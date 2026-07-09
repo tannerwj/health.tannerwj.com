@@ -1,113 +1,18 @@
 ---
-import { getCollection } from "astro:content";
+import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { blends } from "../data/calculator/blends";
 import { compounds } from "../data/calculator/compounds";
+import { calculatorRoute, editorialSections } from "../data/site";
+import { getFeaturedEditorialEntries, getOrderedEditorialSections } from "../lib/content";
 
-const sectionNames = [
-  "supplements",
-  "sleep",
-  "exercise",
-  "protocols",
-  "peptides",
-  "follow"
-] as const;
-
-const sectionMeta = {
-  supplements: {
-    number: "01",
-    title: "Supplements",
-    description: "The daily and weekly stack, with timing, reason, and product context.",
-    href: "/supplements"
-  },
-  sleep: {
-    number: "02",
-    title: "Sleep",
-    description: "Routine, room, gear, and the small decisions that make nights work.",
-    href: "/sleep"
-  },
-  exercise: {
-    number: "03",
-    title: "Exercise",
-    description: "The current split, training principles, sessions, and recovery pieces.",
-    href: "/exercise"
-  },
-  protocols: {
-    number: "04",
-    title: "Protocols",
-    description: "High-level testing, therapies, nutrition, and recovery practices.",
-    href: "/protocols"
-  },
-  peptides: {
-    number: "05",
-    title: "Peptides",
-    description: "Editorial notes on what I have tried, use, or am still considering.",
-    href: "/peptides"
-  },
-  follow: {
-    number: "06",
-    title: "Follow",
-    description: "People and accounts that keep the thinking interesting and useful.",
-    href: "/follow"
-  }
-} satisfies Record<(typeof sectionNames)[number], {
-  number: string;
-  title: string;
-  description: string;
-  href: string;
-}>;
-
-const sections = await Promise.all(
-  sectionNames.map(async (name) => ({
-    name,
-    entries: (await getCollection(name)).sort((a, b) => a.data.order - b.data.order)
-  }))
-);
-
-const featured = sections
-  .flatMap((section) =>
-    section.entries
-      .filter((entry) => entry.data.featured)
-      .map((entry) => ({ section: section.name, entry }))
-  )
-  .sort(
-    (a, b) =>
-      (a.entry.data.homepageOrder ?? Number.MAX_SAFE_INTEGER) -
-      (b.entry.data.homepageOrder ?? Number.MAX_SAFE_INTEGER)
-  );
-
-const routeFor = (section: (typeof sectionNames)[number]) => sectionMeta[section].href;
+const sections = await getOrderedEditorialSections();
+const featured = getFeaturedEditorialEntries(sections);
 const calculatorCount = compounds.length + blends.length;
 const featuredCount = featured.length;
 ---
 
 <BaseLayout>
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand-lockup" href="/" aria-label="health.tannerwj.com home">
-        <svg class="field-mark" viewBox="0 0 32 32" role="img" aria-label="Six-part aperture mark">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.6">
-            <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" />
-            <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(60 16 16)" />
-            <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(120 16 16)" />
-            <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(180 16 16)" />
-            <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(240 16 16)" />
-            <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(300 16 16)" />
-          </g>
-        </svg>
-        <span class="wordmark">
-          health<span>.</span>tannerwj<span>.</span>com
-        </span>
-      </a>
-      <nav class="primary-nav" aria-label="Primary navigation">
-        {sectionNames.map((name) => <a href={routeFor(name)}>{sectionMeta[name].title}</a>)}
-        <a href="/peptides/calculator">Calculator</a>
-      </nav>
-    </div>
-  </header>
-
   <main id="main-content" class="page">
     <section class="hero wrap" aria-labelledby="page-title">
       <div class="hero-copy">
@@ -138,19 +43,18 @@ const featuredCount = featured.length;
           <span class="navigator-count">06 + tool</span>
         </div>
         <div class="navigator-links">
-          {sectionNames.map((name) => (
-            <a href={routeFor(name)}><span>{sectionMeta[name].number}</span>{sectionMeta[name].title}</a>
+          {editorialSections.map((section) => (
+            <a href={section.href}><span>{section.number}</span>{section.title}</a>
           ))}
-          <a class="navigator-tool" href="/peptides/calculator"><span aria-hidden="true">↗</span>Calculator</a>
+          <a class="navigator-tool" href={calculatorRoute.href}><span aria-hidden="true">↗</span>{calculatorRoute.title}</a>
         </div>
       </nav>
     </section>
 
     <div class="wrap">
-      <p class="practice-banner">
-        <strong>Practice data</strong>
-        <span>The entries below are representative placeholders for implementation and are not Tanner's real stack.</span>
-      </p>
+      <PracticeDataNotice>
+        The entries below are representative placeholders for implementation and are not Tanner's real stack.
+      </PracticeDataNotice>
     </div>
 
     <section class="calculator-gateway wrap" aria-labelledby="gateway-heading">
@@ -173,7 +77,7 @@ const featuredCount = featured.length;
             <dd>Singles and named blends</dd>
           </div>
         </dl>
-        <a class="gateway-link" href="/peptides/calculator">Open calculator <span aria-hidden="true">↗</span></a>
+        <a class="gateway-link" href={calculatorRoute.href}>Open calculator <span aria-hidden="true">↗</span></a>
       </div>
     </section>
 
@@ -189,14 +93,13 @@ const featuredCount = featured.length;
 
         <div class="feature-list">
           {featured.map(({ section, entry }, index) => {
-            const meta = sectionMeta[section];
             const status = "status" in entry.data ? entry.data.status : undefined;
             return (
               <article class="feature-item">
                 <span class="feature-number">{String(index + 1).padStart(2, "0")}</span>
-                <span class="feature-type">{meta.title}{status ? ` / ${status}` : ""}</span>
+                <span class="feature-type">{section.title}{status ? ` / ${status}` : ""}</span>
                 <div>
-                  <h3><a href={meta.href}>{entry.data.name}</a></h3>
+                  <h3><a href={section.href}>{entry.data.name}</a></h3>
                   <p class="feature-summary">{entry.data.summary}</p>
                 </div>
                 {entry.data.practiceOnly ? <span class="practice-note">Practice entry — replace before launch</span> : null}
@@ -215,14 +118,13 @@ const featuredCount = featured.length;
         </div>
 
         <nav class="index-grid" aria-label="Health field guide sections">
-          {sectionNames.map((name) => {
-            const meta = sectionMeta[name];
+          {editorialSections.map((section) => {
             return (
-              <a class="index-item" href={meta.href}>
-                <span class="index-number">{meta.number}</span>
+              <a class="index-item" href={section.href}>
+                <span class="index-number">{section.number}</span>
                 <div>
-                  <h3>{meta.title}</h3>
-                  <p>{meta.description}</p>
+                  <h3>{section.title}</h3>
+                  <p>{section.description}</p>
                 </div>
               </a>
             );
@@ -237,7 +139,7 @@ const featuredCount = featured.length;
           <p class="section-label">A separate instrument / {calculatorCount} calculator records</p>
           <h2 id="calculator-heading">Peptide calculator.</h2>
           <p>A focused place for vial math, reconstitution, and named blends. Useful when you need it; out of the way when you don't.</p>
-          <a class="calculator-link" href="/peptides/calculator">
+          <a class="calculator-link" href={calculatorRoute.href}>
             Open the calculator <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -245,11 +147,4 @@ const featuredCount = featured.length;
       </div>
     </section>
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <small>health.tannerwj.com / field notes</small>
-      <p>This is what I do, not a protocol for you. Some links are affiliate links — they don't change what I recommend.</p>
-    </div>
-  </footer>
 </BaseLayout>

@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "validate": "tsx scripts/validate-content.ts",
+    "assert:build": "tsx scripts/assert-build-output.ts",
     "test": "node --import tsx --test tests/*.test.ts",
     "check": "npm run validate && npm test"
   },

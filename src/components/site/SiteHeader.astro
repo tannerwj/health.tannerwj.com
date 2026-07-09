@@ -1,0 +1,27 @@
+---
+import { calculatorRoute, editorialSections } from "../../data/site";
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand-lockup" href="/" aria-label="health.tannerwj.com home">
+      <svg class="field-mark" viewBox="0 0 32 32" role="img" aria-label="Six-part aperture mark">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.6">
+          <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" />
+          <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(60 16 16)" />
+          <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(120 16 16)" />
+          <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(180 16 16)" />
+          <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(240 16 16)" />
+          <path d="M16 3.5a12.5 12.5 0 0 1 6.25 1.675" transform="rotate(300 16 16)" />
+        </g>
+      </svg>
+      <span class="wordmark">
+        health<span>.</span>tannerwj<span>.</span>com
+      </span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      {editorialSections.map((section) => <a href={section.href}>{section.title}</a>)}
+      <a href={calculatorRoute.href}>{calculatorRoute.title}</a>
+    </nav>
+  </div>
+</header>

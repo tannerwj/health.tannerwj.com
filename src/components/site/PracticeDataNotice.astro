@@ -1,0 +1,12 @@
+---
+interface Props {
+  label?: string;
+}
+
+const { label = "Practice data" } = Astro.props;
+---
+
+<p class="practice-banner">
+  <strong>{label}</strong>
+  <span><slot /></span>
+</p>
