@@ -78,6 +78,7 @@ const featured = sections
 
 const routeFor = (section: (typeof sectionNames)[number]) => sectionMeta[section].href;
 const calculatorCount = compounds.length + blends.length;
+const featuredCount = featured.length;
 ---
 
 <BaseLayout>
@@ -111,11 +112,25 @@ const calculatorCount = compounds.length + blends.length;
     <section class="hero wrap" aria-labelledby="page-title">
       <div class="hero-copy">
         <p class="eyebrow">Home / six working sections</p>
-        <h1 id="page-title">What I <em>do</em> for health.</h1>
+        <h1 id="page-title">What I <em>do</em> for health, right now.</h1>
         <p class="hero-intro">
           A public, current-state index of Tanner Johnson's health practices — what he takes,
           does, uses, tests, and follows.
         </p>
+        <dl class="hero-facts" aria-label="Homepage facts">
+          <div class="fact-item">
+            <dt>Sections</dt>
+            <dd>06 editorial peers</dd>
+          </div>
+          <div class="fact-item">
+            <dt>Doing now</dt>
+            <dd>{featuredCount} selected entries</dd>
+          </div>
+          <div class="fact-item">
+            <dt>Calculator</dt>
+            <dd>{calculatorCount} practice records</dd>
+          </div>
+        </dl>
       </div>
       <nav class="hero-navigator" aria-label="Explore the health field guide">
         <div class="navigator-heading">
@@ -139,22 +154,27 @@ const calculatorCount = compounds.length + blends.length;
     </div>
 
     <section class="calculator-gateway wrap" aria-labelledby="gateway-heading">
-      <div>
-        <p class="section-label">Need the math?</p>
-        <h2 id="gateway-heading">Peptide calculator</h2>
-        <p>Reconstitution and syringe-dose math, kept close at hand.</p>
+      <div class="gateway-copy">
+        <p class="section-label">Calculator / quick entry</p>
+        <h2 id="gateway-heading">Vial math stays separate.</h2>
+        <p>
+          Reconstitution and named-blend math get an early door here, while the rest of
+          the page stays editorial.
+        </p>
       </div>
-      <dl class="fact-list" aria-label="Calculator facts">
-        <div class="fact-row">
-          <dt>Use</dt>
-          <dd>Vial math</dd>
-        </div>
-        <div class="fact-row">
-          <dt>Format</dt>
-          <dd>{calculatorCount} records</dd>
-        </div>
-      </dl>
-      <a class="gateway-link" href="/peptides/calculator">Open calculator <span aria-hidden="true">↗</span></a>
+      <div class="gateway-side">
+        <dl class="gateway-facts" aria-label="Calculator facts">
+          <div class="fact-item">
+            <dt>Records</dt>
+            <dd>{calculatorCount} practice entries</dd>
+          </div>
+          <div class="fact-item">
+            <dt>Covers</dt>
+            <dd>Singles and named blends</dd>
+          </div>
+        </dl>
+        <a class="gateway-link" href="/peptides/calculator">Open calculator <span aria-hidden="true">↗</span></a>
+      </div>
     </section>
 
     <section class="feature-section" aria-labelledby="now-heading">
