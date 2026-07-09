@@ -85,8 +85,11 @@ const calculatorCount = compounds.length + blends.length;
 
   <header class="site-header">
     <div class="header-inner">
-      <a class="wordmark" href="/" aria-label="health.tannerwj.com home">
-        health<span>.</span>tannerwj<span>.</span>com
+      <a class="brand-lockup" href="/" aria-label="health.tannerwj.com home">
+        <svg class="register-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M2 2h5v5H2zm7 0h5v5H9zm7 0h5v5h-5zM2 9h5v13H2zm7 0h5v9H9zm7 0h5v13h-5z" />
+        </svg>
+        <span>health.tannerwj.com</span>
       </a>
       <nav class="primary-nav" aria-label="Primary navigation">
         {sectionNames.map((name) => <a href={routeFor(name)}>{sectionMeta[name].title}</a>)}
@@ -98,16 +101,29 @@ const calculatorCount = compounds.length + blends.length;
   <main id="main-content" class="page">
     <section class="hero wrap" aria-labelledby="page-title">
       <div class="hero-copy">
-        <p class="eyebrow">Personal field guide / current index</p>
+        <p class="eyebrow">Tanner Johnson</p>
         <h1 id="page-title">What I <em>do</em> for health.</h1>
         <p class="hero-intro">
           A public, current-state index of Tanner Johnson's health practices — what he takes,
           does, uses, tests, and follows.
         </p>
       </div>
-      <aside class="hero-index" aria-label="Homepage contents summary">
-        <strong>06<br />sections</strong>
-        <p>One place to return to after the conversation, with the useful detail one click away.</p>
+      <aside class="hero-index">
+        <div class="hero-index-head">
+          <span class="fact-label">Browse</span>
+          <strong>06 sections</strong>
+        </div>
+        <nav class="hero-section-nav" aria-label="Browse health guide sections">
+          {sectionNames.map((name) => {
+            const meta = sectionMeta[name];
+            return (
+              <a href={meta.href}>
+                <span>{meta.number}</span>
+                <span>{meta.title}</span>
+              </a>
+            );
+          })}
+        </nav>
       </aside>
     </section>
 
@@ -118,11 +134,32 @@ const calculatorCount = compounds.length + blends.length;
       </p>
     </div>
 
+    <section class="calculator-gateway wrap" aria-labelledby="calculator-gateway-heading">
+      <div>
+        <p class="section-label">Peptide calculator / practice tool</p>
+        <h2 id="calculator-gateway-heading">Need the vial math?</h2>
+        <p>A quick route to reconstitution, syringe draws, and named blend reference details.</p>
+      </div>
+      <dl class="fact-list" aria-label="Calculator details">
+        <div>
+          <dt>Tool</dt>
+          <dd>Vial math</dd>
+        </div>
+        <div>
+          <dt>Catalog</dt>
+          <dd>{calculatorCount} practice records</dd>
+        </div>
+      </dl>
+      <a class="gateway-link" href="/peptides/calculator">
+        Open calculator <span aria-hidden="true">↗</span>
+      </a>
+    </section>
+
     <section class="feature-section" aria-labelledby="now-heading">
       <div class="wrap">
         <div class="section-heading">
           <div>
-            <p class="section-label">01 / The short list</p>
+            <p class="section-label">Selected notes</p>
             <h2 id="now-heading">Doing now</h2>
           </div>
           <p>Selected signals from the collections — the things worth seeing first, not a dump of everything.</p>
@@ -175,14 +212,26 @@ const calculatorCount = compounds.length + blends.length;
     <section class="calculator-section" aria-labelledby="calculator-heading">
       <div class="wrap calculator-wrap">
         <div>
-          <p class="section-label">A separate instrument / {calculatorCount} practice records</p>
+          <p class="section-label">A separate instrument</p>
           <h2 id="calculator-heading">Peptide calculator.</h2>
           <p>A focused place for vial math, reconstitution, and named blends. Useful when you need it; out of the way when you don't.</p>
+          <dl class="fact-list calculator-facts" aria-label="Calculator reference details">
+            <div>
+              <dt>Catalog</dt>
+              <dd>{calculatorCount} practice records</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>Reconstitution + blends</dd>
+            </div>
+          </dl>
           <a class="calculator-link" href="/peptides/calculator">
             Open the calculator <span aria-hidden="true">↗</span>
           </a>
         </div>
-        <div class="calculator-mark" aria-hidden="true">÷</div>
+        <svg class="calculator-mark register-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M2 2h5v5H2zm7 0h5v5H9zm7 0h5v5h-5zM2 9h5v13H2zm7 0h5v9H9zm7 0h5v13h-5z" />
+        </svg>
       </div>
     </section>
   </main>
