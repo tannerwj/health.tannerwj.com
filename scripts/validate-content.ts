@@ -21,7 +21,16 @@ const requiredCollections = [
   "follow"
 ] as const;
 
-const webSourceTypes = new Set(["x", "pep-pedia", "website", "study"]);
+const sourceTypes = new Set([
+  "x",
+  "pep-pedia",
+  "website",
+  "study",
+  "person",
+  "conversation",
+  "local-file"
+]);
+const webSourceTypes = new Set(["x", "website", "study"]);
 const massUnits = new Set(["mcg", "mg"]);
 
 export interface ValidationIssue {
@@ -141,7 +150,9 @@ export function validateIntegrity(input: ValidationInput): ValidationIssue[] {
         });
       }
       sourceIds.add(source.id);
-      pushSourceIssues(issues, source, `Compound "${compound.id}" source "${source.id}"`);
+      pushSourceIssues(issues, source, `Compound "${compound.id}" source "${source.id}"`, {
+        requireId: true
+      });
     }
 
     for (const range of compound.referenceRanges ?? []) {
@@ -254,8 +265,18 @@ export function validateIntegrity(input: ValidationInput): ValidationIssue[] {
       pushQuantityIssues(issues, preset.target, `Blend "${blend.id}" preset "${preset.label}"`);
     }
 
+    const sourceIds = new Set<string>();
     for (const source of blend.sources ?? []) {
-      pushSourceIssues(issues, source, `Blend "${blend.id}" source "${source.id}"`);
+      if (sourceIds.has(source.id)) {
+        issues.push({
+          code: "duplicate-source-id",
+          message: `Blend "${blend.id}" has duplicate source id "${source.id}".`
+        });
+      }
+      sourceIds.add(source.id);
+      pushSourceIssues(issues, source, `Blend "${blend.id}" source "${source.id}"`, {
+        requireId: true
+      });
     }
   }
 
@@ -430,8 +451,13 @@ function pushSourceIssues(
   issues: ValidationIssue[],
   source: unknown,
   context: string,
-  file?: string
+  fileOrOptions?: string | { requireId?: boolean },
+  maybeOptions?: { requireId?: boolean }
 ) {
+  const file = typeof fileOrOptions === "string" ? fileOrOptions : undefined;
+  const options =
+    typeof fileOrOptions === "object" && fileOrOptions !== null ? fileOrOptions : maybeOptions;
+
   if (!source || typeof source !== "object") {
     issues.push({
       code: "invalid-source",
@@ -442,8 +468,32 @@ function pushSourceIssues(
   }
 
   const sourceRecord = source as Record<string, unknown>;
+  const id = sourceRecord.id;
   const type = sourceRecord.type;
   const url = sourceRecord.url;
+  const accessed = sourceRecord.accessed;
+
+  if (options?.requireId && (typeof id !== "string" || !isSlug(id))) {
+    issues.push({
+      code: "invalid-source-id",
+      message: `${context} must have a kebab-case id.`,
+      file
+    });
+  } else if (typeof id === "string" && !isSlug(id)) {
+    issues.push({
+      code: "invalid-source-id",
+      message: `${context} source id must be kebab-case.`,
+      file
+    });
+  }
+
+  if (typeof type !== "string" || !sourceTypes.has(type)) {
+    issues.push({
+      code: "invalid-source-type",
+      message: `${context} has an invalid source type.`,
+      file
+    });
+  }
 
   if (typeof url === "string" && !isHttpUrl(url)) {
     issues.push({
@@ -457,6 +507,14 @@ function pushSourceIssues(
     issues.push({
       code: "missing-source-url",
       message: `${context} of type "${type}" requires a URL.`,
+      file
+    });
+  }
+
+  if (typeof accessed === "string" && !/^\d{4}-\d{2}-\d{2}$/.test(accessed)) {
+    issues.push({
+      code: "invalid-accessed-date",
+      message: `${context} has an invalid accessed date.`,
       file
     });
   }

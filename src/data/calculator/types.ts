@@ -6,7 +6,8 @@ export type SourceType =
   | "website"
   | "study"
   | "person"
-  | "conversation";
+  | "conversation"
+  | "local-file";
 
 export interface Quantity<Unit extends string = MassUnit | VolumeUnit> {
   value: number;
