@@ -1,0 +1,14 @@
+{
+  "practice-magnesium": {
+    "vendor": "Practice Vendor",
+    "product": "Practice Magnesium Glycinate",
+    "url": "https://example.com/practice-magnesium",
+    "practiceOnly": true
+  },
+  "practice-sleep-mask": {
+    "vendor": "Practice Vendor",
+    "product": "Practice Sleep Mask",
+    "url": "https://example.com/practice-sleep-mask",
+    "practiceOnly": true
+  }
+}

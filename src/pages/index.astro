@@ -1,0 +1,110 @@
+---
+import { getCollection } from "astro:content";
+import affiliates from "../data/affiliates.json";
+import { blends } from "../data/calculator/blends";
+import { compounds } from "../data/calculator/compounds";
+
+const sectionNames = [
+  "supplements",
+  "sleep",
+  "exercise",
+  "protocols",
+  "peptides",
+  "follow"
+] as const;
+
+const sections = await Promise.all(
+  sectionNames.map(async (name) => {
+    const entries = await getCollection(name);
+    return {
+      name,
+      entries: entries.sort((a, b) => a.data.order - b.data.order)
+    };
+  })
+);
+
+const featured = sections
+  .flatMap((section) =>
+    section.entries
+      .filter((entry) => entry.data.featured)
+      .map((entry) => ({ section: section.name, entry }))
+  )
+  .sort(
+    (a, b) =>
+      (a.entry.data.homepageOrder ?? Number.MAX_SAFE_INTEGER) -
+      (b.entry.data.homepageOrder ?? Number.MAX_SAFE_INTEGER)
+  );
+
+const affiliateCount = Object.keys(affiliates).length;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="Foundation overview for the health.tannerwj.com content and calculator data model."
+    />
+    <title>health.tannerwj.com foundation</title>
+  </head>
+  <body>
+    <main>
+      <p><strong>Practice data only.</strong> This page proves data composition; it is not Tanner's real stack and it is not a final visual treatment.</p>
+
+      <h1>health.tannerwj.com foundation</h1>
+
+      <section aria-labelledby="featured-heading">
+        <h2 id="featured-heading">Homepage feature composition</h2>
+        <ol>
+          {
+            featured.map(({ section, entry }) => (
+              <li>
+                <strong>{entry.data.name}</strong>
+                <span> ({section})</span>
+                <p>{entry.data.summary}</p>
+                {"practiceNote" in entry.data && entry.data.practiceNote ? (
+                  <small>{entry.data.practiceNote}</small>
+                ) : null}
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section aria-labelledby="collections-heading">
+        <h2 id="collections-heading">Editorial collections</h2>
+        {
+          sections.map((section) => (
+            <article>
+              <h3>{section.name}</h3>
+              <ul>
+                {section.entries.map((entry) => (
+                  <li>
+                    <code>{entry.data.slug}</code> - {entry.data.name}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </section>
+
+      <section aria-labelledby="calculator-heading">
+        <h2 id="calculator-heading">Calculator data foundation</h2>
+        <p>
+          {compounds.length} practice compounds, {blends.length} practice named blend variants, and {affiliateCount} affiliate registry entries are loaded from typed data files.
+        </p>
+        <ul>
+          {compounds.map((compound) => <li>{compound.name} ({compound.id})</li>)}
+          {blends.map((blend) => <li>{blend.name} - {blend.variant} ({blend.id})</li>)}
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      This is what I do, not a protocol for you. Some links are affiliate links -- they don't change what I recommend.
+    </footer>
+  </body>
+</html>
