@@ -1,0 +1,81 @@
+---
+import { getCollection } from "astro:content";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { editorialSections, type EditorialSection } from "../lib/site";
+
+export async function getStaticPaths() {
+  return Promise.all(
+    editorialSections.map(async (section) => {
+      const entries = (await getCollection(section.key)).sort(
+        (a, b) => a.data.order - b.data.order
+      );
+
+      return {
+        params: { section: section.key },
+        props: {
+          section,
+          entryCount: entries.length,
+          leadEntry: entries[0]
+        }
+      };
+    })
+  );
+}
+
+const { section, entryCount, leadEntry } = Astro.props as {
+  section: EditorialSection;
+  entryCount: number;
+  leadEntry?: { data: Record<string, unknown> };
+};
+
+const description = `${section.description} The full section layout is planned for a later phase; this route currently verifies the shared shell and navigation.`;
+const leadData = leadEntry?.data;
+const practiceNote =
+  typeof leadData?.practiceNote === "string" ? leadData.practiceNote : undefined;
+---
+
+<SiteLayout
+  title={section.label}
+  description={description}
+  currentPath={section.href}
+  pageClass="page-route"
+>
+  <section class="route-placeholder">
+    <p class="route-kicker">{section.code} planned route</p>
+    <h1>{section.label}</h1>
+    <p class="route-summary">{section.description}</p>
+
+    <div class="route-panel">
+      <p>
+        This route exists now so the shared shell, metadata, canonical behavior, and
+        keyboard navigation can be exercised before the full section page lands.
+      </p>
+
+      <dl class="instrument-stats">
+        <div>
+          <dt>Entries</dt>
+          <dd>{String(entryCount).padStart(2, "0")}</dd>
+        </div>
+        <div>
+          <dt>Lead item</dt>
+          <dd>{typeof leadData?.name === "string" ? leadData.name : "Planned"}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <p class="route-links">
+      <a href={`/#feature-${section.key}`}>See the homepage highlight</a>
+      <a href="/">Return to the homepage</a>
+    </p>
+
+    {
+      leadData ? (
+        <article class="route-preview">
+          <h2>Representative preview</h2>
+          <p>{typeof leadData.summary === "string" ? leadData.summary : ""}</p>
+          {practiceNote ? <p class="route-note">{practiceNote}</p> : null}
+        </article>
+      ) : null
+    }
+  </section>
+</SiteLayout>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">health.tannerwj.com</title>
+  <desc id="desc">Precision Atlas homepage treatment preview.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18202a" />
+      <stop offset="55%" stop-color="#101317" />
+      <stop offset="100%" stop-color="#090b0d" />
+    </linearGradient>
+    <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e0c27a" />
+      <stop offset="100%" stop-color="#93b5c3" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <g stroke="#f5efe4" stroke-opacity=".08">
+    <path d="M0 110h1200M0 220h1200M0 330h1200M0 440h1200M0 550h1200" />
+    <path d="M140 0v630M320 0v630M500 0v630M680 0v630M860 0v630M1040 0v630" />
+  </g>
+  <g transform="translate(130 122)">
+    <circle cx="76" cy="76" r="76" fill="none" stroke="url(#line)" stroke-width="4" />
+    <path d="M76 0v152M0 76h152" stroke="#e0c27a" stroke-width="4" />
+    <circle cx="76" cy="76" r="18" fill="#93b5c3" />
+  </g>
+  <g fill="#f5efe4">
+    <text x="130" y="345" font-size="24" font-family="'Avenir Next Condensed', 'Arial Narrow', sans-serif" letter-spacing="8" fill="#93b5c3">PERSONAL FIELD GUIDE</text>
+    <text x="130" y="425" font-size="88" font-family="'Avenir Next Condensed', 'Arial Narrow', sans-serif" font-weight="700">health.tannerwj.com</text>
+    <text x="130" y="488" font-size="30" font-family="'Iowan Old Style', Georgia, serif" fill="#d7cfbf">Supplements, sleep, exercise, protocols, peptides, and follow.</text>
+  </g>
+  <g transform="translate(890 120)" fill="none" stroke="#f5efe4" stroke-opacity=".3">
+    <rect width="190" height="390" />
+    <path d="M0 78h190M0 156h190M0 234h190M0 312h190" />
+    <path d="M64 0v390M128 0v390" />
+  </g>
+</svg>

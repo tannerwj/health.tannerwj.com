@@ -1,0 +1,62 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { siteDescription, siteTitle, siteUrl } from "../lib/site";
+import "../styles/site.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  currentPath?: string;
+  imagePath?: string;
+  pageClass?: string;
+}
+
+const {
+  title,
+  description = siteDescription,
+  currentPath = Astro.url.pathname,
+  imagePath = "/og-default.svg",
+  pageClass = ""
+} = Astro.props;
+
+const pageTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+const canonicalUrl = new URL(currentPath, Astro.site ?? siteUrl).toString();
+const socialImageUrl = new URL(imagePath, Astro.site ?? siteUrl).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#101317" />
+
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SiteHeader currentPath={currentPath} />
+    <main id="main" class:list={["site-main", pageClass]}>
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

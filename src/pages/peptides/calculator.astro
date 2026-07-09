@@ -1,0 +1,61 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { calculatorRoute } from "../../lib/site";
+import { blends } from "../../data/calculator/blends";
+import { compounds } from "../../data/calculator/compounds";
+
+const featuredBlends = blends.filter((blend) => blend.featured);
+---
+
+<SiteLayout
+  title="Peptide Calculator"
+  description={calculatorRoute.description}
+  currentPath={calculatorRoute.href}
+  pageClass="page-route"
+>
+  <section class="route-placeholder">
+    <p class="route-kicker">planned route</p>
+    <h1>Peptide Calculator</h1>
+    <p class="route-summary">
+      Reconstitution math, syringe conversions, and named blends live on their own
+      route so peptides stay one peer section of the broader health reference.
+    </p>
+
+    <div class="route-panel">
+      <p>
+        Calculator functionality is intentionally deferred in this slice. This route
+        is here so the homepage can link somewhere real without letting peptides take
+        over the whole site.
+      </p>
+
+      <dl class="instrument-stats">
+        <div>
+          <dt>Singles</dt>
+          <dd>{String(compounds.length).padStart(2, "0")}</dd>
+        </div>
+        <div>
+          <dt>Blend variants</dt>
+          <dd>{String(blends.length).padStart(2, "0")}</dd>
+        </div>
+        <div>
+          <dt>Featured blends</dt>
+          <dd>{String(featuredBlends.length).padStart(2, "0")}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <p class="route-links">
+      <a href="/#calculator-entry">See the homepage entry</a>
+      <a href="/peptides">Go to the peptides section</a>
+    </p>
+
+    <article class="route-preview">
+      <h2>Representative catalog</h2>
+      <p>Practice-only data proves the calculator model and will be replaced before launch.</p>
+      <ul class="route-list">
+        {compounds.map((compound) => <li>{compound.name}</li>)}
+        {featuredBlends.map((blend) => <li>{blend.name} — {blend.variant}</li>)}
+      </ul>
+    </article>
+  </section>
+</SiteLayout>

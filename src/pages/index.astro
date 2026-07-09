@@ -1,110 +1,348 @@
 ---
 import { getCollection } from "astro:content";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { editorialSections, type EditorialSectionKey } from "../lib/site";
 import affiliates from "../data/affiliates.json";
 import { blends } from "../data/calculator/blends";
 import { compounds } from "../data/calculator/compounds";
 
-const sectionNames = [
-  "supplements",
-  "sleep",
-  "exercise",
-  "protocols",
-  "peptides",
-  "follow"
-] as const;
+type EditorialData = Record<string, unknown>;
 
-const sections = await Promise.all(
-  sectionNames.map(async (name) => {
-    const entries = await getCollection(name);
+interface SectionEntryGroup {
+  code: string;
+  key: EditorialSectionKey;
+  label: string;
+  href: string;
+  description: string;
+  entries: Array<{ data: EditorialData }>;
+}
+
+interface FeaturedItem {
+  section: SectionEntryGroup;
+  entry: { data: EditorialData };
+}
+
+function readText(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim().length > 0 ? value : undefined;
+}
+
+function readTextList(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
+function formatCount(value: number): string {
+  return String(value).padStart(2, "0");
+}
+
+function pluralize(value: number, noun: string): string {
+  return `${value} ${noun}${value === 1 ? "" : "s"}`;
+}
+
+function getStatusLabel(value: unknown): string | undefined {
+  if (value === "current") {
+    return "Current";
+  }
+
+  if (value === "considering") {
+    return "Considering";
+  }
+
+  if (value === "previously-tried") {
+    return "Previously tried";
+  }
+
+  return undefined;
+}
+
+function getFeatureMeta(sectionKey: EditorialSectionKey, data: EditorialData) {
+  const meta: Array<{ label: string; value: string }> = [];
+  const push = (label: string, value: unknown) => {
+    const text = readText(value);
+    if (text) {
+      meta.push({ label, value: text });
+    }
+  };
+
+  switch (sectionKey) {
+    case "supplements":
+      push("Dose", data.dose);
+      push("Timing", data.timing);
+      push("Frequency", data.frequency);
+      break;
+    case "sleep":
+      push("Kind", data.kind);
+      push("Spec", data.spec);
+      push("Frequency", data.frequency);
+      break;
+    case "exercise":
+      push("Kind", data.kind);
+      push("Schedule", data.schedule);
+      push("Frequency", data.frequency);
+      break;
+    case "protocols":
+      push("Kind", data.kind);
+      push("Cadence", data.cadence);
+      if (readTextList(data.markers).length > 0) {
+        meta.push({
+          label: "Markers",
+          value: readTextList(data.markers).join(", ")
+        });
+      }
+      break;
+    case "peptides":
+      push("Dose", data.dose);
+      push("Route", data.route);
+      push("Cycle", data.cycle);
+      break;
+    case "follow":
+      push("Handle", data.handle);
+      push("Group", data.group);
+      push("Platform", data.platform);
+      break;
+  }
+
+  const sources = Array.isArray(data.sources) ? data.sources.length : 0;
+  if (sources > 0) {
+    meta.push({
+      label: "Sources",
+      value: pluralize(sources, "source")
+    });
+  }
+
+  return meta;
+}
+
+const sections = (await Promise.all(
+  editorialSections.map(async (section) => {
+    const entries = (await getCollection(section.key)).sort(
+      (a, b) => a.data.order - b.data.order
+    );
+
     return {
-      name,
-      entries: entries.sort((a, b) => a.data.order - b.data.order)
+      ...section,
+      entries: entries.map((entry) => ({ data: entry.data as EditorialData }))
     };
   })
-);
+)) satisfies SectionEntryGroup[];
 
 const featured = sections
   .flatMap((section) =>
     section.entries
-      .filter((entry) => entry.data.featured)
-      .map((entry) => ({ section: section.name, entry }))
+      .filter((entry) => entry.data.featured === true)
+      .map((entry) => ({ section, entry }))
   )
   .sort(
     (a, b) =>
-      (a.entry.data.homepageOrder ?? Number.MAX_SAFE_INTEGER) -
-      (b.entry.data.homepageOrder ?? Number.MAX_SAFE_INTEGER)
-  );
+      ((a.entry.data.homepageOrder as number | undefined) ?? Number.MAX_SAFE_INTEGER) -
+      ((b.entry.data.homepageOrder as number | undefined) ?? Number.MAX_SAFE_INTEGER)
+  ) satisfies FeaturedItem[];
 
 const affiliateCount = Object.keys(affiliates).length;
+const practiceFeaturedCount = featured.filter((item) => item.entry.data.practiceOnly === true).length;
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta
-      name="description"
-      content="Foundation overview for the health.tannerwj.com content and calculator data model."
-    />
-    <title>health.tannerwj.com foundation</title>
-  </head>
-  <body>
-    <main>
-      <p><strong>Practice data only.</strong> This page proves data composition; it is not Tanner's real stack and it is not a final visual treatment.</p>
+<SiteLayout
+  description="A public personal health field guide covering current supplements, sleep, exercise, protocols, peptides, and people worth following."
+  currentPath="/"
+  pageClass="page-home"
+>
+  <section class="hero-grid" aria-labelledby="home-title">
+    <div class="hero-copy">
+      <p class="section-kicker">Current-state field guide</p>
+      <h1 id="home-title">health.tannerwj.com</h1>
+      <p class="home-intro">
+        A public reference for what I currently take, do, use, test, and keep in
+        rotation across supplements, sleep, exercise, protocols, peptides, and the
+        people I keep learning from.
+      </p>
+      <p class="practice-banner">
+        <strong>Representative build.</strong> Every visible item in this candidate
+        uses practice-only data and stays clearly marked as non-production until real
+        launch content replaces it.
+      </p>
+    </div>
 
-      <h1>health.tannerwj.com foundation</h1>
+    <div class="hero-rail">
+      <dl class="metric-grid">
+        <div>
+          <dt class="metric-label">Sections</dt>
+          <dd class="metric-value">{formatCount(sections.length)}</dd>
+        </div>
+        <div>
+          <dt class="metric-label">Featured now</dt>
+          <dd class="metric-value">{formatCount(featured.length)}</dd>
+        </div>
+        <div>
+          <dt class="metric-label">Calculator inputs</dt>
+          <dd class="metric-value">{formatCount(compounds.length + blends.length)}</dd>
+        </div>
+        <div>
+          <dt class="metric-label">Practice-marked</dt>
+          <dd class="metric-value">{formatCount(practiceFeaturedCount)}</dd>
+        </div>
+      </dl>
 
-      <section aria-labelledby="featured-heading">
-        <h2 id="featured-heading">Homepage feature composition</h2>
-        <ol>
-          {
-            featured.map(({ section, entry }) => (
-              <li>
-                <strong>{entry.data.name}</strong>
-                <span> ({section})</span>
-                <p>{entry.data.summary}</p>
-                {"practiceNote" in entry.data && entry.data.practiceNote ? (
-                  <small>{entry.data.practiceNote}</small>
+      <ul class="home-index" aria-label="Homepage map">
+        <li>
+          <a href="#featured-now">
+            <span>Featured now</span>
+            <span>{formatCount(featured.length)} modules</span>
+          </a>
+        </li>
+        <li>
+          <a href="#section-atlas">
+            <span>Section atlas</span>
+            <span>all six routes</span>
+          </a>
+        </li>
+        <li>
+          <a href="#calculator-entry">
+            <span>Calculator</span>
+            <span>separate route</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="featured-now">
+    <div class="section-heading">
+      <p class="section-kicker">Featured now</p>
+      <h2 id="featured-now">One current pass across all six peer sections.</h2>
+      <p>
+        The homepage pulls deliberate highlights from the collections instead of
+        duplicating facts into a separate marketing layer.
+      </p>
+    </div>
+
+    <ol class="featured-list">
+      {
+        featured.map(({ section, entry }, index) => {
+          const data = entry.data;
+          const statusLabel = getStatusLabel(data.status);
+          const meta = getFeatureMeta(section.key, data);
+          const affiliate =
+            typeof data.affiliate === "string" ? affiliates[data.affiliate as keyof typeof affiliates] : undefined;
+          const practiceNote = readText(data.practiceNote);
+          const followUrl = readText(data.url);
+
+          return (
+            <li class="feature-row" id={`feature-${section.key}`}>
+              <div class="feature-index">{formatCount(index + 1)}</div>
+              <article class="feature-body">
+                <p class="eyebrow">
+                  <span>{section.code}</span>
+                  <span>{section.label}</span>
+                  {statusLabel ? <span>{statusLabel}</span> : null}
+                  {data.practiceOnly === true ? <span class="feature-tag">Practice data</span> : null}
+                </p>
+                <h3>
+                  <a href={section.href}>{readText(data.name) ?? section.label}</a>
+                </h3>
+                <p>{readText(data.summary)}</p>
+
+                {meta.length > 0 ? (
+                  <dl class="feature-meta">
+                    {meta.map((item) => (
+                      <div>
+                        <dt>{item.label}</dt>
+                        <dd>{item.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 ) : null}
-              </li>
-            ))
-          }
-        </ol>
-      </section>
 
-      <section aria-labelledby="collections-heading">
-        <h2 id="collections-heading">Editorial collections</h2>
-        {
-          sections.map((section) => (
-            <article>
-              <h3>{section.name}</h3>
-              <ul>
-                {section.entries.map((entry) => (
-                  <li>
-                    <code>{entry.data.slug}</code> - {entry.data.name}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))
-        }
-      </section>
+                <div class="feature-links">
+                  <a class="inline-link" href={section.href}>
+                    Open {section.label}
+                  </a>
+                  {affiliate ? (
+                    <a class="inline-link" href={affiliate.url}>
+                      Product link <span aria-hidden="true">↗</span>
+                      <span class="sr-only">(external)</span>
+                    </a>
+                  ) : null}
+                  {followUrl ? (
+                    <a class="inline-link" href={followUrl}>
+                      Direct source <span aria-hidden="true">↗</span>
+                      <span class="sr-only">(external)</span>
+                    </a>
+                  ) : null}
+                </div>
 
-      <section aria-labelledby="calculator-heading">
-        <h2 id="calculator-heading">Calculator data foundation</h2>
-        <p>
-          {compounds.length} practice compounds, {blends.length} practice named blend variants, and {affiliateCount} affiliate registry entries are loaded from typed data files.
-        </p>
-        <ul>
-          {compounds.map((compound) => <li>{compound.name} ({compound.id})</li>)}
-          {blends.map((blend) => <li>{blend.name} - {blend.variant} ({blend.id})</li>)}
-        </ul>
-      </section>
-    </main>
+                {practiceNote ? <p class="feature-note">{practiceNote}</p> : null}
+              </article>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
 
-    <footer>
-      This is what I do, not a protocol for you. Some links are affiliate links -- they don't change what I recommend.
-    </footer>
-  </body>
-</html>
+  <section aria-labelledby="section-atlas">
+    <div class="section-heading">
+      <p class="section-kicker">Section atlas</p>
+      <h2 id="section-atlas">Strong navigation first, detailed pages second.</h2>
+      <p>
+        Supplements, sleep, exercise, protocols, peptides, and follow stay peers on
+        the homepage so the site reads as one personal system rather than a single
+        peptide destination.
+      </p>
+    </div>
+
+    <ol class="atlas-list">
+      {
+        sections.map((section) => {
+          const lead = section.entries[0]?.data;
+          const currentCount = section.entries.filter((entry) => entry.data.status === "current").length;
+
+          return (
+            <li>
+              <a class="atlas-link" href={section.href}>
+                <span>{section.code}</span>
+                <span>{section.label}</span>
+              </a>
+              <p>{section.description}</p>
+              <p class="atlas-meta">
+                <span>{pluralize(section.entries.length, "entry")}</span>
+                <span>{currentCount > 0 ? `${pluralize(currentCount, "current item")}` : "planned grouping"}</span>
+              </p>
+              {lead ? (
+                <p class="atlas-preview">
+                  <strong>{readText(lead.name)}</strong>: {readText(lead.summary)}
+                </p>
+              ) : null}
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  <aside class="instrument-panel" id="calculator-entry" aria-labelledby="calculator-title">
+    <p class="section-kicker">Calculator entry</p>
+    <h2 id="calculator-title">The calculator stays visible, but it does not become the homepage.</h2>
+    <p>
+      Editorial peptide notes and calculator math are intentionally separated. The
+      calculator gets a distinct route for reconstitution, draw size, and named blends
+      while the broader site keeps equal weight on the rest of the stack.
+    </p>
+
+    <dl class="instrument-stats">
+      <div>
+        <dt>Compounds</dt>
+        <dd>{formatCount(compounds.length)}</dd>
+      </div>
+      <div>
+        <dt>Blend variants</dt>
+        <dd>{formatCount(blends.length)}</dd>
+      </div>
+      <div>
+        <dt>Affiliates</dt>
+        <dd>{formatCount(affiliateCount)}</dd>
+      </div>
+    </dl>
+
+    <a class="inline-link" href="/peptides/calculator">Open the planned calculator route</a>
+  </aside>
+</SiteLayout>
