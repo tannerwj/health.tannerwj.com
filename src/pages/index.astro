@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import affiliates from "../data/affiliates.json";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import { blends } from "../data/calculator/blends";
 import { compounds } from "../data/calculator/compounds";
 
@@ -13,14 +13,55 @@ const sectionNames = [
   "follow"
 ] as const;
 
+const sectionMeta = {
+  supplements: {
+    number: "01",
+    title: "Supplements",
+    description: "The daily and weekly stack, with timing, reason, and product context.",
+    href: "/supplements"
+  },
+  sleep: {
+    number: "02",
+    title: "Sleep",
+    description: "Routine, room, gear, and the small decisions that make nights work.",
+    href: "/sleep"
+  },
+  exercise: {
+    number: "03",
+    title: "Exercise",
+    description: "The current split, training principles, sessions, and recovery pieces.",
+    href: "/exercise"
+  },
+  protocols: {
+    number: "04",
+    title: "Protocols",
+    description: "High-level testing, therapies, nutrition, and recovery practices.",
+    href: "/protocols"
+  },
+  peptides: {
+    number: "05",
+    title: "Peptides",
+    description: "Editorial notes on what I have tried, use, or am still considering.",
+    href: "/peptides"
+  },
+  follow: {
+    number: "06",
+    title: "Follow",
+    description: "People and accounts that keep the thinking interesting and useful.",
+    href: "/follow"
+  }
+} satisfies Record<(typeof sectionNames)[number], {
+  number: string;
+  title: string;
+  description: string;
+  href: string;
+}>;
+
 const sections = await Promise.all(
-  sectionNames.map(async (name) => {
-    const entries = await getCollection(name);
-    return {
-      name,
-      entries: entries.sort((a, b) => a.data.order - b.data.order)
-    };
-  })
+  sectionNames.map(async (name) => ({
+    name,
+    entries: (await getCollection(name)).sort((a, b) => a.data.order - b.data.order)
+  }))
 );
 
 const featured = sections
@@ -35,76 +76,121 @@ const featured = sections
       (b.entry.data.homepageOrder ?? Number.MAX_SAFE_INTEGER)
   );
 
-const affiliateCount = Object.keys(affiliates).length;
+const routeFor = (section: (typeof sectionNames)[number]) => sectionMeta[section].href;
+const calculatorCount = compounds.length + blends.length;
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta
-      name="description"
-      content="Foundation overview for the health.tannerwj.com content and calculator data model."
-    />
-    <title>health.tannerwj.com foundation</title>
-  </head>
-  <body>
-    <main>
-      <p><strong>Practice data only.</strong> This page proves data composition; it is not Tanner's real stack and it is not a final visual treatment.</p>
+<BaseLayout>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-      <h1>health.tannerwj.com foundation</h1>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="/" aria-label="health.tannerwj.com home">
+        health<span>.</span>tannerwj<span>.</span>com
+      </a>
+      <nav class="primary-nav" aria-label="Primary navigation">
+        {sectionNames.map((name) => <a href={routeFor(name)}>{sectionMeta[name].title}</a>)}
+        <a href="/peptides/calculator">Calculator</a>
+      </nav>
+    </div>
+  </header>
 
-      <section aria-labelledby="featured-heading">
-        <h2 id="featured-heading">Homepage feature composition</h2>
-        <ol>
-          {
-            featured.map(({ section, entry }) => (
-              <li>
-                <strong>{entry.data.name}</strong>
-                <span> ({section})</span>
-                <p>{entry.data.summary}</p>
-                {"practiceNote" in entry.data && entry.data.practiceNote ? (
-                  <small>{entry.data.practiceNote}</small>
-                ) : null}
-              </li>
-            ))
-          }
-        </ol>
-      </section>
-
-      <section aria-labelledby="collections-heading">
-        <h2 id="collections-heading">Editorial collections</h2>
-        {
-          sections.map((section) => (
-            <article>
-              <h3>{section.name}</h3>
-              <ul>
-                {section.entries.map((entry) => (
-                  <li>
-                    <code>{entry.data.slug}</code> - {entry.data.name}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))
-        }
-      </section>
-
-      <section aria-labelledby="calculator-heading">
-        <h2 id="calculator-heading">Calculator data foundation</h2>
-        <p>
-          {compounds.length} practice compounds, {blends.length} practice named blend variants, and {affiliateCount} affiliate registry entries are loaded from typed data files.
+  <main id="main-content" class="page">
+    <section class="hero wrap" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Personal field guide / current index</p>
+        <h1 id="page-title">What I <em>do</em> for health.</h1>
+        <p class="hero-intro">
+          A public, current-state index of Tanner Johnson's health practices — what he takes,
+          does, uses, tests, and follows.
         </p>
-        <ul>
-          {compounds.map((compound) => <li>{compound.name} ({compound.id})</li>)}
-          {blends.map((blend) => <li>{blend.name} - {blend.variant} ({blend.id})</li>)}
-        </ul>
-      </section>
-    </main>
+      </div>
+      <aside class="hero-index" aria-label="Homepage contents summary">
+        <strong>06<br />sections</strong>
+        <p>One place to return to after the conversation, with the useful detail one click away.</p>
+      </aside>
+    </section>
 
-    <footer>
-      This is what I do, not a protocol for you. Some links are affiliate links -- they don't change what I recommend.
-    </footer>
-  </body>
-</html>
+    <div class="wrap">
+      <p class="practice-banner">
+        <strong>Practice data</strong>
+        <span>The entries below are representative placeholders for implementation and are not Tanner's real stack.</span>
+      </p>
+    </div>
+
+    <section class="feature-section" aria-labelledby="now-heading">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">01 / The short list</p>
+            <h2 id="now-heading">Doing now</h2>
+          </div>
+          <p>Selected signals from the collections — the things worth seeing first, not a dump of everything.</p>
+        </div>
+
+        <div class="feature-list">
+          {featured.map(({ section, entry }, index) => {
+            const meta = sectionMeta[section];
+            const status = "status" in entry.data ? entry.data.status : undefined;
+            return (
+              <article class="feature-item">
+                <span class="feature-number">{String(index + 1).padStart(2, "0")}</span>
+                <span class="feature-type">{meta.title}{status ? ` / ${status}` : ""}</span>
+                <div>
+                  <h3><a href={meta.href}>{entry.data.name}</a></h3>
+                  <p class="feature-summary">{entry.data.summary}</p>
+                </div>
+                {entry.data.practiceOnly ? <span class="practice-note">Practice entry — replace before launch</span> : null}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section class="index-section" aria-labelledby="index-heading">
+      <div class="wrap">
+        <div class="index-heading">
+          <h2 id="index-heading">The index</h2>
+          <p>Six peers, one point of view. Pick a section when you want the full working notes behind the headline.</p>
+        </div>
+
+        <nav class="index-grid" aria-label="Health field guide sections">
+          {sectionNames.map((name) => {
+            const meta = sectionMeta[name];
+            return (
+              <a class="index-item" href={meta.href}>
+                <span class="index-number">{meta.number}</span>
+                <div>
+                  <h3>{meta.title}</h3>
+                  <p>{meta.description}</p>
+                </div>
+              </a>
+            );
+          })}
+        </nav>
+      </div>
+    </section>
+
+    <section class="calculator-section" aria-labelledby="calculator-heading">
+      <div class="wrap calculator-wrap">
+        <div>
+          <p class="section-label">A separate instrument / {calculatorCount} practice records</p>
+          <h2 id="calculator-heading">Peptide calculator.</h2>
+          <p>A focused place for vial math, reconstitution, and named blends. Useful when you need it; out of the way when you don't.</p>
+          <a class="calculator-link" href="/peptides/calculator">
+            Open the calculator <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <div class="calculator-mark" aria-hidden="true">÷</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <small>health.tannerwj.com / field notes</small>
+      <p>This is what I do, not a protocol for you. Some links are affiliate links — they don't change what I recommend.</p>
+    </div>
+  </footer>
+</BaseLayout>
