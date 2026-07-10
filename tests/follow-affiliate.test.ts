@@ -96,6 +96,15 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
     assert.equal(data.affiliate, affiliateKey);
   }
 
+  const avmacol = frontmatter("src/content/supplements/avmacol-sulforaphane.md");
+  assert.equal(avmacol.name, "Avmacol Sulforaphane-Producing Supplement");
+  assert.match(String(avmacol.summary), /glucoraphanin/i);
+  assert.match(String(avmacol.summary), /active myrosinase/i);
+  assert.equal(
+    affiliates["amazon-avmacol-sulforaphane"].product,
+    "Avmacol Sulforaphane-Producing Supplement, 60 tablets"
+  );
+
   const supplyMappings = new Map([
     ["src/content/supplies/easy-touch-insulin-syringes.md", "amazon-easy-touch-insulin-syringes"],
     ["src/content/supplies/medpride-alcohol-prep-pads.md", "amazon-medpride-alcohol-prep-pads"]
@@ -124,8 +133,19 @@ test("affiliate calls to action are transparent and sponsored", () => {
 
   const affiliateHelper = read("src/lib/affiliates.ts");
   assert.match(affiliateHelper, /View \$\{affiliate\.product\} on Amazon/);
-  assert.match(read("src/pages/supplements.astro"), /As an Amazon Associate I earn from qualifying purchases\./);
-  assert.match(read("src/components/peptides/PeptideSupplies.astro"), /As an Amazon Associate I earn from qualifying purchases\./);
+  const disclosure = read("src/components/site/AmazonDisclosure.astro");
+  assert.match(disclosure, /As an Amazon Associate I earn from qualifying purchases\./);
+  assert.match(disclosure, /font-size: \.88rem/);
+
+  for (const [renderer, publicSurface] of [
+    ["src/components/supplements/SupplementList.astro", "src/pages/supplements.astro"],
+    ["src/components/sleep/SleepEntry.astro", "src/pages/sleep.astro"],
+    ["src/components/exercise/ExerciseGroup.astro", "src/pages/exercise.astro"],
+    ["src/components/peptides/PeptideSupplies.astro", "src/components/peptides/PeptideSupplies.astro"]
+  ]) {
+    assert.match(read(renderer), /getAffiliateEntries/);
+    assert.match(read(publicSurface), /AmazonDisclosure/);
+  }
 });
 
 test("Rhonda Patrick remains one person with two primary X profiles", () => {

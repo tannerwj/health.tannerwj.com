@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import SupplementList from "../components/supplements/SupplementList.astro";
+import AmazonDisclosure from "../components/site/AmazonDisclosure.astro";
 import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
@@ -40,7 +41,7 @@ const glanceItems = glanceEntries.map((entry) => ({
       <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's stack.</PracticeDataNotice></div>
     ) : null}
 
-    <div class="wrap"><p class="amazon-disclosure">As an Amazon Associate I earn from qualifying purchases.</p></div>
+    <div class="wrap"><AmazonDisclosure /></div>
 
     <div class="wrap stack" id="supplement-details">
       {current.length ? <SupplementList entries={current} heading="Current" description="The items in my current stack, in the order I take them." emptyMessage="No current supplement entries are published yet." /> : null}
@@ -53,6 +54,5 @@ const glanceItems = glanceEntries.map((entry) => ({
 </BaseLayout>
 
 <style>
-  .amazon-disclosure { margin: 1.5rem 0 0; border-left: 3px solid var(--clay); padding: .55rem .75rem; color: var(--muted); font-size: .88rem; line-height: 1.45; }
   .stack { padding-bottom: 2.5rem; }
 </style>

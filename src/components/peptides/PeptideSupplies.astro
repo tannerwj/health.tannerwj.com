@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
+import AmazonDisclosure from "../site/AmazonDisclosure.astro";
 
 interface Props {
   entries: CollectionEntry<"supplies">[];
@@ -14,7 +15,8 @@ const { entries } = Astro.props;
     <header class="supplies-heading">
       <p class="section-label">Products / Supplies</p>
       <h2 id="supplies-heading">Supply links.</h2>
-      <p>These links do not describe my current setup. As an Amazon Associate I earn from qualifying purchases.</p>
+      <p>These links do not describe my current setup.</p>
+      <AmazonDisclosure />
     </header>
     <div class="supply-grid">
       {entries.map((entry) => {
@@ -40,7 +42,7 @@ const { entries } = Astro.props;
   .supplies-section { border-bottom: 1px solid var(--line-strong); padding-block: 2.5rem; background: rgba(227, 229, 220, .32); }
   .supplies-heading { max-width: 44rem; }
   .supplies-heading h2 { max-width: 14ch; margin: .5rem 0 0; font-family: var(--serif); font-size: clamp(2rem, 7vw, 3.6rem); font-weight: 400; line-height: .92; }
-  .supplies-heading > p:last-child { margin: .85rem 0 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+  .supplies-heading > p { margin: .85rem 0 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
   .supply-grid { display: grid; gap: .8rem; margin-top: 1.5rem; }
   .supply-entry { border: 1px solid var(--line-strong); border-top: 3px solid var(--sage); padding: 1rem; background: rgba(248, 246, 238, .62); }
   .entry-label { margin: 0; color: var(--clay-deep); font-size: .6rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }

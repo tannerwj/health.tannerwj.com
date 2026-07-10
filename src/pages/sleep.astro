@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import SleepGroup from "../components/sleep/SleepGroup.astro";
+import AmazonDisclosure from "../components/site/AmazonDisclosure.astro";
 import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
@@ -19,6 +20,7 @@ const kinds = [
   ["Tracking", "Sleep tracking notes and patterns.", "tracking"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
+const hasAffiliateLinks = entries.some((entry) => entry.data.affiliate || entry.data.affiliates?.length);
 const glanceItems = current.map((entry) => ({
   label: entry.data.kind,
   title: entry.data.name,
@@ -38,6 +40,7 @@ const glanceItems = current.map((entry) => ({
     <AtAGlance items={glanceItems} description="The sleep gear and setup I have recorded as current." />
 
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's routine.</PracticeDataNotice></div> : null}
+    {hasAffiliateLinks ? <div class="wrap"><AmazonDisclosure /></div> : null}
 
     <div class="wrap sleep-layout">
       {kinds.map(([title, description, kind]) => (

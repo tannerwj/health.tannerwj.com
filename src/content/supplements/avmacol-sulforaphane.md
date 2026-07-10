@@ -1,9 +1,9 @@
 ---
-name: Avmacol Sulforaphane
+name: Avmacol Sulforaphane-Producing Supplement
 slug: avmacol-sulforaphane
-summary: A specific sulforaphane supplement linked here for reference.
+summary: A 60-tablet glucoraphanin and active myrosinase formulation intended to produce sulforaphane, linked here for reference.
 order: 100
 brand: Avmacol
-product: Sulforaphane, 60 tablets
+product: Sulforaphane-Producing Supplement, 60 tablets
 affiliate: amazon-avmacol-sulforaphane
 ---

@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import CurrentSplit from "../components/exercise/CurrentSplit.astro";
 import ExerciseGroup from "../components/exercise/ExerciseGroup.astro";
+import AmazonDisclosure from "../components/site/AmazonDisclosure.astro";
 import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
@@ -20,6 +21,7 @@ const groups = [
   ["Other splits", "Other weekly split ideas and frameworks.", "split"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
+const hasAffiliateLinks = entries.some((entry) => entry.data.affiliate || entry.data.affiliates?.length);
 const glanceItems = groups.slice(0, 4).flatMap(([title, description, kind]) => {
   const count = supportingEntries.filter((entry) => entry.data.kind === kind).length;
   return count ? [{
@@ -40,6 +42,7 @@ const glanceItems = groups.slice(0, 4).flatMap(([title, description, kind]) => {
     <PageIntro eyebrow="03 / Exercise" title="Exercise" description="Training notes, sessions, equipment, recovery, and programming ideas." />
     <AtAGlance items={glanceItems} description="Browse the training library by type. Personal equipment can slot into the same structure." />
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's training plan.</PracticeDataNotice></div> : null}
+    {hasAffiliateLinks ? <div class="wrap"><AmazonDisclosure /></div> : null}
     <div class="wrap exercise-layout">
       {currentSplit ? <CurrentSplit entry={currentSplit} /> : null}
       {groups.map(([title, description, kind]) => <ExerciseGroup title={title} description={description} entries={supportingEntries.filter((entry) => entry.data.kind === kind)} />)}
