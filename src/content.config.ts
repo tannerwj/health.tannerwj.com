@@ -37,7 +37,8 @@ const sharedFields = {
 const productFields = {
   brand: z.string().optional(),
   product: z.string().optional(),
-  affiliate: z.string().optional()
+  affiliate: z.string().optional(),
+  affiliates: z.array(z.string()).min(1).optional()
 };
 
 const supplements = defineCollection({
@@ -163,6 +164,18 @@ const peptides = defineCollection({
   })
 });
 
+const supplies = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/supplies" }),
+  schema: z.object({
+    name: z.string().min(1),
+    slug: slugSchema,
+    summary: z.string().min(1),
+    order: z.number().int().nonnegative(),
+    category: z.literal("peptide-preparation"),
+    affiliates: z.array(z.string()).min(1)
+  })
+});
+
 const follow = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/follow" }),
   schema: z.object({
@@ -192,5 +205,6 @@ export const collections = {
   exercise,
   protocols,
   peptides,
+  supplies,
   follow
 };

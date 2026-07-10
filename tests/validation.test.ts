@@ -98,7 +98,9 @@ test("statusless sourced supplements remain separate from personal stack groups"
   );
   assert.match(supplementsPage, /const sourceNotes = entries\.filter/);
   assert.match(supplementsPage, /heading="Source notes"/);
-  assert.match(supplementList, /: "Source note"/);
+  assert.match(supplementList, /"Source note"/);
+  assert.match(supplementsPage, /heading="Saved product links"/);
+  assert.match(supplementList, /"Saved product"/);
 });
 
 test("valid relationships pass", () => {
@@ -145,6 +147,42 @@ test("unknown affiliate keys fail validation", () => {
   });
 
   assert(issues.some((issue) => issue.code === "unknown-affiliate"));
+});
+
+test("unknown affiliate keys in multi-product lists fail validation", () => {
+  const issues = validateIntegrity({
+    ...validInput,
+    editorialEntries: [
+      {
+        ...validInput.editorialEntries[0],
+        data: {
+          ...validInput.editorialEntries[0].data,
+          affiliate: undefined,
+          affiliates: ["practice-affiliate", "missing-affiliate"]
+        }
+      }
+    ]
+  });
+
+  assert(issues.some((issue) => issue.code === "unknown-affiliate"));
+});
+
+test("malformed affiliate ASINs fail validation", () => {
+  const issues = validateIntegrity({
+    ...validInput,
+    affiliates: {
+      ...validInput.affiliates,
+      "bad-asin": {
+        vendor: "Amazon",
+        product: "Broken product",
+        url: "https://amzn.to/example",
+        kind: "product",
+        asin: "short"
+      }
+    }
+  });
+
+  assert(issues.some((issue) => issue.code === "invalid-asin"));
 });
 
 test("unknown calculatorId references fail validation", () => {

@@ -18,6 +18,7 @@ const requiredCollections = [
   "exercise",
   "protocols",
   "peptides",
+  "supplies",
   "follow"
 ] as const;
 
@@ -52,6 +53,8 @@ export interface AffiliateEntry {
   vendor: string;
   product: string;
   url: string;
+  kind?: "search" | "product";
+  asin?: string;
   practiceOnly?: boolean;
 }
 
@@ -94,6 +97,12 @@ export function validateIntegrity(input: ValidationInput): ValidationIssue[] {
       issues.push({
         code: "invalid-url",
         message: `Affiliate "${key}" has a malformed URL.`
+      });
+    }
+    if (affiliate.asin && !/^[A-Z0-9]{10}$/.test(affiliate.asin)) {
+      issues.push({
+        code: "invalid-asin",
+        message: `Affiliate "${key}" has a malformed ASIN.`
       });
     }
   }
@@ -335,6 +344,19 @@ export function validateIntegrity(input: ValidationInput): ValidationIssue[] {
         message: `Entry "${entry.file}" references unknown affiliate "${affiliate}".`,
         file: entry.file
       });
+    }
+
+    const affiliateList = entry.data.affiliates;
+    if (Array.isArray(affiliateList)) {
+      for (const affiliateKey of affiliateList) {
+        if (typeof affiliateKey !== "string" || !affiliateKeys.has(affiliateKey)) {
+          issues.push({
+            code: "unknown-affiliate",
+            message: `Entry "${entry.file}" references unknown affiliate "${String(affiliateKey)}".`,
+            file: entry.file
+          });
+        }
+      }
     }
 
     const calculatorId = entry.data.calculatorId;

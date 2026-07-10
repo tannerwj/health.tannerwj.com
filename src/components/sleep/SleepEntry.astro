@@ -1,7 +1,7 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
 import PracticeDataNotice from "../site/PracticeDataNotice.astro";
-import affiliates from "../../data/affiliates.json";
+import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
 
 interface Props {
   entry: CollectionEntry<"sleep">;
@@ -10,8 +10,7 @@ interface Props {
 
 const { entry, featured = false } = Astro.props;
 const { Content } = await render(entry);
-const affiliateRegistry = affiliates as Record<string, { vendor: string; url: string }>;
-const affiliate = entry.data.affiliate ? affiliateRegistry[entry.data.affiliate] : undefined;
+const affiliateEntries = getAffiliateEntries(entry.data);
 const hasNotes = Boolean(entry.body?.trim());
 ---
 
@@ -34,7 +33,7 @@ const hasNotes = Boolean(entry.body?.trim());
     </dl>
   ) : null}
 
-  {affiliate ? <a class="product-link" href={affiliate.url} rel="sponsored noreferrer">Search Amazon for {entry.data.name} <span aria-hidden="true">↗</span></a> : null}
+  {affiliateEntries.map((affiliate) => <a class="product-link" href={affiliate.url} rel="sponsored noreferrer">{amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span></a>)}
 
   {entry.data.practiceOnly ? (
     <PracticeDataNotice label="Practice entry">{entry.data.practiceNote ?? "Practice data only — not Tanner's sleep routine."}</PracticeDataNotice>

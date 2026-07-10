@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import PeptideEntry from "../../components/peptides/PeptideEntry.astro";
+import PeptideSupplies from "../../components/peptides/PeptideSupplies.astro";
 import AtAGlance from "../../components/site/AtAGlance.astro";
 import PageIntro from "../../components/site/PageIntro.astro";
 import { blends } from "../../data/calculator/blends";
@@ -10,6 +11,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { groupBy, sortByOrder } from "../../lib/content";
 
 const peptides = sortByOrder(await getCollection("peptides"));
+const supplies = sortByOrder(await getCollection("supplies"));
 const catalogIds = new Set([...compounds, ...blends].map((entry) => entry.id));
 const personalEntries = peptides.filter((entry) => entry.data.entryType === "personal" && entry.data.status);
 const referenceEntries = peptides.filter((entry) => entry.data.entryType === "source-note");
@@ -51,6 +53,8 @@ const glanceItems = glanceSlugs.flatMap((slug) => {
         <div class="calculator-action"><p>{catalogLinkedEntries} reference entries map directly to calculator records.</p><a href={calculatorRoute.href}>Open peptide calculator <span aria-hidden="true">↗</span></a></div>
       </div>
     </section>
+
+    {supplies.length ? <PeptideSupplies entries={supplies} /> : null}
 
     {personalEntries.length ? (
       <section class="library-section personal-section" aria-labelledby="personal-heading">

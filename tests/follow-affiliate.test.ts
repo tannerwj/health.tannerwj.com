@@ -17,32 +17,55 @@ function frontmatter(relativePath: string) {
   return parseYaml(match[1]) as Record<string, unknown>;
 }
 
-test("Amazon search links use Tanner's affiliate tag and map to six known items", () => {
+test("Amazon links preserve generic searches and exact amzn.to product links", () => {
   const affiliates = JSON.parse(read("src/data/affiliates.json")) as Record<
     string,
-    { vendor: string; product: string; url: string }
+    { vendor: string; product: string; url: string; kind?: string; asin?: string }
   >;
   const expectedMappings = new Map([
     ["src/content/supplements/magnesium-glycinate.md", "amazon-magnesium-glycinate"],
-    ["src/content/supplements/creatine-monohydrate.md", "amazon-creatine-monohydrate"],
     ["src/content/supplements/l-theanine.md", "amazon-l-theanine"],
     ["src/content/sleep/mouth-tape.md", "amazon-mouth-tape"],
     ["src/content/sleep/eye-mask.md", "amazon-eye-mask"],
     ["src/content/sleep/10000-lux-light.md", "amazon-10000-lux-light"]
   ]);
 
-  assert.equal(Object.keys(affiliates).length, 6);
+  const exactProducts = [
+    ["amazon-thorne-basic-nutrients-2-day", "B00FOTMGTU", "https://amzn.to/4h7u1vX"],
+    ["amazon-timeline-mitopure-gummies", "B0F1ZJM7X6", "https://amzn.to/4grzsWm"],
+    ["amazon-bucked-up-creatine-blue-raspberry", "B0DW7FCXRY", "https://amzn.to/3STSJpG"],
+    ["amazon-bucked-up-creatine-mango-pineapple", "B0DW7BQLG8", "https://amzn.to/4paLgyo"],
+    ["amazon-easy-touch-insulin-syringes", "B07P2HV7XQ", "https://amzn.to/44n4xDu"],
+    ["amazon-medpride-alcohol-prep-pads", "B07F2MQ9NJ", "https://amzn.to/4vjF8Fz"],
+    ["amazon-avmacol-sulforaphane", "B07V485YZH", "https://amzn.to/44sq7q2"],
+    ["amazon-nutricost-ubiquinol", "B0C87VT8CW", "https://amzn.to/4aNBRHn"],
+    ["amazon-now-curcumin-phytosome", "B004AC0676", "https://amzn.to/4wzaclH"]
+  ] as const;
+
+  assert.equal(Object.keys(affiliates).length, 14);
   assert(!JSON.stringify(affiliates).includes("example.com"));
   assert(!JSON.stringify(affiliates).includes("practice"));
 
   for (const [key, affiliate] of Object.entries(affiliates)) {
     const url = new URL(affiliate.url);
     assert.equal(affiliate.vendor, "Amazon");
-    assert.equal(url.origin, "https://www.amazon.com");
-    assert.equal(url.pathname, "/s");
-    assert(url.searchParams.get("k"), `${key} must include a search query`);
-    assert.equal(url.searchParams.get("tag"), "tannerwj-20");
-    assert.match(affiliate.product, /search results$/i);
+    if (affiliate.kind === "product") {
+      assert.equal(url.origin, "https://amzn.to");
+      assert.equal(url.search, "", `${key} must preserve the provided short URL without appended parameters`);
+      assert.match(affiliate.asin ?? "", /^[A-Z0-9]{10}$/);
+    } else {
+      assert.equal(url.origin, "https://www.amazon.com");
+      assert.equal(url.pathname, "/s");
+      assert(url.searchParams.get("k"), `${key} must include a search query`);
+      assert.equal(url.searchParams.get("tag"), "tannerwj-20");
+      assert.match(affiliate.product, /search results$/i);
+    }
+  }
+
+  for (const [key, asin, url] of exactProducts) {
+    assert.equal(affiliates[key].asin, asin);
+    assert.equal(affiliates[key].url, url);
+    assert.equal(affiliates[key].kind, "product");
   }
 
   for (const [file, affiliateKey] of expectedMappings) {
@@ -51,19 +74,58 @@ test("Amazon search links use Tanner's affiliate tag and map to six known items"
   }
 
   assert.equal(frontmatter("src/content/sleep/temperature-controlled-bed.md").affiliate, undefined);
+
+  assert.deepEqual(frontmatter("src/content/supplements/creatine-monohydrate.md").affiliates, [
+    "amazon-bucked-up-creatine-blue-raspberry",
+    "amazon-bucked-up-creatine-mango-pineapple"
+  ]);
+  assert.equal(affiliates["amazon-creatine-monohydrate"], undefined);
+
+  const productMappings = new Map([
+    ["src/content/supplements/thorne-basic-nutrients-2-day.md", "amazon-thorne-basic-nutrients-2-day"],
+    ["src/content/supplements/timeline-mitopure-urolithin-a-gummies.md", "amazon-timeline-mitopure-gummies"],
+    ["src/content/supplements/avmacol-sulforaphane.md", "amazon-avmacol-sulforaphane"],
+    ["src/content/supplements/nutricost-ubiquinol.md", "amazon-nutricost-ubiquinol"],
+    ["src/content/supplements/now-curcumin-phytosome.md", "amazon-now-curcumin-phytosome"]
+  ]);
+  for (const [file, affiliateKey] of productMappings) {
+    const data = frontmatter(file);
+    assert.equal(data.status, undefined, `${file} must not imply personal use`);
+    assert.equal(data.dose, undefined, `${file} must not invent a dose`);
+    assert.equal(data.timing, undefined, `${file} must not invent timing`);
+    assert.equal(data.affiliate, affiliateKey);
+  }
+
+  const supplyMappings = new Map([
+    ["src/content/supplies/easy-touch-insulin-syringes.md", "amazon-easy-touch-insulin-syringes"],
+    ["src/content/supplies/medpride-alcohol-prep-pads.md", "amazon-medpride-alcohol-prep-pads"]
+  ]);
+  for (const [file, affiliateKey] of supplyMappings) {
+    const data = frontmatter(file);
+    assert.equal(data.category, "peptide-preparation");
+    assert.deepEqual(data.affiliates, [affiliateKey]);
+    assert.equal(data.status, undefined);
+  }
 });
 
 test("affiliate calls to action are transparent and sponsored", () => {
   for (const file of [
     "src/components/supplements/SupplementList.astro",
-    "src/components/sleep/SleepEntry.astro"
+    "src/components/sleep/SleepEntry.astro",
+    "src/components/exercise/ExerciseGroup.astro",
+    "src/components/peptides/PeptideSupplies.astro"
   ]) {
     const component = read(file);
     assert.match(component, /rel="sponsored noreferrer"/);
-    assert.match(component, /Search Amazon for/);
+    assert.doesNotMatch(component, /Search Amazon for/);
     assert.doesNotMatch(component, />\s*Buy\b/i);
     assert.doesNotMatch(component, /Product context:/);
   }
+
+  const affiliateHelper = read("src/lib/affiliates.ts");
+  assert.match(affiliateHelper, /View \$\{affiliate\.product\} on Amazon/);
+  assert.match(read("src/pages/supplements.astro"), /As an Amazon Associate I earn from qualifying purchases\./);
+  assert.match(read("src/components/peptides/PeptideSupplies.astro"), /As an Amazon Associate I earn from qualifying purchases\./);
 });
 
 test("Rhonda Patrick remains one person with two primary X profiles", () => {

@@ -2,31 +2,94 @@
   "amazon-magnesium-glycinate": {
     "vendor": "Amazon",
     "product": "Magnesium glycinate search results",
+    "kind": "search",
     "url": "https://www.amazon.com/s?k=magnesium%20glycinate&tag=tannerwj-20"
-  },
-  "amazon-creatine-monohydrate": {
-    "vendor": "Amazon",
-    "product": "Creatine monohydrate search results",
-    "url": "https://www.amazon.com/s?k=creatine%20monohydrate&tag=tannerwj-20"
   },
   "amazon-l-theanine": {
     "vendor": "Amazon",
     "product": "L-theanine search results",
+    "kind": "search",
     "url": "https://www.amazon.com/s?k=l-theanine&tag=tannerwj-20"
   },
   "amazon-mouth-tape": {
     "vendor": "Amazon",
     "product": "Mouth tape search results",
+    "kind": "search",
     "url": "https://www.amazon.com/s?k=mouth%20tape%20for%20sleep&tag=tannerwj-20"
   },
   "amazon-eye-mask": {
     "vendor": "Amazon",
     "product": "Sleep eye mask search results",
+    "kind": "search",
     "url": "https://www.amazon.com/s?k=sleep%20eye%20mask&tag=tannerwj-20"
   },
   "amazon-10000-lux-light": {
     "vendor": "Amazon",
     "product": "10,000-lux light search results",
+    "kind": "search",
     "url": "https://www.amazon.com/s?k=10000%20lux%20light%20therapy%20lamp&tag=tannerwj-20"
+  },
+  "amazon-thorne-basic-nutrients-2-day": {
+    "vendor": "Amazon",
+    "product": "Thorne Basic Nutrients 2/Day",
+    "kind": "product",
+    "asin": "B00FOTMGTU",
+    "url": "https://amzn.to/4h7u1vX"
+  },
+  "amazon-timeline-mitopure-gummies": {
+    "vendor": "Amazon",
+    "product": "Timeline Mitopure Urolithin A Gummies",
+    "kind": "product",
+    "asin": "B0F1ZJM7X6",
+    "url": "https://amzn.to/4grzsWm"
+  },
+  "amazon-bucked-up-creatine-blue-raspberry": {
+    "vendor": "Amazon",
+    "product": "Bucked Up Creatine Monohydrate — Blue Raspberry",
+    "kind": "product",
+    "asin": "B0DW7FCXRY",
+    "url": "https://amzn.to/3STSJpG"
+  },
+  "amazon-bucked-up-creatine-mango-pineapple": {
+    "vendor": "Amazon",
+    "product": "Bucked Up Creatine Monohydrate — Mango Pineapple",
+    "kind": "product",
+    "asin": "B0DW7BQLG8",
+    "url": "https://amzn.to/4paLgyo"
+  },
+  "amazon-easy-touch-insulin-syringes": {
+    "vendor": "Amazon",
+    "product": "Easy Touch 31G 0.3 cc Insulin Syringes, 5/16-inch, 100-count",
+    "kind": "product",
+    "asin": "B07P2HV7XQ",
+    "url": "https://amzn.to/44n4xDu"
+  },
+  "amazon-medpride-alcohol-prep-pads": {
+    "vendor": "Amazon",
+    "product": "MedPride 70% Isopropyl Alcohol Prep Pads, 200-count",
+    "kind": "product",
+    "asin": "B07F2MQ9NJ",
+    "url": "https://amzn.to/4vjF8Fz"
+  },
+  "amazon-avmacol-sulforaphane": {
+    "vendor": "Amazon",
+    "product": "Avmacol Sulforaphane, 60 tablets",
+    "kind": "product",
+    "asin": "B07V485YZH",
+    "url": "https://amzn.to/44sq7q2"
+  },
+  "amazon-nutricost-ubiquinol": {
+    "vendor": "Amazon",
+    "product": "Nutricost Ubiquinol 100 mg, 120 softgels",
+    "kind": "product",
+    "asin": "B0C87VT8CW",
+    "url": "https://amzn.to/4aNBRHn"
+  },
+  "amazon-now-curcumin-phytosome": {
+    "vendor": "Amazon",
+    "product": "NOW Curcumin Phytosome, 60 capsules",
+    "kind": "product",
+    "asin": "B004AC0676",
+    "url": "https://amzn.to/4wzaclH"
   }
 }

@@ -1,7 +1,7 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
 import PracticeDataNotice from "../site/PracticeDataNotice.astro";
-import affiliates from "../../data/affiliates.json";
+import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
 
 interface Props {
   title: string;
@@ -10,7 +10,6 @@ interface Props {
 }
 
 const { title, description, entries } = Astro.props;
-const affiliateRegistry = affiliates as Record<string, { vendor: string; url: string }>;
 const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
 ---
 
@@ -25,7 +24,7 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
       {entries.map(async (entry) => {
         const { Content } = await render(entry);
         const hasNotes = Boolean(entry.body?.trim());
-        const affiliate = entry.data.affiliate ? affiliateRegistry[entry.data.affiliate] : undefined;
+        const affiliateEntries = getAffiliateEntries(entry.data);
         return (
           <li>
             <article id={entry.data.slug}>
@@ -48,7 +47,7 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
                   {entry.data.spec ? <div><dt>Details</dt><dd>{entry.data.spec}</dd></div> : null}
                 </dl>
               ) : null}
-              {affiliate ? <a class="product-link" href={affiliate.url} rel="noreferrer">Product context: {affiliate.vendor} <span aria-hidden="true">↗</span></a> : null}
+              {affiliateEntries.map((affiliate) => <a class="product-link" href={affiliate.url} rel="sponsored noreferrer">{amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span></a>)}
               {entry.data.practiceOnly ? <PracticeDataNotice label="Practice entry">{entry.data.practiceNote ?? "Practice data only — not Tanner's training plan."}</PracticeDataNotice> : null}
               {hasNotes ? <details><summary>Notes and context</summary><div class="markdown"><Content /></div></details> : null}
             </article>

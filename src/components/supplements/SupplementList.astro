@@ -1,7 +1,7 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
 import PracticeDataNotice from "../site/PracticeDataNotice.astro";
-import affiliates from "../../data/affiliates.json";
+import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
 
 interface Props {
   entries: CollectionEntry<"supplements">[];
@@ -12,10 +12,6 @@ interface Props {
 }
 
 const { entries, heading, sectionLabel = "Stack", description, emptyMessage } = Astro.props;
-const affiliateRegistry = affiliates as Record<
-  string,
-  { vendor: string; product: string; url: string; practiceOnly?: boolean }
->;
 const statusLabels = {
   current: "Current",
   considering: "Considering",
@@ -35,9 +31,7 @@ const statusLabels = {
       <ol class="supplement-list">
         {entries.map(async (entry) => {
           const { Content } = await render(entry);
-          const affiliate = entry.data.affiliate
-            ? affiliateRegistry[entry.data.affiliate]
-            : undefined;
+          const affiliateEntries = getAffiliateEntries(entry.data);
           const hasNotes = Boolean(entry.body?.trim());
 
           return (
@@ -45,7 +39,7 @@ const statusLabels = {
               <article class="supplement-entry" id={entry.data.slug}>
                 <div class="entry-heading">
                   <div>
-                    <p class="entry-status">{entry.data.status ? statusLabels[entry.data.status] : "Source note"}</p>
+                    <p class="entry-status">{entry.data.status ? statusLabels[entry.data.status] : entry.data.sources?.length ? "Source note" : "Saved product"}</p>
                     <h3>{entry.data.name}</h3>
                   </div>
                   {entry.data.product || entry.data.brand ? (
@@ -63,10 +57,14 @@ const statusLabels = {
                   {entry.data.frequency ? <div><dt>Frequency</dt><dd>{entry.data.frequency}</dd></div> : null}
                 </dl> : null}
 
-                {affiliate ? (
-                  <a class="product-link" href={affiliate.url} rel="sponsored noreferrer">
-                    Search Amazon for {entry.data.name} <span aria-hidden="true">↗</span>
-                  </a>
+                {affiliateEntries.length ? (
+                  <div class="product-links" aria-label={`Amazon links for ${entry.data.name}`}>
+                    {affiliateEntries.map((affiliate) => (
+                      <a class="product-link" href={affiliate.url} rel="sponsored noreferrer">
+                        {amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span>
+                      </a>
+                    ))}
+                  </div>
                 ) : null}
 
                 {entry.data.practiceOnly ? (
@@ -127,6 +125,7 @@ const statusLabels = {
   .supplement-facts dt { color: var(--muted); font-size: .64rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
   .supplement-facts dd { margin: .28rem 0 0; font-size: .9rem; line-height: 1.4; }
   .product-link { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; margin-top: .7rem; border-bottom: 1px solid var(--sage-deep); color: var(--sage-deep); font-size: .8rem; font-weight: 900; text-decoration: none; }
+  .product-links { display: flex; flex-wrap: wrap; gap: .2rem 1.25rem; }
   .entry-details { margin-top: .75rem; border-top: 1px solid var(--line); }
   .entry-details summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--sage-deep); font-size: .86rem; font-weight: 800; }
   .markdown { max-width: 46rem; padding-bottom: .3rem; line-height: 1.6; }
