@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Tanner's Field Notes</title>
+  <desc id="description">Health, training, recovery, and reference notes in a Stone and Sage editorial design.</desc>
+  <rect width="1200" height="630" fill="#f1eee8" />
+  <rect x="0" y="0" width="54" height="630" fill="#4a6252" />
+  <rect x="94" y="70" width="1012" height="490" fill="none" stroke="#202522" stroke-width="2" />
+  <circle cx="992" cy="176" r="78" fill="none" stroke="#687b6d" stroke-width="3" />
+  <circle cx="992" cy="176" r="14" fill="#bd6d4e" />
+  <path d="M992 94v164M910 176h164" fill="none" stroke="#687b6d" stroke-width="2" />
+  <text x="142" y="142" fill="#8f4e38" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="5">PERSONAL HEALTH REFERENCE</text>
+  <text x="138" y="292" fill="#202522" font-family="Georgia, 'Times New Roman', serif" font-size="104">Tanner's</text>
+  <text x="138" y="408" fill="#4a6252" font-family="Georgia, 'Times New Roman', serif" font-size="114" font-style="italic">Field Notes</text>
+  <line x1="142" y1="462" x2="744" y2="462" stroke="#202522" stroke-width="2" />
+  <text x="142" y="512" fill="#5d665f" font-family="Arial, Helvetica, sans-serif" font-size="25" letter-spacing="2">SUPPLEMENTS  ·  SLEEP  ·  TRAINING  ·  PEPTIDES</text>
+</svg>

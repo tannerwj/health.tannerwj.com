@@ -5,6 +5,7 @@ import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { routeMetadata } from "../data/site";
 import { sortByOrder } from "../lib/content";
 
 const entries = sortByOrder(await getCollection("supplements"));
@@ -25,8 +26,8 @@ const glanceItems = glanceEntries.map((entry) => ({
 ---
 
 <BaseLayout
-  title="Supplements"
-  description="Tanner Johnson's current personal supplements, with sourced supplement notes and product context."
+  title={routeMetadata["/supplements"].title}
+  description={routeMetadata["/supplements"].description}
   canonicalPath="/supplements"
 >
   <main id="main-content" class="page">

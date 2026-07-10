@@ -6,6 +6,7 @@ import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { routeMetadata } from "../data/site";
 import { sortByOrder } from "../lib/content";
 
 const entries = sortByOrder(await getCollection("exercise"));
@@ -31,8 +32,8 @@ const glanceItems = groups.slice(0, 4).flatMap(([title, description, kind]) => {
 ---
 
 <BaseLayout
-  title="Exercise"
-  description="Training notes on principles, sessions, equipment, recovery, and programming ideas."
+  title={routeMetadata["/exercise"].title}
+  description={routeMetadata["/exercise"].description}
   canonicalPath="/exercise"
 >
   <main id="main-content" class="page">

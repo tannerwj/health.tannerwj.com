@@ -1,9 +1,16 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import test from "node:test";
 import {
+  SITE_NAME,
+  SOCIAL_IMAGE_HEIGHT,
+  SOCIAL_IMAGE_PATH,
+  SOCIAL_IMAGE_WIDTH,
   calculatorRoute,
   editorialSections,
   isHomepageCurrentEntry,
+  routeMetadata,
   siteRoutes
 } from "../src/data/site";
 import { GET as getRobots } from "../src/pages/robots.txt";
@@ -34,6 +41,27 @@ test("site section metadata preserves accepted homepage order and routes", () =>
 
 test("shared route list covers home, peer sections, and calculator", () => {
   assert.deepEqual(siteRoutes, ["/", ...expectedEditorialRoutes, "/peptides/calculator"]);
+});
+
+test("every public route has distinct human SEO metadata", () => {
+  assert.deepEqual(Object.keys(routeMetadata), [...siteRoutes]);
+  assert.equal(new Set(Object.values(routeMetadata).map(({ description }) => description)).size, siteRoutes.length);
+
+  for (const route of siteRoutes) {
+    const metadata = routeMetadata[route];
+    assert.ok(metadata.title.length >= 5, `${route} should have a descriptive title`);
+    assert.ok(metadata.description.length >= 70, `${route} should have a useful description`);
+    assert.doesNotMatch(metadata.title, /health\.tannerwj\.com/i);
+  }
+
+  assert.equal(SITE_NAME, "Tanner's Field Notes");
+});
+
+test("social card is a correctly sized PNG", () => {
+  const image = readFileSync(join(process.cwd(), "public", SOCIAL_IMAGE_PATH));
+  assert.deepEqual([...image.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
+  assert.equal(image.readUInt32BE(16), SOCIAL_IMAGE_WIDTH);
+  assert.equal(image.readUInt32BE(20), SOCIAL_IMAGE_HEIGHT);
 });
 
 test("homepage current entries exclude peptide source notes", () => {

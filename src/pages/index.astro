@@ -3,7 +3,7 @@ import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { blends } from "../data/calculator/blends";
 import { compounds } from "../data/calculator/compounds";
-import { calculatorRoute, editorialSections } from "../data/site";
+import { calculatorRoute, editorialSections, routeMetadata } from "../data/site";
 import { getFeaturedEditorialEntries, getOrderedEditorialSections } from "../lib/content";
 
 const sections = await getOrderedEditorialSections();
@@ -13,7 +13,7 @@ const featuredCount = featured.length;
 const hasPracticeEntries = sections.some(({ entries }) => entries.some((entry) => entry.data.practiceOnly));
 ---
 
-<BaseLayout>
+<BaseLayout title={routeMetadata["/"].title} description={routeMetadata["/"].description} canonicalPath="/">
   <main id="main-content" class="page">
     <section class="hero wrap" aria-labelledby="page-title">
       <div class="hero-copy">
