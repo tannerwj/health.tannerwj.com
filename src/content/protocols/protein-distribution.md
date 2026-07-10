@@ -12,6 +12,6 @@ sources:
     accessed: "2026-07-10"
 ---
 
-Layne Norton's [Tier 1 supplement discussion](https://biolayne.com/podcasts/dr-layne-norton-podcast/supplement-series-tier-1-episode-22/) keeps protein timing and distribution behind total intake.
+Layne Norton's [Tier 1 supplement discussion](https://biolayne.com/podcasts/dr-layne-norton-podcast/supplement-series-tier-1-episode-22/) keeps protein timing and distribution behind total daily intake.
 
-The durable idea is to solve the larger intake question before over-weighting meal spacing.
+Meal frequency and distribution can be useful context around appetite, training, and routine, but remain secondary. The durable idea is to solve the larger intake question before over-weighting meal spacing.

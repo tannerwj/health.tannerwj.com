@@ -6,17 +6,17 @@ summary: "Rhonda Patrick and Matthew Walker discuss heat exposure before bed as 
 order: 80
 sources:
   - type: website
-    url: https://www.foundmyfitness.com/episodes/heat-therapy-slow-wave-sleep
+    url: https://www.foundmyfitness.com/topics/sauna
     author: FoundMyFitness
-    note: Heat therapy and slow-wave sleep context.
+    note: Sauna topic overview and evidence context.
     accessed: "2026-07-10"
-  - type: website
-    url: https://www.foundmyfitness.com/episodes/matthew-walker
-    author: FoundMyFitness
-    note: Matthew Walker sleep discussion.
+  - type: study
+    url: https://pubmed.ncbi.nlm.nih.gov/25705824/
+    author: JAMA Internal Medicine
+    note: Finnish cohort study of sauna bathing and cardiovascular mortality.
     accessed: "2026-07-10"
 ---
 
-FoundMyFitness' [heat therapy and slow-wave sleep note](https://www.foundmyfitness.com/episodes/heat-therapy-slow-wave-sleep) and [Matthew Walker conversation](https://www.foundmyfitness.com/episodes/matthew-walker) discuss heat exposure in relation to sleep.
+FoundMyFitness' [sauna overview](https://www.foundmyfitness.com/topics/sauna) discusses heat exposure in relation to sleep and broader health conversations.
 
-The conservative idea is that a sauna or hot bath 1-2 hours before bed may support later cooling for some people. It is optional, context-dependent, and not for everyone.
+The conservative idea is that a sauna or hot bath before bed may support later cooling for some people. It is optional, context-dependent, and not for everyone. Broader sauna-outcome claims often lean on cohorts, including this [Finnish study](https://pubmed.ncbi.nlm.nih.gov/25705824/), which can show association but not prove the sauna caused the outcome.
