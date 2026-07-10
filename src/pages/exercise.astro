@@ -19,14 +19,14 @@ const groups = [
   ["Other splits", "Other weekly split ideas and frameworks.", "split"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
-const glanceItems = groups.slice(0, 4).map(([title, description, kind]) => {
+const glanceItems = groups.slice(0, 4).flatMap(([title, description, kind]) => {
   const count = supportingEntries.filter((entry) => entry.data.kind === kind).length;
-  return {
+  return count ? [{
     label: `${count} ${count === 1 ? "note" : "notes"}`,
     title,
-    detail: kind === "equipment" && count === 0 ? "Home gym equipment will live here as it is recorded." : description,
-    href: count ? `#exercise-${title.toLowerCase().replaceAll(" ", "-")}` : undefined
-  };
+    detail: description,
+    href: `#exercise-${title.toLowerCase().replaceAll(" ", "-")}`
+  }] : [];
 });
 ---
 
