@@ -98,9 +98,30 @@ const peptides = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/peptides" }),
   schema: z.object({
     ...sharedFields,
-    status: statusSchema,
+    entryType: z.enum(["personal", "source-note"]),
+    status: statusSchema.optional(),
     calculatorId: z.string().optional(),
-    form: z.enum(["single", "blend"]).optional(),
+    form: z.enum(["single", "blend"]),
+    category: z.enum([
+      "repair",
+      "growth-hormone",
+      "metabolic",
+      "immune",
+      "pigmentation-sexual-health",
+      "longevity-sleep"
+    ]),
+    evidenceMaturity: z.enum([
+      "established-human-use",
+      "human-trial",
+      "limited-human",
+      "preclinical",
+      "component-extrapolation"
+    ]),
+    aliases: z.array(z.string()).optional(),
+    components: z.array(z.string()).optional(),
+    commonContext: z.string().min(1),
+    evidenceNote: z.string().min(1),
+    atAGlance: z.string().min(1),
     route: z.string().optional(),
     dose: z.string().optional(),
     timing: z.string().optional(),
@@ -113,6 +134,32 @@ const peptides = defineCollection({
     effects: z.string().optional(),
     sideEffects: z.array(z.string()).optional(),
     contraindications: z.array(z.string()).optional()
+  }).superRefine((entry, context) => {
+    if (entry.entryType === "personal" && !entry.status) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Personal peptide entries require a status."
+      });
+    }
+
+    if (entry.entryType === "source-note") {
+      if (!entry.sources?.length) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Peptide source notes require at least one source."
+        });
+      }
+
+      for (const field of ["dose", "timing", "frequency", "cycle", "effects"] as const) {
+        if (entry[field]) {
+          context.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `Peptide source notes cannot include personal ${field}.`,
+            path: [field]
+          });
+        }
+      }
+    }
   })
 });
 

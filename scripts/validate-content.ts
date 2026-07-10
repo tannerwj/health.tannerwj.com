@@ -346,6 +346,37 @@ export function validateIntegrity(input: ValidationInput): ValidationIssue[] {
       });
     }
 
+    if (entry.collection === "peptides") {
+      const entryType = entry.data.entryType;
+      if (entryType === "personal" && typeof entry.data.status !== "string") {
+        issues.push({
+          code: "missing-personal-status",
+          message: `Personal peptide entry "${entry.file}" requires a status.`,
+          file: entry.file
+        });
+      }
+
+      if (entryType === "source-note") {
+        if (!Array.isArray(entry.data.sources) || entry.data.sources.length === 0) {
+          issues.push({
+            code: "missing-source-note-source",
+            message: `Peptide source note "${entry.file}" requires at least one source.`,
+            file: entry.file
+          });
+        }
+
+        for (const field of ["dose", "timing", "frequency", "cycle", "effects"]) {
+          if (typeof entry.data[field] === "string" && entry.data[field]) {
+            issues.push({
+              code: "source-note-personal-field",
+              message: `Peptide source note "${entry.file}" cannot include personal ${field}.`,
+              file: entry.file
+            });
+          }
+        }
+      }
+    }
+
     if (typeof entry.data.url === "string" && !isHttpUrl(entry.data.url)) {
       issues.push({
         code: "invalid-url",

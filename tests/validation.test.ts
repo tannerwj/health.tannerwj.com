@@ -164,6 +164,94 @@ test("unknown calculatorId references fail validation", () => {
   assert(issues.some((issue) => issue.code === "unknown-calculator-id"));
 });
 
+test("personal peptide entries require a status", () => {
+  const issues = validateIntegrity({
+    ...validInput,
+    requiredCollections: ["supplements", "peptides"],
+    editorialEntries: [
+      validInput.editorialEntries[0],
+      {
+        collection: "peptides",
+        file: "src/content/peptides/personal-note.md",
+        slug: "personal-note",
+        data: { slug: "personal-note", entryType: "personal" }
+      }
+    ]
+  });
+
+  assert(issues.some((issue) => issue.code === "missing-personal-status"));
+});
+
+test("peptide source notes require sources and reject personal regimen fields", () => {
+  const issues = validateIntegrity({
+    ...validInput,
+    requiredCollections: ["supplements", "peptides"],
+    editorialEntries: [
+      validInput.editorialEntries[0],
+      {
+        collection: "peptides",
+        file: "src/content/peptides/source-note.md",
+        slug: "source-note",
+        data: {
+          slug: "source-note",
+          entryType: "source-note",
+          dose: "Not allowed",
+          timing: "Not allowed",
+          frequency: "Not allowed",
+          cycle: "Not allowed",
+          effects: "Not allowed"
+        }
+      }
+    ]
+  });
+
+  assert(issues.some((issue) => issue.code === "missing-source-note-source"));
+  assert.equal(issues.filter((issue) => issue.code === "source-note-personal-field").length, 5);
+});
+
+test("curated peptide library has the accepted shape and calculator coverage", () => {
+  const peptideDir = path.join(workspaceRoot, "src/content/peptides");
+  const entries = readdirSync(peptideDir)
+    .filter((file) => file.endsWith(".md"))
+    .map((file) => {
+      const content = readFileSync(path.join(peptideDir, file), "utf8");
+      const frontmatter = content.match(/^---\n([\s\S]*?)\n---/);
+      assert(frontmatter, `${file} must have frontmatter`);
+      return parseYaml(frontmatter[1]) as {
+        slug: string;
+        entryType: string;
+        form: string;
+        calculatorId?: string;
+        status?: string;
+        dose?: string;
+        timing?: string;
+        frequency?: string;
+        cycle?: string;
+        effects?: string;
+        sources?: unknown[];
+      };
+    });
+
+  assert.equal(entries.length, 26);
+  assert.equal(entries.filter((entry) => entry.form === "single").length, 20);
+  assert.equal(entries.filter((entry) => entry.form === "blend").length, 6);
+  assert.equal(entries.filter((entry) => entry.calculatorId).length, 25);
+  assert.equal(entries.find((entry) => entry.slug === "beauty")?.calculatorId, undefined);
+
+  const catalogIds = new Set([...catalogCompounds, ...catalogBlends].map((entry) => entry.id));
+  for (const entry of entries) {
+    assert.equal(entry.entryType, "source-note");
+    assert(entry.sources?.length, `${entry.slug} must have a source`);
+    assert.equal(entry.status, undefined);
+    for (const field of ["dose", "timing", "frequency", "cycle", "effects"] as const) {
+      assert.equal(entry[field], undefined, `${entry.slug} must not include ${field}`);
+    }
+    if (entry.calculatorId) {
+      assert(catalogIds.has(entry.calculatorId), `${entry.slug} has an unknown calculator ID`);
+    }
+  }
+});
+
 test("blend components must reference known compounds", () => {
   const issues = validateIntegrity({
     ...validInput,

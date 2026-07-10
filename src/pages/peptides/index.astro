@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import PeptideEntry from "../../components/peptides/PeptideEntry.astro";
 import AtAGlance from "../../components/site/AtAGlance.astro";
 import PageIntro from "../../components/site/PageIntro.astro";
-import PracticeDataNotice from "../../components/site/PracticeDataNotice.astro";
 import { blends } from "../../data/calculator/blends";
 import { compounds } from "../../data/calculator/compounds";
 import { calculatorRoute } from "../../data/site";
@@ -12,47 +11,95 @@ import { groupBy, sortByOrder } from "../../lib/content";
 
 const peptides = sortByOrder(await getCollection("peptides"));
 const catalogIds = new Set([...compounds, ...blends].map((entry) => entry.id));
+const personalEntries = peptides.filter((entry) => entry.data.entryType === "personal" && entry.data.status);
+const referenceEntries = peptides.filter((entry) => entry.data.entryType === "source-note");
+const blendEntries = referenceEntries.filter((entry) => entry.data.form === "blend");
+const singleEntries = referenceEntries.filter((entry) => entry.data.form === "single");
+const catalogLinkedEntries = referenceEntries.filter((entry) => entry.data.calculatorId && catalogIds.has(entry.data.calculatorId)).length;
 const statusLabels = { current: "Current", considering: "Considering", "previously-tried": "Previously tried" } as const;
-const statusGroups = groupBy(peptides, (entry) => entry.data.status);
-const hasPracticeEntries = peptides.some((entry) => entry.data.practiceOnly);
-const catalogLinkedEntries = peptides.filter((entry) => entry.data.calculatorId && catalogIds.has(entry.data.calculatorId)).length;
+const statusGroups = groupBy(personalEntries, (entry) => entry.data.status!);
+const categoryOrder = ["repair", "growth-hormone", "metabolic", "immune", "pigmentation-sexual-health", "longevity-sleep"] as const;
+const categoryLabels = {
+  repair: "Repair and tissue signaling",
+  "growth-hormone": "Growth-hormone axis",
+  metabolic: "Metabolic",
+  immune: "Immune signaling",
+  "pigmentation-sexual-health": "Pigmentation and sexual health",
+  "longevity-sleep": "Longevity and sleep research"
+} as const;
+const singleGroups = groupBy(singleEntries, (entry) => entry.data.category);
 const glanceItems = [
   {
-    label: `${compounds.length + blends.length} catalog entries`,
-    title: "Calculator",
-    detail: "Singles and named blends available for vial math.",
-    href: calculatorRoute.href
+    label: "Named blends",
+    title: "GLOW, KLOW, Wolverine",
+    detail: "Plus Healing, CJC/Ipamorelin, and the vendor-specific Beauty label.",
+    href: "#blends-heading"
   },
-  ...(["current", "considering", "previously-tried"] as const).map((status) => {
-    const count = statusGroups.get(status)?.length ?? 0;
-    return {
-      label: `${count} ${count === 1 ? "note" : "notes"}`,
-      title: statusLabels[status],
-      detail: count ? "Personal peptide notes in this group." : "Nothing recorded in this group yet.",
-      href: count ? `#${status}-heading` : undefined
-    };
-  })
+  {
+    label: "Repair references",
+    title: "BPC-157 + GHK-Cu",
+    detail: "Common discussion points with very different evidence profiles.",
+    href: "#bpc-157"
+  },
+  {
+    label: "Metabolic pipeline",
+    title: "Retatrutide",
+    detail: "A human-trial triple-agonist entry alongside semaglutide and tirzepatide.",
+    href: "#retatrutide"
+  },
+  {
+    label: `${catalogLinkedEntries} of ${referenceEntries.length} entries`,
+    title: "Calculator linked",
+    detail: "Vial math is available for every entry except the nonstandard Beauty blend.",
+    href: calculatorRoute.href
+  }
 ];
 ---
 
-<BaseLayout title="Peptides" description="Notes on peptides Tanner Johnson is using, has used, or is considering." canonicalPath="/peptides">
+<BaseLayout title="Peptides" description="A sourced reference library for peptide singles and named blends." canonicalPath="/peptides">
   <main id="main-content" class="page peptides-page">
-    <PageIntro eyebrow="05 / Peptides" title="Peptides" description="Notes on what I am using, have tried, or am considering." />
-    <AtAGlance items={glanceItems} description="Personal notes stay separate from the calculator catalog." />
-
-    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice records below are not Tanner’s peptide use or recommendations.</PracticeDataNotice></div> : null}
+    <PageIntro eyebrow="05 / Peptides" title="Peptides" description="A working reference library for the singles and blends I want close at hand." />
+    <AtAGlance items={glanceItems} description={`${singleEntries.length} singles, ${blendEntries.length} blends, and clear evidence labels before the longer notes.`} />
 
     <section class="calculator-band" aria-labelledby="calculator-heading">
       <div class="wrap calculator-band-inner">
-        <div><p class="section-label">Calculator / catalog entries</p><h2 id="calculator-heading">Peptide calculator.</h2><p>Vial math for catalog entries and named blends.</p></div>
-        <div class="calculator-action"><p>{catalogLinkedEntries} {catalogLinkedEntries === 1 ? "note links" : "notes link"} to calculator records.</p><a href={calculatorRoute.href}>Open peptide calculator <span aria-hidden="true">↗</span></a></div>
+        <div><p class="section-label">Calculator</p><h2 id="calculator-heading">Vial math for the catalog.</h2><p>Select a single or blend, enter the vial and water amounts, and calculate concentration and syringe volume.</p></div>
+        <div class="calculator-action"><p>{catalogLinkedEntries} reference entries map directly to calculator records.</p><a href={calculatorRoute.href}>Open peptide calculator <span aria-hidden="true">↗</span></a></div>
       </div>
     </section>
 
-    <section class="notes-section" aria-labelledby="notes-heading">
+    {personalEntries.length ? (
+      <section class="library-section personal-section" aria-labelledby="personal-heading">
+        <div class="wrap">
+          <div class="library-heading"><p class="section-label">Personal</p><h2 id="personal-heading">My notes.</h2></div>
+          {Array.from(statusGroups).map(([status, entries]) => (
+            <section class="entry-group" aria-labelledby={`${status}-heading`}>
+              <div class="group-heading"><h3 id={`${status}-heading`}>{statusLabels[status]}</h3><span>{String(entries.length).padStart(2, "0")}</span></div>
+              {entries.map((entry) => <PeptideEntry entry={entry} calculatorAvailable={Boolean(entry.data.calculatorId && catalogIds.has(entry.data.calculatorId))} />)}
+            </section>
+          ))}
+        </div>
+      </section>
+    ) : null}
+
+    <section class="library-section" aria-labelledby="library-heading">
       <div class="wrap">
-        <div class="notes-heading"><p class="section-label">Personal notes</p><h2 id="notes-heading">Peptide notes.</h2></div>
-        {peptides.length ? Array.from(statusGroups).map(([status, entries]) => <section class="status-group" aria-labelledby={`${status}-heading`}><div class="status-heading"><h3 id={`${status}-heading`}>{statusLabels[status]}</h3><span>{String(entries.length).padStart(2, "0")}</span></div>{entries.map((entry) => <PeptideEntry entry={entry} calculatorAvailable={Boolean(entry.data.calculatorId && catalogIds.has(entry.data.calculatorId))} />)}</section>) : <p class="empty-state">No peptide notes have been published yet. <a href={calculatorRoute.href}>Use the calculator for catalog math.</a></p>}
+        <div class="library-heading"><p class="section-label">Reference library</p><h2 id="library-heading">Blends, then singles.</h2><p>These are sourced notes, not a record of what I use. Evidence labels describe the underlying research, not a recommendation.</p></div>
+
+        <section class="entry-group" aria-labelledby="blends-heading">
+          <div class="group-heading"><h3 id="blends-heading">Named blends</h3><span>{String(blendEntries.length).padStart(2, "0")}</span></div>
+          {blendEntries.map((entry) => <PeptideEntry entry={entry} calculatorAvailable={Boolean(entry.data.calculatorId && catalogIds.has(entry.data.calculatorId))} />)}
+        </section>
+
+        {categoryOrder.map((category) => {
+          const entries = singleGroups.get(category) ?? [];
+          return entries.length ? (
+            <section class="entry-group" aria-labelledby={`${category}-heading`}>
+              <div class="group-heading"><h3 id={`${category}-heading`}>{categoryLabels[category]}</h3><span>{String(entries.length).padStart(2, "0")}</span></div>
+              {entries.map((entry) => <PeptideEntry entry={entry} calculatorAvailable={Boolean(entry.data.calculatorId && catalogIds.has(entry.data.calculatorId))} />)}
+            </section>
+          ) : null;
+        })}
       </div>
     </section>
   </main>
@@ -62,20 +109,25 @@ const glanceItems = [
   .calculator-band { padding-block: 2.4rem; background: var(--sage-deep); color: var(--paper); }
   .calculator-band-inner { display: grid; gap: 1.7rem; }
   .calculator-band .section-label { color: #c3d0c3; }
-  h2 { max-width: 14ch; margin: .5rem 0 0; font-family: var(--serif); font-size: clamp(2.1rem, 8vw, 4rem); font-weight: 400; letter-spacing: 0; line-height: .9; }
-  .calculator-band p:not(.section-label) { max-width: 35rem; margin: .9rem 0 0; color: rgba(243, 238, 232, .78); font-size: .92rem; line-height: 1.45; }
+  h2 { max-width: 15ch; margin: .5rem 0 0; font-family: var(--serif); font-size: clamp(2rem, 7vw, 3.6rem); font-weight: 400; letter-spacing: 0; line-height: .92; }
+  .calculator-band p:not(.section-label) { max-width: 39rem; margin: .9rem 0 0; color: rgba(243, 238, 232, .78); font-size: .9rem; line-height: 1.45; }
   .calculator-action { display: grid; gap: 1rem; align-content: end; }
   .calculator-action p { margin: 0 !important; }
   .calculator-action a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 44px; border: 1px solid #c3d0c3; padding: .65rem .8rem; color: #f8f6ee; font-size: .72rem; font-weight: 900; letter-spacing: .07em; text-decoration: none; text-transform: uppercase; }
   .calculator-action a:hover, .calculator-action a:focus-visible { background: #c3d0c3; color: var(--sage-deep); }
-  .notes-section { padding-block: 3.5rem 4.5rem; }
-  .notes-heading { margin-bottom: 2rem; }
-  .notes-heading h2 { max-width: 10ch; }
-  .status-group { margin-top: 3rem; }
-  .status-group:first-of-type { margin-top: 0; }
-  .status-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--ink); padding-bottom: .55rem; }
-  .status-heading h3 { margin: 0; color: var(--sage-deep); font-size: .74rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
-  .status-heading span { color: var(--clay-deep); font-size: .72rem; font-weight: 900; letter-spacing: .1em; }
-  .empty-state { max-width: 34rem; margin: 0; color: var(--muted); line-height: 1.5; }
-  @media (min-width: 48rem) { .calculator-band { padding-block: 4.5rem; } .calculator-band-inner { grid-template-columns: minmax(0, 1.15fr) minmax(17rem, .7fr); gap: 4rem; } .notes-section { padding-block: 5.5rem 6.5rem; } }
+  .library-section { padding-block: 3.5rem 4.5rem; }
+  .personal-section { padding-bottom: 0; }
+  .library-heading { max-width: 44rem; margin-bottom: 2rem; }
+  .library-heading h2 { max-width: 12ch; }
+  .library-heading > p:last-child { margin: .85rem 0 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+  .entry-group { margin-top: 3.25rem; }
+  .entry-group:first-of-type { margin-top: 0; }
+  .group-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--ink); padding-bottom: .55rem; }
+  .group-heading h3 { margin: 0; color: var(--sage-deep); font-size: .74rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+  .group-heading span { color: var(--clay-deep); font-size: .72rem; font-weight: 900; letter-spacing: .1em; }
+  @media (min-width: 48rem) {
+    .calculator-band { padding-block: 4rem; }
+    .calculator-band-inner { grid-template-columns: minmax(0, 1.15fr) minmax(17rem, .7fr); gap: 4rem; }
+    .library-section { padding-block: 5rem 6rem; }
+  }
 </style>
