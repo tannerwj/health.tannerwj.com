@@ -1,0 +1,38 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+
+interface Props {
+  entry: CollectionEntry<"follow">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<article class="follow-entry">
+  <div class="identity">
+    <h3>{entry.data.name}</h3>
+    <p>{entry.data.handle} <span aria-hidden="true">/</span> {entry.data.platform}</p>
+  </div>
+  <div class="reason">
+    <p>{entry.data.summary}</p>
+    <div class="entry-body"><Content /></div>
+    {entry.data.practiceOnly && entry.data.practiceNote ? <p class="practice-note">{entry.data.practiceNote}</p> : null}
+  </div>
+  <a href={entry.data.url} target="_blank" rel="noreferrer" aria-label={`Open ${entry.data.name}'s ${entry.data.platform} profile`}>
+    View profile <span aria-hidden="true">↗</span>
+  </a>
+</article>
+
+<style>
+  .follow-entry { display: grid; gap: .8rem; border-top: 1px solid var(--line-strong); padding: 1.2rem 0 1.35rem; }
+  h3 { margin: 0; font-family: var(--serif); font-size: clamp(1.7rem, 5vw, 2.7rem); font-weight: 400; letter-spacing: 0; line-height: .9; }
+  .identity p { margin: .45rem 0 0; color: var(--sage-deep); font-size: .72rem; font-weight: 900; letter-spacing: .06em; }
+  .reason > p { max-width: 38rem; margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+  .entry-body { max-width: 38rem; color: var(--muted); font-size: .82rem; line-height: 1.45; }
+  .entry-body :global(p) { margin: .75rem 0 0; }
+  a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; width: fit-content; min-height: 44px; color: var(--ink); font-size: .72rem; font-weight: 900; letter-spacing: .06em; text-decoration: none; text-transform: uppercase; }
+  a:hover, a:focus-visible { color: var(--clay-deep); }
+  .practice-note { margin: .85rem 0 0; border-left: 3px solid var(--clay); padding-left: .65rem; color: var(--clay-deep); font-size: .74rem; font-weight: 800; line-height: 1.4; }
+  @media (min-width: 48rem) { .follow-entry { grid-template-columns: minmax(11rem, .7fr) minmax(0, 1.5fr) auto; align-items: start; gap: 2rem; } a { justify-self: end; } }
+</style>

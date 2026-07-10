@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import PeptideEntry from "../../components/peptides/PeptideEntry.astro";
+import PageIntro from "../../components/site/PageIntro.astro";
+import PracticeDataNotice from "../../components/site/PracticeDataNotice.astro";
+import { blends } from "../../data/calculator/blends";
+import { compounds } from "../../data/calculator/compounds";
+import { calculatorRoute } from "../../data/site";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { groupBy, sortByOrder } from "../../lib/content";
+
+const peptides = sortByOrder(await getCollection("peptides"));
+const catalogIds = new Set([...compounds, ...blends].map((entry) => entry.id));
+const statusLabels = { current: "Current", considering: "Considering", "previously-tried": "Previously tried" } as const;
+const statusGroups = groupBy(peptides, (entry) => entry.data.status);
+const hasPracticeEntries = peptides.some((entry) => entry.data.practiceOnly);
+const catalogLinkedEntries = peptides.filter((entry) => entry.data.calculatorId && catalogIds.has(entry.data.calculatorId)).length;
+---
+
+<BaseLayout title="Peptides" description="Personal editorial notes on peptides Tanner Johnson is using, has used, or is considering." canonicalPath="/peptides">
+  <main id="main-content" class="page peptides-page">
+    <PageIntro eyebrow="05 / One peer section" title="Peptides" description="Editorial notes on what I’m using, have tried, or am considering. This is one part of a broader personal health field guide—not the whole thing." />
+
+    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>These are practice records for implementation. They are not Tanner’s peptide use or recommendations.</PracticeDataNotice></div> : null}
+
+    <section class="calculator-band" aria-labelledby="calculator-heading">
+      <div class="wrap calculator-band-inner">
+        <div><p class="section-label">Separate tool / catalog-aware</p><h2 id="calculator-heading">When the question is vial math.</h2><p>The calculator is a separate instrument for catalog entries and named blends. It does not turn these field notes into a protocol.</p></div>
+        <div class="calculator-action"><p>{catalogLinkedEntries} editorial {catalogLinkedEntries === 1 ? "entry is" : "entries are"} currently linked to the calculator catalog.</p><a href={calculatorRoute.href}>Open peptide calculator <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+
+    <section class="notes-section" aria-labelledby="notes-heading">
+      <div class="wrap">
+        <div class="notes-heading"><p class="section-label">Personal field notes</p><h2 id="notes-heading">The editorial side.</h2></div>
+        {peptides.length ? Array.from(statusGroups).map(([status, entries]) => <section class="status-group" aria-labelledby={`${status}-heading`}><div class="status-heading"><h3 id={`${status}-heading`}>{statusLabels[status]}</h3><span>{String(entries.length).padStart(2, "0")}</span></div>{entries.map((entry) => <PeptideEntry entry={entry} calculatorAvailable={Boolean(entry.data.calculatorId && catalogIds.has(entry.data.calculatorId))} />)}</section>) : <p class="empty-state">No editorial peptide notes have been published yet. The calculator catalog remains separate from this section.</p>}
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .calculator-band { margin-top: 2rem; padding-block: 2.4rem; background: var(--sage-deep); color: var(--paper); }
+  .calculator-band-inner { display: grid; gap: 1.7rem; }
+  .calculator-band .section-label { color: #c3d0c3; }
+  h2 { max-width: 11ch; margin: .65rem 0 0; font-family: var(--serif); font-size: clamp(2.7rem, 9vw, 5.5rem); font-weight: 400; letter-spacing: 0; line-height: .84; }
+  .calculator-band p:not(.section-label) { max-width: 35rem; margin: .9rem 0 0; color: rgba(243, 238, 232, .78); font-size: .92rem; line-height: 1.45; }
+  .calculator-action { display: grid; gap: 1rem; align-content: end; }
+  .calculator-action p { margin: 0 !important; }
+  .calculator-action a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 44px; border: 1px solid #c3d0c3; padding: .65rem .8rem; color: #f8f6ee; font-size: .72rem; font-weight: 900; letter-spacing: .07em; text-decoration: none; text-transform: uppercase; }
+  .calculator-action a:hover, .calculator-action a:focus-visible { background: #c3d0c3; color: var(--sage-deep); }
+  .notes-section { padding-block: 3.5rem 4.5rem; }
+  .notes-heading { margin-bottom: 2rem; }
+  .notes-heading h2 { max-width: 10ch; }
+  .status-group { margin-top: 3rem; }
+  .status-group:first-of-type { margin-top: 0; }
+  .status-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--ink); padding-bottom: .55rem; }
+  .status-heading h3 { margin: 0; color: var(--sage-deep); font-size: .74rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+  .status-heading span { color: var(--clay-deep); font-size: .72rem; font-weight: 900; letter-spacing: .1em; }
+  .empty-state { max-width: 34rem; margin: 0; color: var(--muted); line-height: 1.5; }
+  @media (min-width: 48rem) { .calculator-band { padding-block: 4.5rem; } .calculator-band-inner { grid-template-columns: minmax(0, 1.15fr) minmax(17rem, .7fr); gap: 4rem; } .notes-section { padding-block: 5.5rem 6.5rem; } }
+</style>

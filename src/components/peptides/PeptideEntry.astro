@@ -1,0 +1,88 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+
+interface Props {
+  entry: CollectionEntry<"peptides">;
+  calculatorAvailable: boolean;
+}
+
+const { entry, calculatorAvailable } = Astro.props;
+const { Content } = await render(entry);
+const details = [
+  ["Form", entry.data.form],
+  ["Route", entry.data.route],
+  ["Dose", entry.data.dose],
+  ["Timing", entry.data.timing],
+  ["Frequency", entry.data.frequency],
+  ["Cycle", entry.data.cycle],
+  ["Vial", entry.data.vial],
+  ["Reconstitution", entry.data.reconstitution],
+  ["Storage", entry.data.storage]
+] as const;
+const observations = [
+  ["Practical context", entry.data.mechanism],
+  ["What I noticed / expect", entry.data.effects]
+] as const;
+---
+
+<article class="peptide-entry">
+  <header>
+    <p class="entry-number">{String(entry.data.order).padStart(2, "0")}</p>
+    <h3>{entry.data.name}</h3>
+    <p class="summary">{entry.data.summary}</p>
+  </header>
+
+  <div class="entry-body"><Content /></div>
+
+  {details.some(([, value]) => value) || observations.some(([, value]) => value) || entry.data.sideEffects?.length || entry.data.contraindications?.length ? (
+    <details class="practical-details">
+      <summary>Practical details</summary>
+      {details.some(([, value]) => value) ? (
+        <dl>{details.map(([label, value]) => value ? <div><dt>{label}</dt><dd>{value}</dd></div> : null)}</dl>
+      ) : null}
+      {observations.some(([, value]) => value) ? (
+        <div class="observations">
+          {observations.map(([label, value]) => value ? <p><strong>{label}:</strong> {value}</p> : null)}
+        </div>
+      ) : null}
+      {entry.data.sideEffects?.length ? <p class="list-note"><strong>Side effects noted:</strong> {entry.data.sideEffects.join(", ")}</p> : null}
+      {entry.data.contraindications?.length ? <p class="list-note"><strong>Contraindications noted:</strong> {entry.data.contraindications.join(", ")}</p> : null}
+    </details>
+  ) : null}
+
+  <div class="entry-footer">
+    {calculatorAvailable ? <a class="calculator-link" href="/peptides/calculator">Use this catalog entry in the calculator <span aria-hidden="true">↗</span></a> : null}
+    {entry.data.sources?.length ? (
+      <details class="sources">
+        <summary>Sources and context</summary>
+        <ul>{entry.data.sources.map((source) => <li>{source.url ? <a href={source.url} target="_blank" rel="noreferrer">{source.type}</a> : source.type}{source.note ? ` — ${source.note}` : null}</li>)}</ul>
+      </details>
+    ) : null}
+  </div>
+
+  {entry.data.practiceOnly && entry.data.practiceNote ? <p class="practice-note">{entry.data.practiceNote}</p> : null}
+</article>
+
+<style>
+  .peptide-entry { position: relative; border-top: 1px solid var(--line-strong); padding: 1.4rem 0 1.7rem; }
+  .entry-number { margin: 0; color: var(--clay-deep); font-size: .68rem; font-weight: 900; letter-spacing: .12em; }
+  h3 { max-width: 15ch; margin: .45rem 0 0; font-family: var(--serif); font-size: clamp(2.2rem, 7vw, 4.7rem); font-weight: 400; letter-spacing: 0; line-height: .84; }
+  .summary { max-width: 34rem; margin: .9rem 0 0; color: var(--muted); font-size: 1rem; line-height: 1.45; }
+  .entry-body { max-width: 38rem; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+  .entry-body :global(p) { margin: 1rem 0 0; }
+  .practical-details, .sources { max-width: 42rem; margin-top: 1rem; color: var(--muted); font-size: .8rem; line-height: 1.45; }
+  summary { cursor: pointer; min-height: 44px; padding-top: .75rem; color: var(--ink); font-weight: 900; }
+  dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem 1rem; margin: .1rem 0 0; }
+  dl div { border-top: 1px solid var(--line); padding-top: .4rem; }
+  dt { color: var(--muted); font-size: .6rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+  dd { margin: .18rem 0 0; color: var(--ink); font-size: .76rem; font-weight: 800; line-height: 1.35; }
+  .observations p, .list-note { margin: .8rem 0 0; }
+  .entry-footer { display: grid; gap: .5rem; margin-top: 1rem; }
+  .calculator-link { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; width: fit-content; min-height: 44px; border-bottom: 1px solid var(--sage-deep); color: var(--sage-deep); font-size: .74rem; font-weight: 900; letter-spacing: .04em; text-decoration: none; text-transform: uppercase; }
+  .calculator-link:hover, .calculator-link:focus-visible { color: var(--clay-deep); border-bottom-color: var(--clay-deep); }
+  .sources { margin-top: 0; }
+  .sources ul { margin: 0; padding-left: 1.1rem; }
+  .sources a { color: var(--sage-deep); font-weight: 800; }
+  .practice-note { max-width: 40rem; margin: 1rem 0 0; border-left: 3px solid var(--clay); padding-left: .65rem; color: var(--clay-deep); font-size: .75rem; font-weight: 800; line-height: 1.4; }
+  @media (min-width: 48rem) { .peptide-entry { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .6fr); column-gap: 3rem; } .peptide-entry > header, .entry-body, .practice-note { grid-column: 1; } .practical-details, .entry-footer { grid-column: 2; } .practical-details { grid-row: 1 / span 2; } .entry-footer { align-self: end; } dl { grid-template-columns: 1fr; } }
+</style>

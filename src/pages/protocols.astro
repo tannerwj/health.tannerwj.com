@@ -1,0 +1,50 @@
+---
+import { getCollection } from "astro:content";
+import ProtocolEntry from "../components/protocols/ProtocolEntry.astro";
+import PageIntro from "../components/site/PageIntro.astro";
+import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { groupBy, sortByOrder } from "../lib/content";
+
+const protocols = sortByOrder(await getCollection("protocols"));
+const current = protocols.filter((entry) => entry.data.status === "current");
+const future = protocols.filter((entry) => entry.data.status !== "current");
+const futureByKind = groupBy(future, (entry) => entry.data.kind);
+const kindLabels = { testing: "Testing", therapy: "Therapy", nutrition: "Nutrition", recovery: "Recovery", other: "Other practices" } as const;
+const hasPracticeEntries = protocols.some((entry) => entry.data.practiceOnly);
+---
+
+<BaseLayout title="Protocols" description="High-level testing cadence and other health practices in Tanner Johnson's public field guide." canonicalPath="/protocols">
+  <main id="main-content" class="page protocols-page">
+    <PageIntro eyebrow="04 / Practices in view" title="Protocols" description="High-level testing cadence and the practices I keep in view. This is a reference page, not a personal results log." />
+
+    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice entries are visible here only to test the page structure; they are not Tanner’s protocols.</PracticeDataNotice></div> : null}
+
+    <section class="current-section" aria-labelledby="current-heading">
+      <div class="wrap">
+        <div class="section-heading"><div><p class="section-label">Current focus</p><h2 id="current-heading">What is active now.</h2></div><p>Cadence and context over a ledger of values.</p></div>
+        {current.length ? <div class="current-list">{current.map((entry) => <ProtocolEntry entry={entry} featured />)}</div> : <p class="empty-state">No current protocol entries have been published yet.</p>}
+      </div>
+    </section>
+
+    <section class="future-section" aria-labelledby="future-heading">
+      <div class="wrap">
+        <div class="future-heading"><p class="section-label">Other kinds</p><h2 id="future-heading">A place for the rest of the practice.</h2><p>Therapy, nutrition, recovery, and future testing notes sit beside the current view when they are ready to be shared.</p></div>
+        {futureByKind.size ? Array.from(futureByKind).map(([kind, entries]) => <section class="kind-group" aria-labelledby={`${kind}-heading`}><h3 id={`${kind}-heading`}>{kindLabels[kind]}</h3>{entries.map((entry) => <ProtocolEntry entry={entry} />)}</section>) : <p class="empty-state">Other protocol kinds will appear here as they are added.</p>}
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .current-section, .future-section { padding-block: 2.75rem 4rem; }
+  .current-section { margin-top: 2rem; background: var(--paper-deep); }
+  .section-heading, .future-heading { display: grid; gap: 1rem; margin-bottom: 1.6rem; }
+  h2 { max-width: 12ch; margin: .65rem 0 0; font-family: var(--serif); font-size: clamp(2.8rem, 9vw, 6rem); font-weight: 400; letter-spacing: 0; line-height: .84; }
+  .section-heading > p, .future-heading > p { max-width: 25rem; margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.45; }
+  .current-list { border-bottom: 1px solid var(--line-strong); }
+  .kind-group { margin-top: 2.7rem; }
+  .kind-group h3 { margin: 0; border-bottom: 1px solid var(--ink); padding-bottom: .65rem; color: var(--sage-deep); font-size: .72rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+  .empty-state { max-width: 32rem; margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.45; }
+  @media (min-width: 48rem) { .current-section, .future-section { padding-block: 5rem; } .section-heading { grid-template-columns: minmax(0, 1fr) 18rem; align-items: end; } .future-heading { grid-template-columns: minmax(0, 1.1fr) minmax(16rem, .6fr); align-items: end; } .future-heading .section-label, .future-heading h2 { grid-column: 1; } .future-heading > p { grid-column: 2; grid-row: 1 / span 2; } }
+</style>
