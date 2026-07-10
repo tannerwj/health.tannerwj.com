@@ -44,7 +44,7 @@ const supplements = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/supplements" }),
   schema: z.object({
     ...sharedFields,
-    status: statusSchema,
+    status: statusSchema.optional(),
     dose: z.string().optional(),
     timing: z.string().optional(),
     frequency: z.string().optional(),

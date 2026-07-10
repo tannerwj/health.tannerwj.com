@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
+import { parse as parseYaml } from "yaml";
 import { validateIntegrity, type ValidationInput } from "../scripts/validate-content";
 import { blends as catalogBlends } from "../src/data/calculator/blends";
 import { compounds as catalogCompounds } from "../src/data/calculator/compounds";
@@ -57,6 +61,45 @@ const validInput: ValidationInput = {
     }
   ]
 };
+
+const workspaceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+test("statusless sourced supplements remain separate from personal stack groups", () => {
+  const supplementsDir = path.join(workspaceRoot, "src/content/supplements");
+  const entries = readdirSync(supplementsDir)
+    .filter((file) => file.endsWith(".md"))
+    .map((file) => {
+      const content = readFileSync(path.join(supplementsDir, file), "utf8");
+      const frontmatter = content.match(/^---\n([\s\S]*?)\n---/);
+      assert(frontmatter, `${file} must have frontmatter`);
+      return parseYaml(frontmatter[1]) as {
+        slug: string;
+        order: number;
+        status?: string;
+        sources?: unknown[];
+      };
+    });
+
+  const personalEntries = entries.filter((entry) => entry.status);
+  const sourceNotes = entries
+    .filter((entry) => !entry.status && entry.sources?.length)
+    .sort((a, b) => a.order - b.order);
+
+  assert.equal(personalEntries.length, 3);
+  assert.deepEqual(
+    sourceNotes.map((entry) => entry.slug),
+    ["apigenin", "glycine", "myo-inositol", "melatonin-caution"]
+  );
+
+  const supplementsPage = readFileSync(path.join(workspaceRoot, "src/pages/supplements.astro"), "utf8");
+  const supplementList = readFileSync(
+    path.join(workspaceRoot, "src/components/supplements/SupplementList.astro"),
+    "utf8"
+  );
+  assert.match(supplementsPage, /const sourceNotes = entries\.filter/);
+  assert.match(supplementsPage, /heading="Source notes"/);
+  assert.match(supplementList, /: "Source note"/);
+});
 
 test("valid relationships pass", () => {
   assert.equal(validateIntegrity(validInput).length, 0);

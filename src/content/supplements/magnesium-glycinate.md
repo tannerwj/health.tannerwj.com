@@ -19,4 +19,6 @@ sources:
     accessed: "2026-07-10"
 ---
 
-Magnesium glycinate is part of my current supplement list. Huberman Lab's [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep) and FoundMyFitness' [magnesium overview](https://www.foundmyfitness.com/episodes/magnesium) are useful context for why magnesium comes up often in sleep and relaxation conversations.
+Magnesium glycinate is part of my current supplement list. Huberman Lab's [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep) mentions magnesium bisglycinate and threonate as optional sleep-supplement forms; this recorded item remains magnesium glycinate, not a claim that the forms are interchangeable.
+
+The toolkit also names Momentous and includes a discount link, so its supplement guidance carries product context. FoundMyFitness' [magnesium overview](https://www.foundmyfitness.com/episodes/magnesium) is additional context for why magnesium comes up in sleep and relaxation discussions.

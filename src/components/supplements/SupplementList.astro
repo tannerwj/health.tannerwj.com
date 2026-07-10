@@ -44,7 +44,7 @@ const statusLabels = {
               <article class="supplement-entry">
                 <div class="entry-heading">
                   <div>
-                    <p class="entry-status">{statusLabels[entry.data.status]}</p>
+                    <p class="entry-status">{entry.data.status ? statusLabels[entry.data.status] : "Source note"}</p>
                     <h3>{entry.data.name}</h3>
                   </div>
                   {entry.data.product || entry.data.brand ? (
