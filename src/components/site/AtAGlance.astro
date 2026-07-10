@@ -1,0 +1,86 @@
+---
+interface GlanceItem {
+  label: string;
+  title: string;
+  detail?: string;
+  href?: string;
+}
+
+interface Props {
+  items: GlanceItem[];
+  title?: string;
+  description?: string;
+  emptyMessage?: string;
+}
+
+const {
+  items,
+  title = "At a glance",
+  description,
+  emptyMessage = "More notes will appear here as they are added."
+} = Astro.props;
+---
+
+<section class="at-a-glance wrap" aria-labelledby="at-a-glance-heading">
+  <header>
+    <div>
+      <p class="section-label">Quick view</p>
+      <h2 id="at-a-glance-heading">{title}</h2>
+    </div>
+    {description ? <p>{description}</p> : null}
+  </header>
+
+  {items.length ? (
+    <ul>
+      {items.map((item) => (
+        <li>
+          {item.href ? (
+            <a href={item.href}>
+              <span class="glance-label">{item.label}</span>
+              <strong>{item.title}</strong>
+              {item.detail ? <span class="glance-detail">{item.detail}</span> : null}
+              <span class="glance-arrow" aria-hidden="true">↓</span>
+            </a>
+          ) : (
+            <div>
+              <span class="glance-label">{item.label}</span>
+              <strong>{item.title}</strong>
+              {item.detail ? <span class="glance-detail">{item.detail}</span> : null}
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  ) : <p class="empty-state">{emptyMessage}</p>}
+</section>
+
+<style>
+  .at-a-glance { margin-bottom: 2.25rem; border: 1px solid var(--line-strong); background: rgba(248, 246, 238, .48); }
+  header { display: grid; gap: .65rem; border-bottom: 1px solid var(--line-strong); padding: 1rem; }
+  header h2 { margin: .28rem 0 0; font-family: var(--serif); font-size: clamp(1.85rem, 6vw, 2.8rem); font-weight: 400; line-height: .95; }
+  header > p { max-width: 34rem; margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.45; }
+  ul { display: grid; margin: 0; padding: 0; list-style: none; }
+  li { min-width: 0; border-bottom: 1px solid var(--line); }
+  li:last-child { border-bottom: 0; }
+  a, li > div { position: relative; display: grid; align-content: start; min-height: 100%; padding: 1rem; text-decoration: none; }
+  a { padding-right: 2.6rem; }
+  a:hover, a:focus-visible { background: var(--paper-deep); color: var(--sage-deep); }
+  .glance-label { color: var(--clay-deep); font-size: .61rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+  strong { margin-top: .38rem; font-family: var(--serif); font-size: 1.28rem; font-weight: 400; line-height: 1.05; }
+  .glance-detail { margin-top: .48rem; color: var(--muted); font-size: .76rem; line-height: 1.38; }
+  .glance-arrow { position: absolute; top: 1rem; right: 1rem; color: var(--sage-deep); font-size: 1rem; }
+  .empty-state { margin: 0; padding: 1rem; color: var(--muted); font-size: .86rem; }
+  @media (min-width: 40rem) {
+    header { grid-template-columns: minmax(0, .8fr) minmax(16rem, 1.2fr); align-items: end; padding: 1.2rem 1.35rem; }
+    ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    li { border-bottom: 0; }
+    li:nth-child(odd) { border-right: 1px solid var(--line); }
+    li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+    a, li > div { padding: 1.2rem 1.35rem; }
+  }
+  @media (min-width: 64rem) {
+    ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    li { border-top: 0; border-right: 1px solid var(--line); border-bottom: 0; }
+    li:last-child { border-right: 0; }
+  }
+</style>

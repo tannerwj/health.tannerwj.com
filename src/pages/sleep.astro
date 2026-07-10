@@ -1,15 +1,16 @@
 ---
 import { getCollection } from "astro:content";
-import SleepEntry from "../components/sleep/SleepEntry.astro";
 import SleepGroup from "../components/sleep/SleepGroup.astro";
+import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { sortByOrder } from "../lib/content";
 
 const entries = sortByOrder(await getCollection("sleep"));
-const featured = entries.find((entry) => entry.data.featured) ?? entries.find((entry) => entry.data.status === "current");
-const remaining = entries.filter((entry) => entry.id !== featured?.id);
+const current = entries
+  .filter((entry) => entry.data.status === "current")
+  .sort((a, b) => Number(Boolean(b.data.featured)) - Number(Boolean(a.data.featured)) || a.data.order - b.data.order);
 const kinds = [
   ["Routine", "Sleep routines and timing ideas.", "routine"],
   ["Environment", "Sleep environment notes and context.", "environment"],
@@ -17,6 +18,12 @@ const kinds = [
   ["Tracking", "Sleep tracking notes and patterns.", "tracking"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
+const glanceItems = current.map((entry) => ({
+  label: entry.data.kind,
+  title: entry.data.name,
+  detail: [entry.data.timing, entry.data.frequency, entry.data.spec].filter(Boolean).join(" · ") || entry.data.summary,
+  href: `#${entry.data.slug}`
+}));
 ---
 
 <BaseLayout
@@ -27,24 +34,13 @@ const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
   <main id="main-content" class="page">
     <PageIntro eyebrow="02 / Sleep" title="Sleep" description="My routine, room, gear, and sleep tracking." />
 
+    <AtAGlance items={glanceItems} description="The sleep gear and setup I have recorded as current." />
+
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's routine.</PracticeDataNotice></div> : null}
 
     <div class="wrap sleep-layout">
-      {featured ? (
-        <section class="featured-section" aria-labelledby="featured-sleep-heading">
-          <div class="featured-intro">
-            <p class="section-label">Sleep / current</p>
-            <h2 id="featured-sleep-heading">Current routine</h2>
-            <p>The sleep item I am using now.</p>
-          </div>
-          <SleepEntry entry={featured} featured />
-        </section>
-      ) : (
-        <p class="empty-state">No sleep entries are published yet.</p>
-      )}
-
       {kinds.map(([title, description, kind]) => (
-        <SleepGroup title={title} description={description} entries={remaining.filter((entry) => entry.data.kind === kind)} />
+        <SleepGroup title={title} description={description} entries={entries.filter((entry) => entry.data.kind === kind)} />
       ))}
     </div>
   </main>
@@ -52,9 +48,4 @@ const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
 
 <style>
   .sleep-layout { padding-bottom: 2.5rem; }
-  .featured-section { display: grid; gap: 1.25rem; margin-top: 2.2rem; padding-block: 1.3rem 2.25rem; }
-  .featured-intro { max-width: 33rem; }
-  .featured-intro h2 { margin: .6rem 0; font-family: var(--serif); font-size: clamp(2.3rem, 8vw, 4.8rem); font-weight: 400; line-height: .92; }
-  .featured-intro p:last-child, .empty-state { margin: 0; color: var(--muted); line-height: 1.45; }
-  @media (min-width: 60rem) { .featured-section { grid-template-columns: minmax(13rem, .55fr) minmax(0, 1fr); align-items: end; gap: 3rem; } }
 </style>

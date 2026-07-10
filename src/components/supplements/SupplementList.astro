@@ -42,7 +42,7 @@ const statusLabels = {
 
           return (
             <li>
-              <article class="supplement-entry">
+              <article class="supplement-entry" id={entry.data.slug}>
                 <div class="entry-heading">
                   <div>
                     <p class="entry-status">{entry.data.status ? statusLabels[entry.data.status] : "Source note"}</p>
@@ -57,15 +57,11 @@ const statusLabels = {
 
                 <p class="summary">{entry.data.summary}</p>
 
-                <dl class="supplement-facts">
-                  <div>
-                    <dt>Why</dt>
-                    <dd>{entry.data.summary}</dd>
-                  </div>
+                {entry.data.dose || entry.data.timing || entry.data.frequency ? <dl class="supplement-facts">
                   {entry.data.dose ? <div><dt>Dose</dt><dd>{entry.data.dose}</dd></div> : null}
                   {entry.data.timing ? <div><dt>Timing</dt><dd>{entry.data.timing}</dd></div> : null}
                   {entry.data.frequency ? <div><dt>Frequency</dt><dd>{entry.data.frequency}</dd></div> : null}
-                </dl>
+                </dl> : null}
 
                 {affiliate ? (
                   <a class="product-link" href={affiliate.url} rel="noreferrer">
@@ -99,7 +95,7 @@ const statusLabels = {
 <style>
   .supplement-group {
     border-top: 1px solid var(--line-strong);
-    padding-block: 2.5rem;
+    padding-block: 1.8rem 2.5rem;
   }
 
   .group-heading {
@@ -116,22 +112,21 @@ const statusLabels = {
     font-weight: 400;
   }
 
-  .group-heading h2 { font-size: clamp(2.2rem, 8vw, 4.5rem); line-height: 0.94; }
+  .group-heading h2 { font-size: clamp(1.9rem, 7vw, 3.2rem); line-height: 0.96; }
   .group-heading > p:last-child { margin: 0; color: var(--muted); line-height: 1.5; }
 
-  .supplement-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
-  .supplement-entry { border-top: 1px solid var(--line); padding-block: 1.25rem 1.5rem; }
+  .supplement-list { display: grid; gap: .85rem; margin: 0; padding: 0; list-style: none; }
+  .supplement-entry { border: 1px solid var(--line); border-top: 3px solid var(--sage); padding: 1rem; background: rgba(248, 246, 238, .42); scroll-margin-top: 1rem; }
   .entry-heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
-  .entry-status, .product-context { margin: 0; color: var(--muted); font-size: 0.7rem; font-weight: 800; letter-spacing: .08em; line-height: 1.35; text-transform: uppercase; }
+  .entry-status, .product-context { margin: 0; color: var(--muted); font-size: 0.62rem; font-weight: 900; letter-spacing: .11em; line-height: 1.35; text-transform: uppercase; }
   .product-context { max-width: 14rem; text-align: right; }
-  .supplement-entry h3 { margin-top: .3rem; font-size: clamp(1.65rem, 6vw, 2.7rem); line-height: .98; }
-  .summary { max-width: 47rem; margin: .9rem 0 0; line-height: 1.5; }
-  .supplement-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem 1rem; margin: 1.2rem 0 0; }
-  .supplement-facts div { border-top: 1px solid var(--line); padding-top: .55rem; }
-  .supplement-facts div:first-child { grid-column: 1 / -1; }
+  .supplement-entry h3 { margin-top: .3rem; font-size: clamp(1.75rem, 6vw, 2.55rem); line-height: .98; }
+  .summary { max-width: 47rem; margin: .75rem 0 0; color: var(--ink); line-height: 1.5; }
+  .supplement-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem 1rem; margin: 1rem 0 0; border-top: 1px solid var(--line); padding-top: .7rem; }
+  .supplement-facts div { min-width: 0; }
   .supplement-facts dt { color: var(--muted); font-size: .64rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
   .supplement-facts dd { margin: .28rem 0 0; font-size: .9rem; line-height: 1.4; }
-  .product-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: .7rem; color: var(--sage-deep); font-size: .88rem; font-weight: 800; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+  .product-link { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; margin-top: .7rem; border-bottom: 1px solid var(--sage-deep); color: var(--sage-deep); font-size: .8rem; font-weight: 900; text-decoration: none; }
   .entry-details { margin-top: .75rem; border-top: 1px solid var(--line); }
   .entry-details summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--sage-deep); font-size: .86rem; font-weight: 800; }
   .markdown { max-width: 46rem; padding-bottom: .3rem; line-height: 1.6; }
@@ -139,8 +134,7 @@ const statusLabels = {
   .empty-state { margin: 0; color: var(--muted); font-style: italic; }
 
   @media (min-width: 48rem) {
-    .supplement-entry { padding-block: 1.6rem 1.85rem; }
-    .supplement-facts { grid-template-columns: minmax(12rem, 2fr) repeat(3, minmax(7rem, 1fr)); }
-    .supplement-facts div:first-child { grid-column: auto; }
+    .supplement-entry { padding: 1.35rem 1.45rem; }
+    .supplement-facts { grid-template-columns: repeat(3, minmax(7rem, 1fr)); }
   }
 </style>

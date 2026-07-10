@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import FollowEntry from "../components/follow/FollowEntry.astro";
+import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -10,11 +11,18 @@ const follows = sortByOrder(await getCollection("follow"));
 const followGroups = groupBy(follows, (entry) => entry.data.group);
 const groupLabels = { longevity: "Longevity", training: "Training", sleep: "Sleep", nutrition: "Nutrition", general: "General health" } as const;
 const hasPracticeEntries = follows.some((entry) => entry.data.practiceOnly);
+const glanceItems = follows.slice(0, 4).map((entry) => ({
+  label: entry.data.platform,
+  title: entry.data.handle,
+  detail: entry.data.name,
+  href: `#${entry.data.slug}`
+}));
 ---
 
 <BaseLayout title="Follow" description="People and accounts Tanner Johnson follows for health and training." canonicalPath="/follow">
   <main id="main-content" class="page follow-page">
     <PageIntro eyebrow="06 / Follow" title="Follow" description="People and accounts I follow for health and training." />
+    <AtAGlance items={glanceItems} description={`${follows.length} people in the directory. Handles and primary profiles come first.`} />
 
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice accounts below are not Tanner’s actual follow list.</PracticeDataNotice></div> : null}
 
@@ -28,13 +36,13 @@ const hasPracticeEntries = follows.some((entry) => entry.data.practiceOnly);
 </BaseLayout>
 
 <style>
-  .follow-directory { padding-block: 2.75rem 4.5rem; }
+  .follow-directory { padding-block: 1rem 4.5rem; }
   .directory-heading { display: grid; gap: 1rem; margin-bottom: 2.75rem; }
-  h2 { max-width: 13ch; margin: 0; font-family: var(--serif); font-size: clamp(2.8rem, 9vw, 6rem); font-weight: 400; letter-spacing: 0; line-height: .84; }
+  h2 { max-width: 16ch; margin: 0; font-family: var(--serif); font-size: clamp(2rem, 7vw, 3.6rem); font-weight: 400; letter-spacing: 0; line-height: .92; }
   .directory-heading > p { max-width: 27rem; margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
   .group { margin-top: 3rem; }
   .group:first-of-type { margin-top: 0; }
   .group h3 { margin: 0; border-bottom: 1px solid var(--ink); padding-bottom: .7rem; color: var(--clay-deep); font-size: .72rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
   .empty-state { color: var(--muted); }
-  @media (min-width: 48rem) { .follow-directory { padding-block: 5rem 6.5rem; } .directory-heading { grid-template-columns: minmax(0, 1fr) 19rem; align-items: end; } .directory-heading .section-label, .directory-heading h2 { grid-column: 1; } .directory-heading > p { grid-column: 2; grid-row: 1 / span 2; } }
+  @media (min-width: 48rem) { .follow-directory { padding-block: 2rem 6.5rem; } .directory-heading { grid-template-columns: minmax(0, 1fr) 19rem; align-items: end; } .directory-heading .section-label, .directory-heading h2 { grid-column: 1; } .directory-heading > p { grid-column: 2; grid-row: 1 / span 2; } }
 </style>

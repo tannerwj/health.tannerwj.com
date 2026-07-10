@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import SupplementList from "../components/supplements/SupplementList.astro";
+import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -14,6 +15,13 @@ const considering = entries.filter((entry) => entry.data.status === "considering
 const previouslyTried = entries.filter((entry) => entry.data.status === "previously-tried");
 const sourceNotes = entries.filter((entry) => !entry.data.status && entry.data.sources?.length);
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
+const glanceEntries = current.length ? current : sourceNotes.slice(0, 4);
+const glanceItems = glanceEntries.map((entry) => ({
+  label: entry.data.status === "current" ? "Current" : "Source note",
+  title: entry.data.name,
+  detail: [entry.data.dose, entry.data.timing, entry.data.frequency].filter(Boolean).join(" · ") || entry.data.summary,
+  href: `#${entry.data.slug}`
+}));
 ---
 
 <BaseLayout
@@ -24,11 +32,13 @@ const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
   <main id="main-content" class="page">
     <PageIntro eyebrow="01 / Supplements" title="Supplements" description="My current personal supplements, with sourced notes for additional context." />
 
+    <AtAGlance items={glanceItems} description="Current items first. Dose, timing, and frequency appear here when recorded." />
+
     {hasPracticeEntries ? (
       <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's stack.</PracticeDataNotice></div>
     ) : null}
 
-    <div class="wrap stack">
+    <div class="wrap stack" id="supplement-details">
       {current.length ? <SupplementList entries={current} heading="Current" description="The items in my current stack, in the order I take them." emptyMessage="No current supplement entries are published yet." /> : null}
       {considering.length ? <SupplementList entries={considering} heading="Considering" description="Things I am still deciding whether to add." emptyMessage="Nothing is under consideration here right now." /> : null}
       {previouslyTried.length ? <SupplementList entries={previouslyTried} heading="Previously tried" description="Past items for context, not recommendations." emptyMessage="No previously tried entries are published yet." /> : null}

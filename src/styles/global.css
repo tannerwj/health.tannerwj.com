@@ -90,29 +90,40 @@ button:focus-visible {
 .brand-lockup {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.7rem;
   min-height: 44px;
   color: var(--ink);
   text-decoration: none;
 }
 
 .field-mark {
-  width: 1.7rem;
-  height: 1.7rem;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
   color: var(--sage-deep);
 }
 
 .wordmark {
+  display: grid;
   flex: 0 0 auto;
-  color: var(--ink);
-  font-size: 0.8rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  text-decoration: none;
+  gap: .08rem;
 }
 
-.wordmark span {
+.wordmark strong {
+  font-family: var(--serif);
+  font-size: 1.04rem;
+  font-weight: 400;
+  letter-spacing: -.015em;
+  line-height: 1;
+}
+
+.wordmark small {
   color: var(--clay-deep);
+  font-size: .49rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+  line-height: 1.15;
+  text-transform: uppercase;
 }
 
 .primary-nav {
@@ -155,17 +166,17 @@ button:focus-visible {
 }
 
 .page-intro {
-  padding-block: 2.5rem 3rem;
+  padding-block: 1.7rem 1.35rem;
 }
 
 .page-intro h1 {
   max-width: 12ch;
-  margin: 1rem 0 1.25rem;
+  margin: .6rem 0 .65rem;
   font-family: var(--serif);
-  font-size: 3rem;
+  font-size: clamp(2.35rem, 9vw, 3.4rem);
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 0.9;
+  line-height: 0.92;
   text-wrap: balance;
 }
 
@@ -704,7 +715,7 @@ button:focus-visible {
   }
 
   .page-intro h1 {
-    font-size: 5rem;
+    font-size: 3.7rem;
   }
 
   .hero-intro {
@@ -815,7 +826,7 @@ button:focus-visible {
   }
 
   .page-intro h1 {
-    font-size: 6.5rem;
+    font-size: 4.5rem;
   }
 
   .calculator-gateway h2 {

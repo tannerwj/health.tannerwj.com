@@ -9,10 +9,11 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<article class="follow-entry">
+<article class="follow-entry" id={entry.data.slug}>
   <div class="identity">
+    <p class="handle">{entry.data.handle}</p>
     <h3>{entry.data.name}</h3>
-    <p>{entry.data.handle} <span aria-hidden="true">/</span> {entry.data.platform}</p>
+    <p class="platform">{entry.data.platform}</p>
   </div>
   <div class="reason">
     <p>{entry.data.summary}</p>
@@ -25,14 +26,15 @@ const { Content } = await render(entry);
 </article>
 
 <style>
-  .follow-entry { display: grid; gap: .8rem; border-top: 1px solid var(--line-strong); padding: 1.2rem 0 1.35rem; }
-  h3 { margin: 0; font-family: var(--serif); font-size: clamp(1.7rem, 5vw, 2.7rem); font-weight: 400; letter-spacing: 0; line-height: .9; }
-  .identity p { margin: .45rem 0 0; color: var(--sage-deep); font-size: .72rem; font-weight: 900; letter-spacing: .06em; }
+  .follow-entry { display: grid; gap: .8rem; margin-top: .85rem; border: 1px solid var(--line); border-top: 3px solid var(--sage); padding: 1rem; background: rgba(248, 246, 238, .42); scroll-margin-top: 1rem; }
+  h3 { margin: .38rem 0 0; color: var(--muted); font-family: var(--sans); font-size: .78rem; font-weight: 800; letter-spacing: .03em; line-height: 1.2; }
+  .identity .handle { overflow-wrap: anywhere; margin: 0; color: var(--ink); font-family: var(--serif); font-size: clamp(1.65rem, 5vw, 2.35rem); font-weight: 400; letter-spacing: -.015em; line-height: .95; }
+  .identity .platform { margin: .4rem 0 0; color: var(--clay-deep); font-size: .59rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
   .reason > p { max-width: 38rem; margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
   .entry-body { max-width: 38rem; color: var(--muted); font-size: .82rem; line-height: 1.45; }
   .entry-body :global(p) { margin: .75rem 0 0; }
   a { display: inline-flex; align-items: center; justify-content: space-between; gap: 1rem; width: fit-content; min-height: 44px; color: var(--ink); font-size: .72rem; font-weight: 900; letter-spacing: .06em; text-decoration: none; text-transform: uppercase; }
   a:hover, a:focus-visible { color: var(--clay-deep); }
   .practice-note { margin: .85rem 0 0; border-left: 3px solid var(--clay); padding-left: .65rem; color: var(--clay-deep); font-size: .74rem; font-weight: 800; line-height: 1.4; }
-  @media (min-width: 48rem) { .follow-entry { grid-template-columns: minmax(11rem, .7fr) minmax(0, 1.5fr) auto; align-items: start; gap: 2rem; } a { justify-self: end; } }
+  @media (min-width: 48rem) { .follow-entry { grid-template-columns: minmax(14rem, .8fr) minmax(0, 1.5fr) auto; align-items: start; gap: 2rem; padding: 1.35rem 1.45rem; } a { justify-self: end; } }
 </style>

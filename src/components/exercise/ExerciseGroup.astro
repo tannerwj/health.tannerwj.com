@@ -28,7 +28,7 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
         const affiliate = entry.data.affiliate ? affiliateRegistry[entry.data.affiliate] : undefined;
         return (
           <li>
-            <article>
+            <article id={entry.data.slug}>
               <div class="entry-heading">
                 <div>
                   <div class="entry-meta">
@@ -60,21 +60,22 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
 ) : null}
 
 <style>
-  .exercise-group { border-top: 1px solid var(--line-strong); padding-block: 2.4rem; }
+  .exercise-group { border-top: 1px solid var(--line-strong); padding-block: 1.8rem 2.5rem; }
   header { display: grid; gap: .65rem; max-width: 42rem; margin-bottom: 1.25rem; }
   h2, h3 { margin: 0; font-family: var(--serif); font-weight: 400; }
-  h2 { font-size: clamp(2.1rem, 8vw, 4.4rem); line-height: .93; }
+  h2 { font-size: clamp(1.9rem, 7vw, 3.2rem); line-height: .96; }
   header > p:last-child { margin: 0; color: var(--muted); line-height: 1.45; }
-  ol { margin: 0; padding: 0; list-style: none; }
-  article { border-top: 1px solid var(--line); padding-block: 1.25rem 1.45rem; }
+  ol { display: grid; gap: .85rem; margin: 0; padding: 0; list-style: none; }
+  article { border: 1px solid var(--line); border-top: 3px solid var(--sage); padding: 1rem; background: rgba(248, 246, 238, .42); scroll-margin-top: 1rem; }
   .entry-heading { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
   .entry-meta { display: flex; flex-wrap: wrap; gap: .4rem .8rem; }
-  .entry-kind, .source-note, .status { margin: 0; color: var(--clay-deep); font-size: .64rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+  .entry-kind, .source-note, .status { margin: 0; color: var(--clay-deep); font-size: .61rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
   .status { color: var(--muted); text-align: right; }
-  h3 { margin-top: .3rem; font-size: clamp(1.55rem, 6vw, 2.5rem); line-height: .98; }
-  .summary { max-width: 46rem; margin: .8rem 0 0; line-height: 1.5; }
-  dl { display: flex; flex-wrap: wrap; gap: .7rem 1.4rem; margin: 1rem 0 0; }
+  h3 { margin-top: .3rem; font-size: clamp(1.75rem, 6vw, 2.55rem); line-height: .98; }
+  .summary { max-width: 46rem; margin: .75rem 0 0; line-height: 1.5; }
+  dl { display: flex; flex-wrap: wrap; gap: .7rem 1.4rem; margin: 1rem 0 0; border-top: 1px solid var(--line); padding-top: .7rem; }
   dl div { min-width: 7rem; } dt { color: var(--muted); font-size: .62rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; } dd { margin: .25rem 0 0; font-size: .88rem; line-height: 1.4; }
   .product-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: .5rem; color: var(--sage-deep); font-size: .87rem; font-weight: 800; text-underline-offset: .2em; }
   details { margin-top: .6rem; border-top: 1px solid var(--line); } summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--sage-deep); font-size: .86rem; font-weight: 800; } .markdown { max-width: 44rem; padding-bottom: .3rem; line-height: 1.6; }
+  @media (min-width: 48rem) { article { padding: 1.35rem 1.45rem; } }
 </style>

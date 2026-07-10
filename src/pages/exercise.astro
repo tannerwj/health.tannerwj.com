@@ -2,15 +2,14 @@
 import { getCollection } from "astro:content";
 import CurrentSplit from "../components/exercise/CurrentSplit.astro";
 import ExerciseGroup from "../components/exercise/ExerciseGroup.astro";
+import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { sortByOrder } from "../lib/content";
 
 const entries = sortByOrder(await getCollection("exercise"));
-const currentSplit = entries.find((entry) => entry.data.kind === "split" && entry.data.status === "current")
-  ?? entries.find((entry) => entry.data.kind === "split" && entry.data.featured)
-  ?? entries.find((entry) => entry.data.kind === "split");
+const currentSplit = entries.find((entry) => entry.data.kind === "split" && entry.data.status === "current");
 const supportingEntries = entries.filter((entry) => entry.id !== currentSplit?.id);
 const groups = [
   ["Sessions", "Recurring training sessions and conditioning ideas.", "session"],
@@ -20,6 +19,15 @@ const groups = [
   ["Other splits", "Other weekly split ideas and frameworks.", "split"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
+const glanceItems = groups.slice(0, 4).map(([title, description, kind]) => {
+  const count = supportingEntries.filter((entry) => entry.data.kind === kind).length;
+  return {
+    label: `${count} ${count === 1 ? "note" : "notes"}`,
+    title,
+    detail: kind === "equipment" && count === 0 ? "Home gym equipment will live here as it is recorded." : description,
+    href: count ? `#exercise-${title.toLowerCase().replaceAll(" ", "-")}` : undefined
+  };
+});
 ---
 
 <BaseLayout
@@ -29,6 +37,7 @@ const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
 >
   <main id="main-content" class="page">
     <PageIntro eyebrow="03 / Exercise" title="Exercise" description="Training notes, sessions, equipment, recovery, and programming ideas." />
+    <AtAGlance items={glanceItems} description="Browse the training library by type. Personal equipment can slot into the same structure." />
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's training plan.</PracticeDataNotice></div> : null}
     <div class="wrap exercise-layout">
       {currentSplit ? <CurrentSplit entry={currentSplit} /> : null}
@@ -37,4 +46,4 @@ const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
   </main>
 </BaseLayout>
 
-<style>.exercise-layout { padding-block: 2.25rem 2.5rem; }</style>
+<style>.exercise-layout { padding-block: 0 2.5rem; }</style>
