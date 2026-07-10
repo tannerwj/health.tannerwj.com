@@ -18,21 +18,21 @@ const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
 
 <BaseLayout
   title="Supplements"
-  description="Tanner Johnson's current supplement stack, with timing, dose, and product context."
+  description="Tanner Johnson's current personal supplements, with sourced supplement notes and product context."
   canonicalPath="/supplements"
 >
   <main id="main-content" class="page">
-    <PageIntro eyebrow="01 / Supplements" title="Supplements" description="What I take now, what I am considering, and what I have stopped taking." />
+    <PageIntro eyebrow="01 / Supplements" title="Supplements" description="My current personal supplements, with sourced notes for additional context." />
 
     {hasPracticeEntries ? (
       <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's stack.</PracticeDataNotice></div>
     ) : null}
 
     <div class="wrap stack">
-      <SupplementList entries={current} heading="Current" description="The items in my current stack, in the order I take them." emptyMessage="No current supplement entries are published yet." />
-      <SupplementList entries={considering} heading="Considering" description="Things I am still deciding whether to add." emptyMessage="Nothing is under consideration here right now." />
-      <SupplementList entries={previouslyTried} heading="Previously tried" description="Past items for context, not recommendations." emptyMessage="No previously tried entries are published yet." />
-      <SupplementList entries={sourceNotes} heading="Source notes" description="Sourced supplement context, separate from my personal stack." emptyMessage="No sourced supplement notes are published yet." />
+      {current.length ? <SupplementList entries={current} heading="Current" description="The items in my current stack, in the order I take them." emptyMessage="No current supplement entries are published yet." /> : null}
+      {considering.length ? <SupplementList entries={considering} heading="Considering" description="Things I am still deciding whether to add." emptyMessage="Nothing is under consideration here right now." /> : null}
+      {previouslyTried.length ? <SupplementList entries={previouslyTried} heading="Previously tried" description="Past items for context, not recommendations." emptyMessage="No previously tried entries are published yet." /> : null}
+      {sourceNotes.length ? <SupplementList entries={sourceNotes} heading="Source notes" sectionLabel="Notes" description="Sourced supplement context, separate from my personal stack." emptyMessage="No sourced supplement notes are published yet." /> : null}
     </div>
   </main>
 </BaseLayout>

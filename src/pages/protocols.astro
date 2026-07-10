@@ -20,12 +20,14 @@ const hasPracticeEntries = protocols.some((entry) => entry.data.practiceOnly);
 
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice entries below are not Tanner’s protocols.</PracticeDataNotice></div> : null}
 
-    <section class="current-section" aria-labelledby="current-heading">
-      <div class="wrap">
-        <div class="section-heading"><div><p class="section-label">Current</p><h2 id="current-heading">Current notes.</h2></div><p>Testing context and other notes appear here when published.</p></div>
-        {current.length ? <div class="current-list">{current.map((entry) => <ProtocolEntry entry={entry} featured />)}</div> : <p class="empty-state">No current protocol entries have been published yet.</p>}
-      </div>
-    </section>
+    {current.length ? (
+      <section class="current-section" aria-labelledby="current-heading">
+        <div class="wrap">
+          <div class="section-heading"><div><p class="section-label">Current</p><h2 id="current-heading">Current notes.</h2></div><p>Testing context and other notes appear here when published.</p></div>
+          <div class="current-list">{current.map((entry) => <ProtocolEntry entry={entry} featured />)}</div>
+        </div>
+      </section>
+    ) : null}
 
     <section class="future-section" aria-labelledby="future-heading">
       <div class="wrap">

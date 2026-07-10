@@ -6,11 +6,12 @@ import affiliates from "../../data/affiliates.json";
 interface Props {
   entries: CollectionEntry<"supplements">[];
   heading: string;
+  sectionLabel?: string;
   description: string;
   emptyMessage: string;
 }
 
-const { entries, heading, description, emptyMessage } = Astro.props;
+const { entries, heading, sectionLabel = "Stack", description, emptyMessage } = Astro.props;
 const affiliateRegistry = affiliates as Record<
   string,
   { vendor: string; product: string; url: string; practiceOnly?: boolean }
@@ -24,7 +25,7 @@ const statusLabels = {
 
 <section class="supplement-group" aria-labelledby={`supplements-${heading.toLowerCase().replaceAll(" ", "-")}`}>
   <header class="group-heading">
-    <p class="section-label">Stack / {heading}</p>
+    <p class="section-label">{sectionLabel} / {heading}</p>
     <h2 id={`supplements-${heading.toLowerCase().replaceAll(" ", "-")}`}>{heading}</h2>
     <p>{description}</p>
   </header>
