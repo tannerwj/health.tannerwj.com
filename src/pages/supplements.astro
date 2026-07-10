@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import SupplementList from "../components/supplements/SupplementList.astro";
+import PageIntro from "../components/site/PageIntro.astro";
+import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { sortByOrder } from "../lib/content";
+
+const entries = sortByOrder(await getCollection("supplements"));
+const current = entries
+  .filter((entry) => entry.data.status === "current")
+  .sort((a, b) => Number(Boolean(b.data.featured)) - Number(Boolean(a.data.featured)) || a.data.order - b.data.order);
+const considering = entries.filter((entry) => entry.data.status === "considering");
+const previouslyTried = entries.filter((entry) => entry.data.status === "previously-tried");
+const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
+---
+
+<BaseLayout
+  title="Supplements"
+  description="Tanner Johnson's current supplement stack, with timing, dose, and product context."
+  canonicalPath="/supplements"
+>
+  <main id="main-content" class="page">
+    <PageIntro eyebrow="01 / Supplements" title="Supplements" description="The current stack first, then the items still under consideration or left behind." />
+
+    {hasPracticeEntries ? (
+      <div class="wrap"><PracticeDataNotice>Practice placeholders below are for layout testing and are not Tanner's stack.</PracticeDataNotice></div>
+    ) : null}
+
+    <div class="wrap stack">
+      <SupplementList entries={current} heading="Current" description="The items in the active stack, in the order I keep them." emptyMessage="No current supplement entries are published yet." />
+      <SupplementList entries={considering} heading="Considering" description="Things I am still deciding whether to add." emptyMessage="Nothing is under consideration here right now." />
+      <SupplementList entries={previouslyTried} heading="Previously tried" description="Useful context without treating every past experiment as a recommendation." emptyMessage="No previously tried entries are published yet." />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .stack { padding-bottom: 2.5rem; }
+</style>

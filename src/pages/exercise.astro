@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import CurrentSplit from "../components/exercise/CurrentSplit.astro";
+import ExerciseGroup from "../components/exercise/ExerciseGroup.astro";
+import PageIntro from "../components/site/PageIntro.astro";
+import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { sortByOrder } from "../lib/content";
+
+const entries = sortByOrder(await getCollection("exercise"));
+const currentSplit = entries.find((entry) => entry.data.kind === "split" && entry.data.status === "current")
+  ?? entries.find((entry) => entry.data.kind === "split" && entry.data.featured)
+  ?? entries.find((entry) => entry.data.kind === "split");
+const supportingEntries = entries.filter((entry) => entry.id !== currentSplit?.id);
+const groups = [
+  ["Sessions", "Recurring training sessions and conditioning work.", "session"],
+  ["Principles", "Rules that help the split stay coherent as details change.", "principle"],
+  ["Equipment", "Equipment that earns a place in the training environment.", "equipment"],
+  ["Recovery", "Recovery practices that specifically support the work.", "recovery"],
+  ["Other splits", "Additional weekly structures when they are worth keeping alongside the current one.", "split"]
+] as const;
+const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
+---
+
+<BaseLayout
+  title="Exercise"
+  description="Tanner Johnson's current training split, principles, sessions, equipment, and recovery notes."
+  canonicalPath="/exercise"
+>
+  <main id="main-content" class="page">
+    <PageIntro eyebrow="03 / Exercise" title="Exercise" description="The active split gets the page’s weight; everything else exists to support it." />
+    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are for layout testing and are not Tanner's training plan.</PracticeDataNotice></div> : null}
+    <div class="wrap exercise-layout">
+      <CurrentSplit entry={currentSplit} />
+      {groups.map(([title, description, kind]) => <ExerciseGroup title={title} description={description} entries={supportingEntries.filter((entry) => entry.data.kind === kind)} />)}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>.exercise-layout { padding-block: 2.25rem 2.5rem; }</style>

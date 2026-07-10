@@ -1,0 +1,145 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import PracticeDataNotice from "../site/PracticeDataNotice.astro";
+import affiliates from "../../data/affiliates.json";
+
+interface Props {
+  entries: CollectionEntry<"supplements">[];
+  heading: string;
+  description: string;
+  emptyMessage: string;
+}
+
+const { entries, heading, description, emptyMessage } = Astro.props;
+const affiliateRegistry = affiliates as Record<
+  string,
+  { vendor: string; product: string; url: string; practiceOnly?: boolean }
+>;
+const statusLabels = {
+  current: "Current",
+  considering: "Considering",
+  "previously-tried": "Previously tried"
+} as const;
+---
+
+<section class="supplement-group" aria-labelledby={`supplements-${heading.toLowerCase().replaceAll(" ", "-")}`}>
+  <header class="group-heading">
+    <p class="section-label">Stack / {heading}</p>
+    <h2 id={`supplements-${heading.toLowerCase().replaceAll(" ", "-")}`}>{heading}</h2>
+    <p>{description}</p>
+  </header>
+
+  {
+    entries.length ? (
+      <ol class="supplement-list">
+        {entries.map(async (entry) => {
+          const { Content } = await render(entry);
+          const affiliate = entry.data.affiliate
+            ? affiliateRegistry[entry.data.affiliate]
+            : undefined;
+          const hasNotes = Boolean(entry.body?.trim());
+
+          return (
+            <li>
+              <article class="supplement-entry">
+                <div class="entry-heading">
+                  <div>
+                    <p class="entry-status">{statusLabels[entry.data.status]}</p>
+                    <h3>{entry.data.name}</h3>
+                  </div>
+                  {entry.data.product || entry.data.brand ? (
+                    <p class="product-context">
+                      {[entry.data.brand, entry.data.product].filter(Boolean).join(" / ")}
+                    </p>
+                  ) : null}
+                </div>
+
+                <p class="summary">{entry.data.summary}</p>
+
+                <dl class="supplement-facts">
+                  <div>
+                    <dt>Why</dt>
+                    <dd>{entry.data.summary}</dd>
+                  </div>
+                  {entry.data.dose ? <div><dt>Dose</dt><dd>{entry.data.dose}</dd></div> : null}
+                  {entry.data.timing ? <div><dt>Timing</dt><dd>{entry.data.timing}</dd></div> : null}
+                  {entry.data.frequency ? <div><dt>Frequency</dt><dd>{entry.data.frequency}</dd></div> : null}
+                </dl>
+
+                {affiliate ? (
+                  <a class="product-link" href={affiliate.url} rel="noreferrer">
+                    Product context: {affiliate.vendor} <span aria-hidden="true">↗</span>
+                  </a>
+                ) : null}
+
+                {entry.data.practiceOnly ? (
+                  <PracticeDataNotice label="Practice entry">
+                    {entry.data.practiceNote ?? "Practice data — replace before launch."}
+                  </PracticeDataNotice>
+                ) : null}
+
+                {hasNotes ? (
+                  <details class="entry-details">
+                    <summary>Notes and context</summary>
+                    <div class="markdown"><Content /></div>
+                  </details>
+                ) : null}
+              </article>
+            </li>
+          );
+        })}
+      </ol>
+    ) : (
+      <p class="empty-state">{emptyMessage}</p>
+    )
+  }
+</section>
+
+<style>
+  .supplement-group {
+    border-top: 1px solid var(--line-strong);
+    padding-block: 2.5rem;
+  }
+
+  .group-heading {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 45rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .group-heading h2,
+  .supplement-entry h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+  }
+
+  .group-heading h2 { font-size: clamp(2.2rem, 8vw, 4.5rem); line-height: 0.94; }
+  .group-heading > p:last-child { margin: 0; color: var(--muted); line-height: 1.5; }
+
+  .supplement-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .supplement-entry { border-top: 1px solid var(--line); padding-block: 1.25rem 1.5rem; }
+  .entry-heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
+  .entry-status, .product-context { margin: 0; color: var(--muted); font-size: 0.7rem; font-weight: 800; letter-spacing: .08em; line-height: 1.35; text-transform: uppercase; }
+  .product-context { max-width: 14rem; text-align: right; }
+  .supplement-entry h3 { margin-top: .3rem; font-size: clamp(1.65rem, 6vw, 2.7rem); line-height: .98; }
+  .summary { max-width: 47rem; margin: .9rem 0 0; line-height: 1.5; }
+  .supplement-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem 1rem; margin: 1.2rem 0 0; }
+  .supplement-facts div { border-top: 1px solid var(--line); padding-top: .55rem; }
+  .supplement-facts div:first-child { grid-column: 1 / -1; }
+  .supplement-facts dt { color: var(--muted); font-size: .64rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  .supplement-facts dd { margin: .28rem 0 0; font-size: .9rem; line-height: 1.4; }
+  .product-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: .7rem; color: var(--sage-deep); font-size: .88rem; font-weight: 800; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+  .entry-details { margin-top: .75rem; border-top: 1px solid var(--line); }
+  .entry-details summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--sage-deep); font-size: .86rem; font-weight: 800; }
+  .markdown { max-width: 46rem; padding-bottom: .3rem; line-height: 1.6; }
+  .markdown :global(p) { margin: .35rem 0 .8rem; }
+  .empty-state { margin: 0; color: var(--muted); font-style: italic; }
+
+  @media (min-width: 48rem) {
+    .supplement-entry { padding-block: 1.6rem 1.85rem; }
+    .supplement-facts { grid-template-columns: minmax(12rem, 2fr) repeat(3, minmax(7rem, 1fr)); }
+    .supplement-facts div:first-child { grid-column: auto; }
+  }
+</style>
