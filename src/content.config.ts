@@ -170,6 +170,11 @@ const follow = defineCollection({
     slug: slugSchema,
     handle: z.string().min(1),
     url: z.string().url(),
+    profiles: z.array(z.object({
+      handle: z.string().min(1),
+      url: z.string().url(),
+      platform: z.string().default("x")
+    })).min(1).optional(),
     group: z.enum(["longevity", "training", "sleep", "nutrition", "general"]),
     summary: z.string().min(1),
     order: z.number().int().nonnegative(),

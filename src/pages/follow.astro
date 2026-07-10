@@ -13,7 +13,7 @@ const groupLabels = { longevity: "Longevity", training: "Training", sleep: "Slee
 const hasPracticeEntries = follows.some((entry) => entry.data.practiceOnly);
 const glanceItems = follows.slice(0, 4).map((entry) => ({
   label: entry.data.platform,
-  title: entry.data.handle,
+  title: (entry.data.profiles ?? [{ handle: entry.data.handle }]).map((profile) => profile.handle).join(" · "),
   detail: entry.data.name,
   href: `#${entry.data.slug}`
 }));

@@ -6,6 +6,7 @@ summary: Magnesium glycinate is part of my current supplement list.
 order: 10
 featured: true
 homepageOrder: 10
+affiliate: amazon-magnesium-glycinate
 sources:
   - type: x
     url: https://x.com/hubermanlab/status/2059108059436421383
