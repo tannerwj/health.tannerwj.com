@@ -1,0 +1,56 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import PracticeDataNotice from "../site/PracticeDataNotice.astro";
+
+interface Props {
+  entry?: CollectionEntry<"exercise">;
+}
+
+const { entry } = Astro.props;
+const rendered = entry ? await render(entry) : undefined;
+---
+
+<section class="current-split" aria-labelledby="current-split-heading">
+  <header>
+    <p class="section-label">Training / current split</p>
+    <h2 id="current-split-heading">{entry ? entry.data.name : "Current split"}</h2>
+    {entry ? <p>{entry.data.summary}</p> : <p>No current split has been published yet.</p>}
+  </header>
+
+  {entry ? (
+    <div class="split-body">
+      {entry.data.schedule || entry.data.frequency ? (
+        <dl class="split-facts">
+          {entry.data.schedule ? <div><dt>Schedule</dt><dd>{entry.data.schedule}</dd></div> : null}
+          {entry.data.frequency ? <div><dt>Cadence</dt><dd>{entry.data.frequency}</dd></div> : null}
+          {entry.data.duration ? <div><dt>Duration</dt><dd>{entry.data.duration}</dd></div> : null}
+          {entry.data.spec ? <div><dt>Notes</dt><dd>{entry.data.spec}</dd></div> : null}
+        </dl>
+      ) : null}
+
+      {entry.data.practiceOnly ? (
+        <PracticeDataNotice label="Practice split">{entry.data.practiceNote ?? "Practice data — replace before launch."}</PracticeDataNotice>
+      ) : null}
+
+      {rendered ? <div class="markdown"><rendered.Content /></div> : null}
+    </div>
+  ) : null}
+</section>
+
+<style>
+  .current-split { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding-block: 1.5rem 1.8rem; }
+  header { max-width: 46rem; }
+  h2 { margin: .6rem 0 .8rem; font-family: var(--serif); font-size: clamp(2.8rem, 10vw, 6.7rem); font-weight: 400; line-height: .84; letter-spacing: -.035em; }
+  header > p:last-child { margin: 0; color: var(--muted); font-size: 1.02rem; line-height: 1.48; }
+  .split-body { margin-top: 1.5rem; }
+  .split-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem 1rem; margin: 0 0 1.35rem; }
+  .split-facts div { border-top: 1px solid var(--line); padding-top: .55rem; }
+  dt { color: var(--muted); font-size: .63rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+  dd { margin: .25rem 0 0; font-size: .9rem; line-height: 1.4; }
+  .markdown { overflow-x: auto; max-width: 100%; color: var(--ink); line-height: 1.55; }
+  .markdown :global(table) { width: 100%; min-width: 30rem; border-collapse: collapse; font-size: .92rem; }
+  .markdown :global(th), .markdown :global(td) { border-bottom: 1px solid var(--line); padding: .75rem .65rem; text-align: left; vertical-align: top; }
+  .markdown :global(th) { color: var(--muted); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; }
+  .markdown :global(ul), .markdown :global(ol) { padding-left: 1.25rem; }
+  @media (min-width: 48rem) { .current-split { padding-block: 2.25rem 2.5rem; } .split-facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+</style>

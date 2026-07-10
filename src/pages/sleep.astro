@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import SleepEntry from "../components/sleep/SleepEntry.astro";
+import SleepGroup from "../components/sleep/SleepGroup.astro";
+import PageIntro from "../components/site/PageIntro.astro";
+import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { sortByOrder } from "../lib/content";
+
+const entries = sortByOrder(await getCollection("sleep"));
+const featured = entries.find((entry) => entry.data.featured) ?? entries.find((entry) => entry.data.status === "current");
+const remaining = entries.filter((entry) => entry.id !== featured?.id);
+const kinds = [
+  ["Routine", "The repeatable cues that set the night in motion.", "routine"],
+  ["Environment", "The room conditions I try to make automatic.", "environment"],
+  ["Gear", "Useful objects, kept in proportion to the routine around them.", "gear"],
+  ["Tracking", "What I look at to notice patterns rather than chase a score.", "tracking"]
+] as const;
+const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
+---
+
+<BaseLayout
+  title="Sleep"
+  description="Tanner Johnson's sleep routine, environment, gear, and tracking notes."
+  canonicalPath="/sleep"
+>
+  <main id="main-content" class="page">
+    <PageIntro eyebrow="02 / Sleep" title="Sleep" description="A coherent nighttime setup: routines, room, gear, and the signals worth noticing." />
+
+    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are for layout testing and are not Tanner's routine.</PracticeDataNotice></div> : null}
+
+    <div class="wrap sleep-layout">
+      {featured ? (
+        <section class="featured-section" aria-labelledby="featured-sleep-heading">
+          <div class="featured-intro">
+            <p class="section-label">Tonight / featured now</p>
+            <h2 id="featured-sleep-heading">The current anchor</h2>
+            <p>The piece that is most clearly in the active sleep setup.</p>
+          </div>
+          <SleepEntry entry={featured} featured />
+        </section>
+      ) : (
+        <p class="empty-state">No sleep entries are published yet.</p>
+      )}
+
+      {kinds.map(([title, description, kind]) => (
+        <SleepGroup title={title} description={description} entries={remaining.filter((entry) => entry.data.kind === kind)} />
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .sleep-layout { padding-bottom: 2.5rem; }
+  .featured-section { display: grid; gap: 1.25rem; margin-top: 2.2rem; padding-block: 1.3rem 2.25rem; }
+  .featured-intro { max-width: 33rem; }
+  .featured-intro h2 { margin: .6rem 0; font-family: var(--serif); font-size: clamp(2.3rem, 8vw, 4.8rem); font-weight: 400; line-height: .92; }
+  .featured-intro p:last-child, .empty-state { margin: 0; color: var(--muted); line-height: 1.45; }
+  @media (min-width: 60rem) { .featured-section { grid-template-columns: minmax(13rem, .55fr) minmax(0, 1fr); align-items: end; gap: 3rem; } }
+</style>

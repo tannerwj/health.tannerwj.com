@@ -1,0 +1,67 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import PracticeDataNotice from "../site/PracticeDataNotice.astro";
+import affiliates from "../../data/affiliates.json";
+
+interface Props {
+  entry: CollectionEntry<"sleep">;
+  featured?: boolean;
+}
+
+const { entry, featured = false } = Astro.props;
+const { Content } = await render(entry);
+const affiliateRegistry = affiliates as Record<string, { vendor: string; url: string }>;
+const affiliate = entry.data.affiliate ? affiliateRegistry[entry.data.affiliate] : undefined;
+const hasNotes = Boolean(entry.body?.trim());
+---
+
+<article class:list={["sleep-entry", { featured }]}>
+  <header>
+    <div class="entry-kicker">
+      <span>{featured ? "Featured now" : entry.data.kind}</span>
+      {entry.data.status ? <span>{entry.data.status.replaceAll("-", " ")}</span> : null}
+    </div>
+    <h3>{entry.data.name}</h3>
+  </header>
+  <p class="summary">{entry.data.summary}</p>
+
+  {entry.data.timing || entry.data.frequency || entry.data.spec ? (
+    <dl class="sleep-facts">
+      {entry.data.timing ? <div><dt>When</dt><dd>{entry.data.timing}</dd></div> : null}
+      {entry.data.frequency ? <div><dt>Cadence</dt><dd>{entry.data.frequency}</dd></div> : null}
+      {entry.data.spec ? <div><dt>Setup</dt><dd>{entry.data.spec}</dd></div> : null}
+    </dl>
+  ) : null}
+
+  {affiliate ? <a class="product-link" href={affiliate.url} rel="noreferrer">Product context: {affiliate.vendor} <span aria-hidden="true">↗</span></a> : null}
+
+  {entry.data.practiceOnly ? (
+    <PracticeDataNotice label="Practice entry">{entry.data.practiceNote ?? "Practice data — replace before launch."}</PracticeDataNotice>
+  ) : null}
+
+  {hasNotes ? (
+    <details>
+      <summary>More context</summary>
+      <div class="markdown"><Content /></div>
+    </details>
+  ) : null}
+</article>
+
+<style>
+  .sleep-entry { border-top: 1px solid var(--line); padding-block: 1.2rem 1.45rem; }
+  .sleep-entry.featured { border: 1px solid var(--ink); padding: 1.3rem; background: rgba(227, 229, 220, .48); }
+  .entry-kicker { display: flex; flex-wrap: wrap; gap: .5rem 1rem; color: var(--clay-deep); font-size: .65rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+  .entry-kicker span + span { color: var(--muted); }
+  h3 { margin: .5rem 0 0; font-family: var(--serif); font-size: clamp(1.7rem, 6vw, 3rem); font-weight: 400; line-height: .96; }
+  .summary { max-width: 44rem; margin: .85rem 0 0; line-height: 1.5; }
+  .sleep-facts { display: flex; flex-wrap: wrap; gap: .7rem 1.6rem; margin: 1rem 0 0; }
+  .sleep-facts div { min-width: 7rem; }
+  dt { color: var(--muted); font-size: .62rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+  dd { margin: .25rem 0 0; font-size: .88rem; line-height: 1.35; }
+  .product-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: .5rem; color: var(--sage-deep); font-size: .87rem; font-weight: 800; text-underline-offset: .2em; }
+  details { margin-top: .55rem; border-top: 1px solid var(--line); }
+  summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--sage-deep); font-size: .86rem; font-weight: 800; }
+  .markdown { max-width: 42rem; padding-bottom: .3rem; line-height: 1.6; }
+  .markdown :global(p) { margin: .3rem 0 .8rem; }
+  @media (min-width: 48rem) { .sleep-entry.featured { padding: 2rem; } }
+</style>
