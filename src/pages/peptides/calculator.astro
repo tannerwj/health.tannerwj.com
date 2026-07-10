@@ -1,0 +1,40 @@
+---
+import PageIntro from "../../components/site/PageIntro.astro";
+import PracticeDataNotice from "../../components/site/PracticeDataNotice.astro";
+import PeptideCalculator from "../../components/calculator/PeptideCalculator.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { calculatorRoute } from "../../data/site";
+---
+
+<BaseLayout
+  title="Peptide calculator"
+  description="A focused peptide reconstitution calculator for single compounds and named blend vials, using curated catalog defaults and local-only preferences."
+  canonicalPath={calculatorRoute.href}
+>
+  <main id="main-content" class="page calculator-page">
+    <PageIntro
+      eyebrow="Peptides / calculator"
+      title="Peptide calculator."
+      description="Vial math, BAC water, U-100 units, and named blends in one local tool. The catalog supplies the defaults; the browser remembers what you use on this device."
+    />
+
+    <div class="wrap calculator-notice">
+      <PracticeDataNotice label="Reference note">
+        Reference ranges are catalog context, not universal recommendations. The math is deterministic; decisions stay between you and a qualified clinician.
+      </PracticeDataNotice>
+    </div>
+
+    <PeptideCalculator />
+  </main>
+</BaseLayout>
+
+<style>
+  .calculator-page {
+    padding-bottom: 4rem;
+  }
+
+  .calculator-notice {
+    margin-top: -1rem;
+    margin-bottom: 1.5rem;
+  }
+</style>
