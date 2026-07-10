@@ -34,14 +34,14 @@ const blendWaterPresets = buildWaterPresetOptions(initialBlend.commonWaterMl);
     </fieldset>
 
     <div class="storage-panel" aria-live="polite">
-      <p data-save-status>Using catalog defaults. Changes save locally after the page loads.</p>
+      <p data-save-status>Using catalog defaults. Changes save in this browser.</p>
       <button type="button" data-reset-defaults>Reset to catalog defaults</button>
     </div>
   </div>
 
   <noscript>
     <p class="noscript-note">
-      This calculator needs JavaScript for live math and local-only preferences. The rest of the site still works without it.
+      This calculator uses JavaScript for calculations and saved choices.
     </p>
   </noscript>
 
@@ -49,7 +49,7 @@ const blendWaterPresets = buildWaterPresetOptions(initialBlend.commonWaterMl);
     <div class="input-column">
       <section class="calculator-panel" data-mode-section="single" aria-labelledby="single-heading">
         <div class="panel-heading">
-          <p class="section-label">Single / curated catalog</p>
+          <p class="section-label">Single / catalog</p>
           <h2 id="single-heading">Compound vial</h2>
         </div>
 
@@ -175,7 +175,7 @@ const blendWaterPresets = buildWaterPresetOptions(initialBlend.commonWaterMl);
 
       <section class="calculator-panel" data-mode-section="blend" aria-labelledby="blend-heading" hidden>
         <div class="panel-heading">
-          <p class="section-label">Blend / named variants</p>
+          <p class="section-label">Blend / named blends</p>
           <h2 id="blend-heading">Shared draw</h2>
         </div>
 
@@ -351,8 +351,8 @@ const blendWaterPresets = buildWaterPresetOptions(initialBlend.commonWaterMl);
 
     <section class="results-panel" aria-labelledby="result-heading">
       <div class="result-heading">
-        <p class="section-label">Result / live math</p>
-        <h2 id="result-heading">Pull to here.</h2>
+        <p class="section-label">Result / calculated draw</p>
+        <h2 id="result-heading">Calculated draw.</h2>
       </div>
 
       <div class="result-state" data-result-state aria-live="polite">

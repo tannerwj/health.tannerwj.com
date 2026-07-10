@@ -12,15 +12,15 @@ const groupLabels = { longevity: "Longevity", training: "Training", sleep: "Slee
 const hasPracticeEntries = follows.some((entry) => entry.data.practiceOnly);
 ---
 
-<BaseLayout title="Follow" description="A curated personal reference of people and accounts Tanner Johnson follows for useful health thinking." canonicalPath="/follow">
+<BaseLayout title="Follow" description="People and accounts Tanner Johnson follows for health and training." canonicalPath="/follow">
   <main id="main-content" class="page follow-page">
-    <PageIntro eyebrow="06 / Reference shelf" title="Follow" description="People and accounts that keep my thinking useful. This is a small personal reference, not a social feed." />
+    <PageIntro eyebrow="06 / Follow" title="Follow" description="People and accounts I follow for health and training." />
 
-    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>These accounts are practice placeholders for the page structure, not Tanner’s actual follow list.</PracticeDataNotice></div> : null}
+    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice accounts below are not Tanner’s actual follow list.</PracticeDataNotice></div> : null}
 
     <section class="follow-directory" aria-labelledby="directory-heading">
       <div class="wrap">
-        <div class="directory-heading"><p class="section-label">Curated reference</p><h2 id="directory-heading">Who I keep close to the work.</h2><p>A short reason accompanies every profile so this stays useful when you return to it later.</p></div>
+        <div class="directory-heading"><p class="section-label">Personal reference</p><h2 id="directory-heading">People I follow.</h2><p>A short note on why I follow each account.</p></div>
         {followGroups.size ? Array.from(followGroups).map(([group, entries]) => <section class="group" aria-labelledby={`${group}-heading`}><h3 id={`${group}-heading`}>{groupLabels[group]}</h3>{entries.map((entry) => <FollowEntry entry={entry} />)}</section>) : <p class="empty-state">No follow references have been published yet.</p>}
       </div>
     </section>

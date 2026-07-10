@@ -29,7 +29,7 @@ const rendered = entry ? await render(entry) : undefined;
       ) : null}
 
       {entry.data.practiceOnly ? (
-        <PracticeDataNotice label="Practice split">{entry.data.practiceNote ?? "Practice data — replace before launch."}</PracticeDataNotice>
+        <PracticeDataNotice label="Practice split">{entry.data.practiceNote ?? "Practice data only — not Tanner's training plan."}</PracticeDataNotice>
       ) : null}
 
       {rendered ? <div class="markdown"><rendered.Content /></div> : null}

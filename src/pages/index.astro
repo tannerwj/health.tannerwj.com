@@ -16,16 +16,15 @@ const featuredCount = featured.length;
   <main id="main-content" class="page">
     <section class="hero wrap" aria-labelledby="page-title">
       <div class="hero-copy">
-        <p class="eyebrow">Home / six working sections</p>
+        <p class="eyebrow">Home / six topics</p>
         <h1 id="page-title">What I <em>do</em> for health, right now.</h1>
         <p class="hero-intro">
-          A public, current-state index of Tanner Johnson's health practices — what he takes,
-          does, uses, tests, and follows.
+          Notes on what I take, do, use, test, and follow.
         </p>
         <dl class="hero-facts" aria-label="Homepage facts">
           <div class="fact-item">
             <dt>Sections</dt>
-            <dd>06 editorial peers</dd>
+            <dd>06 topics</dd>
           </div>
           <div class="fact-item">
             <dt>Doing now</dt>
@@ -37,9 +36,9 @@ const featuredCount = featured.length;
           </div>
         </dl>
       </div>
-      <nav class="hero-navigator" aria-label="Explore the health field guide">
+      <nav class="hero-navigator" aria-label="Health topics">
         <div class="navigator-heading">
-          <span class="meta-label">Explore the index</span>
+          <span class="meta-label">Topics</span>
           <span class="navigator-count">06 + tool</span>
         </div>
         <div class="navigator-links">
@@ -53,17 +52,16 @@ const featuredCount = featured.length;
 
     <div class="wrap">
       <PracticeDataNotice>
-        The entries below are representative placeholders for implementation and are not Tanner's real stack.
+        Practice placeholders below are not Tanner's real stack.
       </PracticeDataNotice>
     </div>
 
     <section class="calculator-gateway wrap" aria-labelledby="gateway-heading">
       <div class="gateway-copy">
-        <p class="section-label">Calculator / quick entry</p>
-        <h2 id="gateway-heading">Vial math stays separate.</h2>
+        <p class="section-label">Calculator</p>
+        <h2 id="gateway-heading">Peptide calculator.</h2>
         <p>
-          Reconstitution and named-blend math get an early door here, while the rest of
-          the page stays editorial.
+          Vial math for reconstitution and named blends.
         </p>
       </div>
       <div class="gateway-side">
@@ -88,7 +86,7 @@ const featuredCount = featured.length;
             <p class="section-label">01 / The short list</p>
             <h2 id="now-heading">Doing now</h2>
           </div>
-          <p>Selected signals from the collections — the things worth seeing first, not a dump of everything.</p>
+          <p>Current entries from across my notes.</p>
         </div>
 
         <div class="feature-list">
@@ -102,7 +100,7 @@ const featuredCount = featured.length;
                   <h3><a href={section.href}>{entry.data.name}</a></h3>
                   <p class="feature-summary">{entry.data.summary}</p>
                 </div>
-                {entry.data.practiceOnly ? <span class="practice-note">Practice entry — replace before launch</span> : null}
+                {entry.data.practiceOnly ? <span class="practice-note">Practice entry — not Tanner's current practice</span> : null}
               </article>
             );
           })}
@@ -113,11 +111,11 @@ const featuredCount = featured.length;
     <section class="index-section" aria-labelledby="index-heading">
       <div class="wrap">
         <div class="index-heading">
-          <h2 id="index-heading">The index</h2>
-          <p>Six peers, one point of view. Pick a section when you want the full working notes behind the headline.</p>
+          <h2 id="index-heading">Notes by topic</h2>
+          <p>Supplements, sleep, exercise, protocols, peptides, and people I follow.</p>
         </div>
 
-        <nav class="index-grid" aria-label="Health field guide sections">
+        <nav class="index-grid" aria-label="Health topics">
           {editorialSections.map((section) => {
             return (
               <a class="index-item" href={section.href}>
@@ -136,9 +134,9 @@ const featuredCount = featured.length;
     <section class="calculator-section" aria-labelledby="calculator-heading">
       <div class="wrap calculator-wrap">
         <div>
-          <p class="section-label">A separate instrument / {calculatorCount} calculator records</p>
+          <p class="section-label">Calculator / {calculatorCount} records</p>
           <h2 id="calculator-heading">Peptide calculator.</h2>
-          <p>A focused place for vial math, reconstitution, and named blends. Useful when you need it; out of the way when you don't.</p>
+          <p>Vial math for reconstitution and named blends.</p>
           <a class="calculator-link" href={calculatorRoute.href}>
             Open the calculator <span aria-hidden="true">↗</span>
           </a>

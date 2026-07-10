@@ -14,22 +14,22 @@ const kindLabels = { testing: "Testing", therapy: "Therapy", nutrition: "Nutriti
 const hasPracticeEntries = protocols.some((entry) => entry.data.practiceOnly);
 ---
 
-<BaseLayout title="Protocols" description="High-level testing cadence and other health practices in Tanner Johnson's public field guide." canonicalPath="/protocols">
+<BaseLayout title="Protocols" description="High-level testing cadence and other health practices Tanner Johnson tracks." canonicalPath="/protocols">
   <main id="main-content" class="page protocols-page">
-    <PageIntro eyebrow="04 / Practices in view" title="Protocols" description="High-level testing cadence and the practices I keep in view. This is a reference page, not a personal results log." />
+    <PageIntro eyebrow="04 / Protocols" title="Protocols" description="Testing cadence and other practices I track. This is not a log of my results." />
 
-    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice entries are visible here only to test the page structure; they are not Tanner’s protocols.</PracticeDataNotice></div> : null}
+    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice entries below are not Tanner’s protocols.</PracticeDataNotice></div> : null}
 
     <section class="current-section" aria-labelledby="current-heading">
       <div class="wrap">
-        <div class="section-heading"><div><p class="section-label">Current focus</p><h2 id="current-heading">What is active now.</h2></div><p>Cadence and context over a ledger of values.</p></div>
+        <div class="section-heading"><div><p class="section-label">Current</p><h2 id="current-heading">What I am doing now.</h2></div><p>How often I test and the context I keep with it.</p></div>
         {current.length ? <div class="current-list">{current.map((entry) => <ProtocolEntry entry={entry} featured />)}</div> : <p class="empty-state">No current protocol entries have been published yet.</p>}
       </div>
     </section>
 
     <section class="future-section" aria-labelledby="future-heading">
       <div class="wrap">
-        <div class="future-heading"><p class="section-label">Other kinds</p><h2 id="future-heading">A place for the rest of the practice.</h2><p>Therapy, nutrition, recovery, and future testing notes sit beside the current view when they are ready to be shared.</p></div>
+        <div class="future-heading"><p class="section-label">Other practices</p><h2 id="future-heading">Therapy, nutrition, recovery, and testing.</h2><p>Notes on practices I have tried, am considering, or plan to track.</p></div>
         {futureByKind.size ? Array.from(futureByKind).map(([kind, entries]) => <section class="kind-group" aria-labelledby={`${kind}-heading`}><h3 id={`${kind}-heading`}>{kindLabels[kind]}</h3>{entries.map((entry) => <ProtocolEntry entry={entry} />)}</section>) : <p class="empty-state">Other protocol kinds will appear here as they are added.</p>}
       </div>
     </section>

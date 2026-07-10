@@ -2,7 +2,7 @@ export const SITE_ORIGIN = "https://health.tannerwj.com";
 export const SITE_NAME = "health.tannerwj.com";
 
 export const SITE_DESCRIPTION =
-  "A public field guide to Tanner Johnson's current health practices: what he takes, does, uses, tests, and follows.";
+  "Notes on Tanner Johnson's current health practices: what he takes, does, uses, tests, and follows.";
 
 export const FOOTER_DISCLOSURE =
   "This is what I do, not a protocol for you. Some links are affiliate links — they don't change what I recommend.";
@@ -12,21 +12,21 @@ export const editorialSections = [
     key: "supplements",
     number: "01",
     title: "Supplements",
-    description: "The daily and weekly stack, with timing, reason, and product context.",
+    description: "My daily and weekly stack, with timing, reason, and product context.",
     href: "/supplements"
   },
   {
     key: "sleep",
     number: "02",
     title: "Sleep",
-    description: "Routine, room, gear, and the small decisions that make nights work.",
+    description: "My routine, room, gear, and sleep tracking.",
     href: "/sleep"
   },
   {
     key: "exercise",
     number: "03",
     title: "Exercise",
-    description: "The current split, training principles, sessions, and recovery pieces.",
+    description: "My current split, training principles, sessions, and recovery.",
     href: "/exercise"
   },
   {
@@ -40,14 +40,14 @@ export const editorialSections = [
     key: "peptides",
     number: "05",
     title: "Peptides",
-    description: "Editorial notes on what I have tried, use, or am still considering.",
+    description: "Notes on what I use, have tried, or am considering.",
     href: "/peptides"
   },
   {
     key: "follow",
     number: "06",
     title: "Follow",
-    description: "People and accounts that keep the thinking interesting and useful.",
+    description: "People and accounts I follow for health and training.",
     href: "/follow"
   }
 ] as const;
@@ -55,7 +55,7 @@ export const editorialSections = [
 export const calculatorRoute = {
   key: "calculator",
   title: "Calculator",
-  description: "A focused place for vial math, reconstitution, and named blends.",
+  description: "Vial math for reconstitution and named blends.",
   href: "/peptides/calculator"
 } as const;
 
