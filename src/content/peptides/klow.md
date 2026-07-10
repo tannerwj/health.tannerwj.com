@@ -17,7 +17,6 @@ commonContext: Sold as a broad repair-oriented blend with skin and inflammatory-
 evidenceNote: Evidence is extrapolated from four separate components. The named combination has no established human evidence, and several components remain primarily preclinical research topics.
 mechanism: Pairs copper-peptide signaling with three research peptides discussed around tissue and inflammatory pathways; the combination itself has not been clinically characterized.
 order: 20
-featured: true
 sources:
   - type: pep-pedia
     author: Local Pep-Pedia-derived dataset

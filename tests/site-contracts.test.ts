@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { calculatorRoute, editorialSections, siteRoutes } from "../src/data/site";
+import {
+  calculatorRoute,
+  editorialSections,
+  isHomepageCurrentEntry,
+  siteRoutes
+} from "../src/data/site";
 import { GET as getRobots } from "../src/pages/robots.txt";
 import { GET as getSitemap } from "../src/pages/sitemap.xml";
 
@@ -29,6 +34,30 @@ test("site section metadata preserves accepted homepage order and routes", () =>
 
 test("shared route list covers home, peer sections, and calculator", () => {
   assert.deepEqual(siteRoutes, ["/", ...expectedEditorialRoutes, "/peptides/calculator"]);
+});
+
+test("homepage current entries exclude peptide source notes", () => {
+  assert.equal(
+    isHomepageCurrentEntry("peptides", {
+      featured: true,
+      status: "current",
+      entryType: "source-note"
+    }),
+    false
+  );
+  assert.equal(
+    isHomepageCurrentEntry("peptides", {
+      featured: true,
+      status: "current",
+      entryType: "personal"
+    }),
+    true
+  );
+  assert.equal(isHomepageCurrentEntry("supplements", { featured: true, status: "current" }), true);
+  assert.equal(
+    isHomepageCurrentEntry("supplements", { featured: true, status: "previously-tried" }),
+    false
+  );
 });
 
 test("static SEO endpoints expose canonical production routes", async () => {

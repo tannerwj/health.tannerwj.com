@@ -28,32 +28,16 @@ const categoryLabels = {
   "longevity-sleep": "Longevity and sleep research"
 } as const;
 const singleGroups = groupBy(singleEntries, (entry) => entry.data.category);
-const glanceItems = [
-  {
-    label: "Named blends",
-    title: "GLOW, KLOW, Wolverine",
-    detail: "Plus Healing, CJC/Ipamorelin, and the vendor-specific Beauty label.",
-    href: "#blends-heading"
-  },
-  {
-    label: "Repair references",
-    title: "BPC-157 + GHK-Cu",
-    detail: "Common discussion points with very different evidence profiles.",
-    href: "#bpc-157"
-  },
-  {
-    label: "Metabolic pipeline",
-    title: "Retatrutide",
-    detail: "A human-trial triple-agonist entry alongside semaglutide and tirzepatide.",
-    href: "#retatrutide"
-  },
-  {
-    label: `${catalogLinkedEntries} of ${referenceEntries.length} entries`,
-    title: "Calculator linked",
-    detail: "Vial math is available for every entry except the nonstandard Beauty blend.",
-    href: calculatorRoute.href
-  }
-];
+const glanceSlugs = ["glow", "klow", "wolverine", "bpc-157", "ghk-cu", "retatrutide"];
+const glanceItems = glanceSlugs.flatMap((slug) => {
+  const entry = referenceEntries.find((candidate) => candidate.data.slug === slug);
+  return entry ? [{
+    label: entry.data.form === "blend" ? "Named blend" : "Single",
+    title: entry.data.name,
+    detail: entry.data.atAGlance,
+    href: `#${entry.data.slug}`
+  }] : [];
+});
 ---
 
 <BaseLayout title="Peptides" description="A sourced reference library for peptide singles and named blends." canonicalPath="/peptides">

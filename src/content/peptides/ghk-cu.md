@@ -14,7 +14,6 @@ commonContext: Topical skin-care and hair products; also appears in injectable c
 evidenceNote: Human cosmetic research is largely topical. It should not be used as direct support for injectable dosing, systemic outcomes, or proprietary blends.
 mechanism: Binds copper and is studied in extracellular-matrix, wound-remodeling, and gene-signaling contexts.
 order: 130
-featured: true
 sources:
   - type: pep-pedia
     author: Local Pep-Pedia-derived dataset

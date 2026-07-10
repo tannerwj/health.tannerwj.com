@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from "astro:content";
-import { editorialSections } from "../data/site";
+import { editorialSections, isHomepageCurrentEntry } from "../data/site";
 
 type OrderedEntry = {
   data: {
@@ -84,7 +84,7 @@ export function getFeaturedEditorialEntries(sections: OrderedEditorialSections) 
 
   for (const section of sections) {
     for (const entry of section.entries) {
-      if (entry.data.featured) {
+      if (isHomepageCurrentEntry(section.section.key, entry.data)) {
         featuredEntries.push({
           section: section.section,
           entry

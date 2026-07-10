@@ -15,7 +15,6 @@ commonContext: Commonly marketed for injury recovery and connective-tissue suppo
 evidenceNote: The blend has no established clinical evidence. BPC-157 lacks randomized human trials, while TB-500 product identity should not be conflated with full-length thymosin beta-4 research.
 mechanism: Combines two compounds discussed around angiogenesis, cell migration, and tissue-repair signaling; a clinically validated combined mechanism is not established.
 order: 30
-featured: true
 sources:
   - type: pep-pedia
     author: Local Pep-Pedia-derived dataset

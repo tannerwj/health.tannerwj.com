@@ -16,7 +16,6 @@ commonContext: Marketed as a combined tissue, skin, and recovery blend.
 evidenceNote: The named blend has no established clinical evidence as a formulation. Evidence must be assessed component by component, and the injectable claims are generally weaker than topical GHK-Cu research.
 mechanism: Combines copper-peptide signaling with two research compounds discussed around tissue-repair pathways; a combined mechanism has not been established clinically.
 order: 10
-featured: true
 sources:
   - type: pep-pedia
     author: Local Pep-Pedia-derived dataset

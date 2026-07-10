@@ -12,7 +12,6 @@ commonContext: Obesity, metabolic disease, and next-generation incretin research
 evidenceNote: Human trials support meaningful metabolic effects, while longer-term outcomes and broader claims remain under study. Attia’s geroprotection/cognition comments and Patrick’s genetics context are emerging hypotheses, not settled indications.
 mechanism: Combines GIP and GLP-1 receptor agonism with glucagon-receptor activity to affect appetite, glucose regulation, and energy expenditure.
 order: 340
-featured: true
 sources:
   - type: pep-pedia
     author: Local Pep-Pedia-derived dataset

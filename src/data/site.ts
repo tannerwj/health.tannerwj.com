@@ -40,7 +40,7 @@ export const editorialSections = [
     key: "peptides",
     number: "05",
     title: "Peptides",
-    description: "Notes on what I use, have tried, or am considering.",
+    description: "A sourced reference library for peptide singles and named blends.",
     href: "/peptides"
   },
   {
@@ -68,3 +68,14 @@ export const siteRoutes = [
 export type EditorialSection = (typeof editorialSections)[number];
 export type EditorialSectionKey = EditorialSection["key"];
 export type SiteRoute = (typeof siteRoutes)[number];
+
+export function isHomepageCurrentEntry(
+  sectionKey: EditorialSectionKey,
+  data: { featured?: boolean; status?: string; entryType?: string }
+): boolean {
+  return (
+    data.featured === true &&
+    data.status === "current" &&
+    (sectionKey !== "peptides" || data.entryType === "personal")
+  );
+}

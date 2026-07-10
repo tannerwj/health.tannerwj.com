@@ -21,7 +21,7 @@ const {
 } = Astro.props;
 ---
 
-<section class="at-a-glance wrap" aria-labelledby="at-a-glance-heading">
+<section class:list={["at-a-glance", "wrap", { "six-up": items.length === 6 }]} aria-labelledby="at-a-glance-heading">
   <header>
     <div>
       <p class="section-label">Quick view</p>
@@ -82,5 +82,8 @@ const {
     ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     li { border-top: 0; border-right: 1px solid var(--line); border-bottom: 0; }
     li:last-child { border-right: 0; }
+    .six-up ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .six-up li:nth-child(3n) { border-right: 0; }
+    .six-up li:nth-child(n + 4) { border-top: 1px solid var(--line); }
   }
 </style>
