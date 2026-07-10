@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync, readdirSync } from "node:fs";
 import test from "node:test";
 import { blends } from "../src/data/calculator/blends";
 import { compounds } from "../src/data/calculator/compounds";
@@ -8,8 +9,19 @@ import {
   getBlendDefaults,
   getDefaultAnchorForBlend,
   getSingleCompoundDefaults,
-  quantityKey
+  moveCatalogSearchIndex,
+  normalizeCatalogSearch,
+  quantityKey,
+  searchBlendCatalog,
+  searchCompoundCatalog
 } from "../src/lib/calculator/catalog-ui";
+import {
+  calculatorHrefForCatalogEntry,
+  calculatorSelectionHref,
+  parseCalculatorSelection,
+  replaceCalculatorSelectionInUrl,
+  resolveCalculatorSelection
+} from "../src/lib/calculator/catalog-query";
 import {
   CALCULATOR_PREFERENCES_VERSION,
   parseCalculatorPreferences,
@@ -150,4 +162,125 @@ test("blend UI defaults use catalog presets when present and direct draw when ab
   const glowAnchorFallback = getDefaultAnchorForBlend(glow, compoundsById);
   assert.equal(glowAnchorFallback.anchorCompoundId, "ghk-cu");
   assert.deepEqual(glowAnchorFallback.target, { value: 1, unit: "mg" });
+});
+
+test("calculator query contract parses valid catalog selections and rejects invalid pairs", () => {
+  assert.deepEqual(parseCalculatorSelection("?mode=single&id=bpc-157", catalogContext), {
+    mode: "single",
+    id: "bpc-157"
+  });
+  assert.deepEqual(parseCalculatorSelection("mode=blend&id=glow-57-27-12-54-10-45", catalogContext), {
+    mode: "blend",
+    id: "glow-57-27-12-54-10-45"
+  });
+  assert.equal(parseCalculatorSelection("?mode=blend&id=bpc-157", catalogContext), null);
+  assert.equal(parseCalculatorSelection("?mode=single&id=missing", catalogContext), null);
+  assert.equal(parseCalculatorSelection("?mode=single", catalogContext), null);
+  assert.equal(parseCalculatorSelection("?mode=other&id=bpc-157", catalogContext), null);
+});
+
+test("URL selection wins over saved state while invalid links fall through safely", () => {
+  const saved: CalculatorPreferences = {
+    version: CALCULATOR_PREFERENCES_VERSION,
+    mode: "blend",
+    compoundId: "semaglutide",
+    blendId: "wolverine-5-5",
+    favoriteCompoundIds: ["bpc-157"],
+    single: { waterVolumeMl: 3 }
+  };
+
+  assert.deepEqual(
+    resolveCalculatorSelection("?mode=single&id=bpc-157", saved, catalogContext),
+    { selection: { mode: "single", id: "bpc-157" }, source: "url" }
+  );
+  assert.deepEqual(
+    resolveCalculatorSelection("?mode=single&id=missing", saved, catalogContext),
+    { selection: { mode: "blend", id: "wolverine-5-5" }, source: "saved" }
+  );
+  assert.deepEqual(resolveCalculatorSelection("", null, catalogContext), {
+    selection: { mode: "single", id: compounds[0].id },
+    source: "default"
+  });
+  assert.deepEqual(saved.favoriteCompoundIds, ["bpc-157"]);
+  assert.deepEqual(saved.single, { waterVolumeMl: 3 });
+});
+
+test("calculator selection URLs serialize only public catalog identity", () => {
+  assert.equal(
+    calculatorSelectionHref({ mode: "blend", id: "wolverine-5-5" }),
+    "/peptides/calculator?mode=blend&id=wolverine-5-5"
+  );
+  assert.equal(
+    replaceCalculatorSelectionInUrl(
+      "https://health.tannerwj.com/peptides/calculator?ref=library#result",
+      { mode: "single", id: "bpc-157" }
+    ),
+    "/peptides/calculator?ref=library&mode=single&id=bpc-157#result"
+  );
+});
+
+test("every calculator-linked peptide record maps to a validated mode and id deep link", () => {
+  const peptideDirectory = new URL("../src/content/peptides/", import.meta.url);
+  const linkedRecords = readdirSync(peptideDirectory)
+    .filter((file) => file.endsWith(".md"))
+    .flatMap((file) => {
+      const source = readFileSync(new URL(file, peptideDirectory), "utf8");
+      const form = source.match(/^form:\s*(single|blend)$/m)?.[1] as "single" | "blend" | undefined;
+      const id = source.match(/^calculatorId:\s*([^\s]+)$/m)?.[1];
+      return form && id ? [{ file, form, id }] : [];
+    });
+
+  assert(linkedRecords.length > 0);
+  for (const record of linkedRecords) {
+    assert.equal(
+      calculatorHrefForCatalogEntry(record.form, record.id, catalogContext),
+      `/peptides/calculator?mode=${record.form}&id=${record.id}`,
+      record.file
+    );
+  }
+  assert.equal(calculatorHrefForCatalogEntry("single", "missing", catalogContext), null);
+});
+
+test("catalog search normalizes punctuation and ranks exact, prefix, and substring matches", () => {
+  assert.equal(normalizeCatalogSearch("  CJC-1295 / Ipamorelin  "), "cjc 1295 ipamorelin");
+
+  const aliasMatches = searchCompoundCatalog(compounds, "Body Protection Compound");
+  assert.equal(aliasMatches[0]?.id, "bpc-157");
+  assert.equal(aliasMatches[0]?.score, 1);
+
+  const exactMatches = searchCompoundCatalog(compounds, "bpc-157");
+  assert.equal(exactMatches[0]?.id, "bpc-157");
+  assert.equal(exactMatches[0]?.score, 0);
+
+  const substringMatches = searchCompoundCatalog(compounds, "tection");
+  assert.equal(substringMatches[0]?.id, "bpc-157");
+  assert.equal(substringMatches[0]?.score, 3);
+});
+
+test("catalog search keyboard index wraps, respects the visible limit, and handles empty results", () => {
+  assert.equal(moveCatalogSearchIndex(-1, 18, 1, 10), 0);
+  assert.equal(moveCatalogSearchIndex(0, 18, -1, 10), 9);
+  assert.equal(moveCatalogSearchIndex(9, 18, 1, 10), 0);
+  assert.equal(moveCatalogSearchIndex(4, 5, 1, 10), 0);
+  assert.equal(moveCatalogSearchIndex(0, 0, 1, 10), -1);
+});
+
+test("blend search includes variants, component names and aliases, with visible favorite priority", () => {
+  const componentMatches = searchBlendCatalog(blends, "Copper Tripeptide", compoundsById);
+  assert.deepEqual(
+    componentMatches.map((match) => match.id),
+    ["glow-57-27-12-54-10-45", "klow-15-5-5-2"]
+  );
+
+  const variantMatches = searchBlendCatalog(blends, "57.27", compoundsById);
+  assert.equal(variantMatches[0]?.id, "glow-57-27-12-54-10-45");
+
+  const favoritesFirst = searchBlendCatalog(
+    blends,
+    "",
+    compoundsById,
+    new Set(["wolverine-5-5"])
+  );
+  assert.equal(favoritesFirst[0]?.id, "wolverine-5-5");
+  assert.equal(favoritesFirst[0]?.favorite, true);
 });
