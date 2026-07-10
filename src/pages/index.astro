@@ -10,6 +10,7 @@ const sections = await getOrderedEditorialSections();
 const featured = getFeaturedEditorialEntries(sections);
 const calculatorCount = compounds.length + blends.length;
 const featuredCount = featured.length;
+const hasPracticeEntries = sections.some(({ entries }) => entries.some((entry) => entry.data.practiceOnly));
 ---
 
 <BaseLayout>
@@ -50,11 +51,13 @@ const featuredCount = featured.length;
       </nav>
     </section>
 
-    <div class="wrap">
-      <PracticeDataNotice>
-        Practice placeholders below are not Tanner's real stack.
-      </PracticeDataNotice>
-    </div>
+    {hasPracticeEntries ? (
+      <div class="wrap">
+        <PracticeDataNotice>
+          Practice placeholders below are not Tanner's real stack.
+        </PracticeDataNotice>
+      </div>
+    ) : null}
 
     <section class="calculator-gateway wrap" aria-labelledby="gateway-heading">
       <div class="gateway-copy">

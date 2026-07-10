@@ -62,6 +62,31 @@ test("valid relationships pass", () => {
   assert.equal(validateIntegrity(validInput).length, 0);
 });
 
+test("empty peptides are valid while relationship failures still fail", () => {
+  const emptyPeptides = validateIntegrity({
+    ...validInput,
+    requiredCollections: ["supplements", "peptides"]
+  });
+
+  assert.deepEqual(emptyPeptides, []);
+
+  const brokenRelationship = validateIntegrity({
+    ...validInput,
+    requiredCollections: ["supplements", "peptides"],
+    editorialEntries: [
+      {
+        ...validInput.editorialEntries[0],
+        data: {
+          ...validInput.editorialEntries[0].data,
+          affiliate: "missing-affiliate"
+        }
+      }
+    ]
+  });
+
+  assert(brokenRelationship.some((issue) => issue.code === "unknown-affiliate"));
+});
+
 test("unknown affiliate keys fail validation", () => {
   const issues = validateIntegrity({
     ...validInput,

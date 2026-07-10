@@ -20,6 +20,7 @@ const hasNotes = Boolean(entry.body?.trim());
     <div class="entry-kicker">
       <span>{featured ? "Featured now" : entry.data.kind}</span>
       {entry.data.status ? <span>{entry.data.status.replaceAll("-", " ")}</span> : null}
+      {entry.data.sources?.length && !entry.data.status ? <span>Source note</span> : null}
     </div>
     <h3>{entry.data.name}</h3>
   </header>

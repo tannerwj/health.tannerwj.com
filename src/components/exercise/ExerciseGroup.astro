@@ -30,7 +30,13 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
           <li>
             <article>
               <div class="entry-heading">
-                <div><p class="entry-kind">{entry.data.kind}</p><h3>{entry.data.name}</h3></div>
+                <div>
+                  <div class="entry-meta">
+                    <p class="entry-kind">{entry.data.kind}</p>
+                    {entry.data.sources?.length && !entry.data.status ? <p class="source-note">Source note</p> : null}
+                  </div>
+                  <h3>{entry.data.name}</h3>
+                </div>
                 {entry.data.status ? <span class="status">{entry.data.status.replaceAll("-", " ")}</span> : null}
               </div>
               <p class="summary">{entry.data.summary}</p>
@@ -62,7 +68,8 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
   ol { margin: 0; padding: 0; list-style: none; }
   article { border-top: 1px solid var(--line); padding-block: 1.25rem 1.45rem; }
   .entry-heading { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
-  .entry-kind, .status { margin: 0; color: var(--clay-deep); font-size: .64rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+  .entry-meta { display: flex; flex-wrap: wrap; gap: .4rem .8rem; }
+  .entry-kind, .source-note, .status { margin: 0; color: var(--clay-deep); font-size: .64rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
   .status { color: var(--muted); text-align: right; }
   h3 { margin-top: .3rem; font-size: clamp(1.55rem, 6vw, 2.5rem); line-height: .98; }
   .summary { max-width: 46rem; margin: .8rem 0 0; line-height: 1.5; }

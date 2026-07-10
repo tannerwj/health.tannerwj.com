@@ -19,21 +19,21 @@ export const editorialSections = [
     key: "sleep",
     number: "02",
     title: "Sleep",
-    description: "My routine, room, gear, and sleep tracking.",
+    description: "Sleep routine, room, gear, and source notes.",
     href: "/sleep"
   },
   {
     key: "exercise",
     number: "03",
     title: "Exercise",
-    description: "My current split, training principles, sessions, and recovery.",
+    description: "Training principles, sessions, equipment, recovery, and ideas.",
     href: "/exercise"
   },
   {
     key: "protocols",
     number: "04",
     title: "Protocols",
-    description: "High-level testing, therapies, nutrition, and recovery practices.",
+    description: "High-level testing, therapy, nutrition, and recovery notes.",
     href: "/protocols"
   },
   {

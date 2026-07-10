@@ -11,10 +11,10 @@ const entries = sortByOrder(await getCollection("sleep"));
 const featured = entries.find((entry) => entry.data.featured) ?? entries.find((entry) => entry.data.status === "current");
 const remaining = entries.filter((entry) => entry.id !== featured?.id);
 const kinds = [
-  ["Routine", "The habits I use to wind down.", "routine"],
-  ["Environment", "The room setup I use at night.", "environment"],
-  ["Gear", "Gear I use for sleep.", "gear"],
-  ["Tracking", "What I track to spot patterns.", "tracking"]
+  ["Routine", "Sleep routines and timing ideas.", "routine"],
+  ["Environment", "Sleep environment notes and context.", "environment"],
+  ["Gear", "Sleep gear, including what I use now.", "gear"],
+  ["Tracking", "Sleep tracking notes and patterns.", "tracking"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
 ---

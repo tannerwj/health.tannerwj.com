@@ -18,7 +18,10 @@ const details = [
 
 <article class:list={["protocol-entry", { "protocol-entry--featured": featured }]}>
   <header>
-    <p class="kind">{entry.data.kind}</p>
+    <div class="entry-meta">
+      <p class="kind">{entry.data.kind}</p>
+      {entry.data.sources?.length && !entry.data.status ? <p class="source-note">Source note</p> : null}
+    </div>
     <div class="title-row">
       <h3>{entry.data.name}</h3>
       {entry.data.status ? <span class="status">{entry.data.status}</span> : null}
@@ -61,7 +64,8 @@ const details = [
 <style>
   .protocol-entry { border-top: 1px solid var(--line-strong); padding: 1.25rem 0 1.5rem; }
   .protocol-entry--featured { border-top-color: var(--ink); }
-  .kind, .status, .markers > p { margin: 0; color: var(--clay-deep); font-size: .65rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+  .entry-meta { display: flex; flex-wrap: wrap; gap: .4rem .8rem; }
+  .kind, .source-note, .status, .markers > p { margin: 0; color: var(--clay-deep); font-size: .65rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
   .title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-top: .5rem; }
   h3 { margin: 0; font-family: var(--serif); font-size: clamp(1.9rem, 5vw, 3.3rem); font-weight: 400; letter-spacing: 0; line-height: .9; }
   .status { color: var(--sage-deep); white-space: nowrap; }

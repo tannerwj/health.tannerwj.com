@@ -33,7 +33,7 @@ const catalogLinkedEntries = peptides.filter((entry) => entry.data.calculatorId 
     <section class="notes-section" aria-labelledby="notes-heading">
       <div class="wrap">
         <div class="notes-heading"><p class="section-label">Personal notes</p><h2 id="notes-heading">Peptide notes.</h2></div>
-        {peptides.length ? Array.from(statusGroups).map(([status, entries]) => <section class="status-group" aria-labelledby={`${status}-heading`}><div class="status-heading"><h3 id={`${status}-heading`}>{statusLabels[status]}</h3><span>{String(entries.length).padStart(2, "0")}</span></div>{entries.map((entry) => <PeptideEntry entry={entry} calculatorAvailable={Boolean(entry.data.calculatorId && catalogIds.has(entry.data.calculatorId))} />)}</section>) : <p class="empty-state">No peptide notes have been published yet.</p>}
+        {peptides.length ? Array.from(statusGroups).map(([status, entries]) => <section class="status-group" aria-labelledby={`${status}-heading`}><div class="status-heading"><h3 id={`${status}-heading`}>{statusLabels[status]}</h3><span>{String(entries.length).padStart(2, "0")}</span></div>{entries.map((entry) => <PeptideEntry entry={entry} calculatorAvailable={Boolean(entry.data.calculatorId && catalogIds.has(entry.data.calculatorId))} />)}</section>) : <p class="empty-state">No peptide notes have been published yet. <a href={calculatorRoute.href}>Use the calculator for catalog math.</a></p>}
       </div>
     </section>
   </main>

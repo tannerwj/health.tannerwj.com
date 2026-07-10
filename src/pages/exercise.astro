@@ -13,22 +13,22 @@ const currentSplit = entries.find((entry) => entry.data.kind === "split" && entr
   ?? entries.find((entry) => entry.data.kind === "split");
 const supportingEntries = entries.filter((entry) => entry.id !== currentSplit?.id);
 const groups = [
-  ["Sessions", "Recurring training sessions and conditioning work.", "session"],
-  ["Principles", "Guidelines I use as details change.", "principle"],
-  ["Equipment", "Equipment I use for training.", "equipment"],
-  ["Recovery", "Recovery practices I use to support training.", "recovery"],
-  ["Other splits", "Other weekly splits I have used or am considering.", "split"]
+  ["Sessions", "Recurring training sessions and conditioning ideas.", "session"],
+  ["Principles", "Training principles and ideas for organizing work.", "principle"],
+  ["Equipment", "Equipment notes for training.", "equipment"],
+  ["Recovery", "Recovery notes related to training.", "recovery"],
+  ["Other splits", "Other weekly split ideas and frameworks.", "split"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
 ---
 
 <BaseLayout
   title="Exercise"
-  description="Tanner Johnson's current training split, principles, sessions, equipment, and recovery notes."
+  description="Training notes on principles, sessions, equipment, recovery, and programming ideas."
   canonicalPath="/exercise"
 >
   <main id="main-content" class="page">
-    <PageIntro eyebrow="03 / Exercise" title="Exercise" description="My current split, plus training, equipment, and recovery notes." />
+    <PageIntro eyebrow="03 / Exercise" title="Exercise" description="Training notes, sessions, equipment, recovery, and programming ideas." />
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's training plan.</PracticeDataNotice></div> : null}
     <div class="wrap exercise-layout">
       <CurrentSplit entry={currentSplit} />

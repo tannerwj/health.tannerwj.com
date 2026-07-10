@@ -21,6 +21,8 @@ const requiredCollections = [
   "follow"
 ] as const;
 
+const collectionsAllowedToBeEmpty = new Set(["peptides"]);
+
 const sourceTypes = new Set([
   "x",
   "pep-pedia",
@@ -70,7 +72,10 @@ export function validateIntegrity(input: ValidationInput): ValidationIssue[] {
   const calculatorIds = new Set<string>();
 
   for (const collection of required) {
-    if (!input.editorialEntries.some((entry) => entry.collection === collection)) {
+    if (
+      !collectionsAllowedToBeEmpty.has(collection) &&
+      !input.editorialEntries.some((entry) => entry.collection === collection)
+    ) {
       issues.push({
         code: "missing-collection-entry",
         message: `Collection "${collection}" must have at least one entry.`
