@@ -36,7 +36,7 @@ const hasNotes = Boolean(entry.body?.trim());
   {affiliate ? <a class="product-link" href={affiliate.url} rel="noreferrer">Product context: {affiliate.vendor} <span aria-hidden="true">↗</span></a> : null}
 
   {entry.data.practiceOnly ? (
-    <PracticeDataNotice label="Practice entry">{entry.data.practiceNote ?? "Practice data — replace before launch."}</PracticeDataNotice>
+    <PracticeDataNotice label="Practice entry">{entry.data.practiceNote ?? "Practice data only — not Tanner's sleep routine."}</PracticeDataNotice>
   ) : null}
 
   {hasNotes ? (

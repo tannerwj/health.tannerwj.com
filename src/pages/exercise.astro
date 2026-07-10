@@ -14,10 +14,10 @@ const currentSplit = entries.find((entry) => entry.data.kind === "split" && entr
 const supportingEntries = entries.filter((entry) => entry.id !== currentSplit?.id);
 const groups = [
   ["Sessions", "Recurring training sessions and conditioning work.", "session"],
-  ["Principles", "Rules that help the split stay coherent as details change.", "principle"],
-  ["Equipment", "Equipment that earns a place in the training environment.", "equipment"],
-  ["Recovery", "Recovery practices that specifically support the work.", "recovery"],
-  ["Other splits", "Additional weekly structures when they are worth keeping alongside the current one.", "split"]
+  ["Principles", "Guidelines I use as details change.", "principle"],
+  ["Equipment", "Equipment I use for training.", "equipment"],
+  ["Recovery", "Recovery practices I use to support training.", "recovery"],
+  ["Other splits", "Other weekly splits I have used or am considering.", "split"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
 ---
@@ -28,8 +28,8 @@ const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
   canonicalPath="/exercise"
 >
   <main id="main-content" class="page">
-    <PageIntro eyebrow="03 / Exercise" title="Exercise" description="The active split gets the page’s weight; everything else exists to support it." />
-    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are for layout testing and are not Tanner's training plan.</PracticeDataNotice></div> : null}
+    <PageIntro eyebrow="03 / Exercise" title="Exercise" description="My current split, plus training, equipment, and recovery notes." />
+    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's training plan.</PracticeDataNotice></div> : null}
     <div class="wrap exercise-layout">
       <CurrentSplit entry={currentSplit} />
       {groups.map(([title, description, kind]) => <ExerciseGroup title={title} description={description} entries={supportingEntries.filter((entry) => entry.data.kind === kind)} />)}

@@ -11,10 +11,10 @@ const entries = sortByOrder(await getCollection("sleep"));
 const featured = entries.find((entry) => entry.data.featured) ?? entries.find((entry) => entry.data.status === "current");
 const remaining = entries.filter((entry) => entry.id !== featured?.id);
 const kinds = [
-  ["Routine", "The repeatable cues that set the night in motion.", "routine"],
-  ["Environment", "The room conditions I try to make automatic.", "environment"],
-  ["Gear", "Useful objects, kept in proportion to the routine around them.", "gear"],
-  ["Tracking", "What I look at to notice patterns rather than chase a score.", "tracking"]
+  ["Routine", "The habits I use to wind down.", "routine"],
+  ["Environment", "The room setup I use at night.", "environment"],
+  ["Gear", "Gear I use for sleep.", "gear"],
+  ["Tracking", "What I track to spot patterns.", "tracking"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
 ---
@@ -25,17 +25,17 @@ const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
   canonicalPath="/sleep"
 >
   <main id="main-content" class="page">
-    <PageIntro eyebrow="02 / Sleep" title="Sleep" description="A coherent nighttime setup: routines, room, gear, and the signals worth noticing." />
+    <PageIntro eyebrow="02 / Sleep" title="Sleep" description="My routine, room, gear, and sleep tracking." />
 
-    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are for layout testing and are not Tanner's routine.</PracticeDataNotice></div> : null}
+    {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's routine.</PracticeDataNotice></div> : null}
 
     <div class="wrap sleep-layout">
       {featured ? (
         <section class="featured-section" aria-labelledby="featured-sleep-heading">
           <div class="featured-intro">
-            <p class="section-label">Tonight / featured now</p>
-            <h2 id="featured-sleep-heading">The current anchor</h2>
-            <p>The piece that is most clearly in the active sleep setup.</p>
+            <p class="section-label">Sleep / current</p>
+            <h2 id="featured-sleep-heading">Current routine</h2>
+            <p>The sleep item I am using now.</p>
           </div>
           <SleepEntry entry={featured} featured />
         </section>
