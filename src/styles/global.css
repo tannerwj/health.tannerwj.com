@@ -55,6 +55,17 @@ button:focus-visible {
   outline-offset: 4px;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .skip-link {
   position: fixed;
   z-index: 10;
@@ -158,6 +169,44 @@ button:focus-visible {
 
 .page {
   overflow-x: clip;
+}
+
+.share-strip {
+  border-top: 1px solid var(--line-strong);
+  background: var(--paper-deep);
+}
+
+.share-strip-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.25rem;
+}
+
+.share-strip p {
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: .95rem;
+}
+
+.share-strip a {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 44px;
+  color: var(--sage-deep);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.share-strip a:hover,
+.share-strip a:focus-visible {
+  color: var(--clay-deep);
 }
 
 .wrap {

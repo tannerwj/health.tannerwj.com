@@ -5,6 +5,7 @@ import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { routeMetadata } from "../data/site";
 import { groupBy, sortByOrder } from "../lib/content";
 
 const follows = sortByOrder(await getCollection("follow"));
@@ -19,7 +20,7 @@ const glanceItems = follows.slice(0, 4).map((entry) => ({
 }));
 ---
 
-<BaseLayout title="Follow" description="People and accounts Tanner Johnson follows for health and training." canonicalPath="/follow">
+<BaseLayout title={routeMetadata["/follow"].title} description={routeMetadata["/follow"].description} canonicalPath="/follow">
   <main id="main-content" class="page follow-page">
     <PageIntro eyebrow="06 / Follow" title="Follow" description="People and accounts I follow for health and training." />
     <AtAGlance items={glanceItems} description={`${follows.length} people in the directory. Handles and primary profiles come first.`} />

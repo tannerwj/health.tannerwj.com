@@ -5,6 +5,7 @@ import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { routeMetadata } from "../data/site";
 import { groupBy, sortByOrder } from "../lib/content";
 
 const protocols = sortByOrder(await getCollection("protocols"));
@@ -21,7 +22,7 @@ const glanceItems = Array.from(futureByKind).slice(0, 4).map(([kind, entries]) =
 }));
 ---
 
-<BaseLayout title="Protocols" description="High-level testing, therapy, nutrition, and recovery notes." canonicalPath="/protocols">
+<BaseLayout title={routeMetadata["/protocols"].title} description={routeMetadata["/protocols"].description} canonicalPath="/protocols">
   <main id="main-content" class="page protocols-page">
     <PageIntro eyebrow="04 / Protocols" title="Protocols" description="Testing, therapy, nutrition, and recovery notes. This is not a log of my results." />
     <AtAGlance items={glanceItems} description="Source-led notes grouped by the question they help answer." />

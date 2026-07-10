@@ -1,8 +1,23 @@
 ---
 import "../styles/global.css";
+import ShareOnX from "../components/site/ShareOnX.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
 import SiteHeader from "../components/site/SiteHeader.astro";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_ORIGIN } from "../data/site";
+import {
+  SITE_ALTERNATE_NAME,
+  SITE_AUTHOR,
+  SITE_DESCRIPTION,
+  SITE_LANGUAGE,
+  SITE_LOCALE,
+  SITE_NAME,
+  SITE_ORIGIN,
+  SOCIAL_IMAGE_ALT,
+  SOCIAL_IMAGE_HEIGHT,
+  SOCIAL_IMAGE_PATH,
+  SOCIAL_IMAGE_WIDTH,
+  X_HANDLE,
+  routeMetadata
+} from "../data/site";
 
 interface Props {
   title?: string;
@@ -14,8 +29,8 @@ interface Props {
 }
 
 const {
-  title = SITE_NAME,
-  description = SITE_DESCRIPTION,
+  title = routeMetadata["/"].title,
+  description = routeMetadata["/"].description,
   ogTitle,
   ogDescription,
   canonicalPath = "/",
@@ -24,13 +39,41 @@ const {
 
 const siteUrl = Astro.site ?? new URL(SITE_ORIGIN);
 const canonicalUrl = new URL(canonicalPath, siteUrl).toString();
-const pageTitle = title === SITE_NAME ? title : `${title} — ${SITE_NAME}`;
+const pageTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
 const socialTitle = ogTitle ?? pageTitle;
 const socialDescription = ogDescription ?? description;
+const socialImageUrl = new URL(SOCIAL_IMAGE_PATH, siteUrl).toString();
+const shareIntent = new URL("https://x.com/intent/tweet");
+shareIntent.searchParams.set("text", pageTitle);
+shareIntent.searchParams.set("url", canonicalUrl);
+const personId = new URL("/#person", siteUrl).toString();
+const websiteId = new URL("/#website", siteUrl).toString();
+const structuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      url: new URL("/", siteUrl).toString(),
+      name: SITE_NAME,
+      alternateName: SITE_ALTERNATE_NAME,
+      description: SITE_DESCRIPTION,
+      inLanguage: SITE_LANGUAGE,
+      publisher: { "@id": personId }
+    },
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: SITE_AUTHOR,
+      url: new URL("/", siteUrl).toString(),
+      sameAs: [`https://x.com/${X_HANDLE.slice(1)}`]
+    }
+  ]
+}).replaceAll("<", "\\u003c");
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={SITE_LANGUAGE} prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -43,15 +86,29 @@ const socialDescription = ogDescription ?? description;
     <meta property="og:title" content={socialTitle} />
     <meta property="og:description" content={socialDescription} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:locale" content={SITE_LOCALE} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:secure_url" content={socialImageUrl} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content={String(SOCIAL_IMAGE_WIDTH)} />
+    <meta property="og:image:height" content={String(SOCIAL_IMAGE_HEIGHT)} />
+    <meta property="og:image:alt" content={SOCIAL_IMAGE_ALT} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={X_HANDLE} />
+    <meta name="twitter:creator" content={X_HANDLE} />
     <meta name="twitter:title" content={socialTitle} />
     <meta name="twitter:description" content={socialDescription} />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={SOCIAL_IMAGE_ALT} />
+    <script type="application/ld+json" set:html={structuredData} />
     <title>{pageTitle}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <SiteHeader />
     <slot />
+    <ShareOnX href={shareIntent.toString()} />
     <SiteFooter />
   </body>
 </html>

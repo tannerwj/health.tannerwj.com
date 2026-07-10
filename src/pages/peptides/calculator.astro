@@ -3,12 +3,12 @@ import PageIntro from "../../components/site/PageIntro.astro";
 import PracticeDataNotice from "../../components/site/PracticeDataNotice.astro";
 import PeptideCalculator from "../../components/calculator/PeptideCalculator.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { calculatorRoute } from "../../data/site";
+import { calculatorRoute, routeMetadata } from "../../data/site";
 ---
 
 <BaseLayout
-  title="Peptide calculator"
-  description="Peptide reconstitution calculator for single compounds and named blend vials, with catalog defaults and browser-only saved choices."
+  title={routeMetadata["/peptides/calculator"].title}
+  description={routeMetadata["/peptides/calculator"].description}
   canonicalPath={calculatorRoute.href}
 >
   <main id="main-content" class="page calculator-page">

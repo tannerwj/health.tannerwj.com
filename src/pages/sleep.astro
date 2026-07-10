@@ -5,6 +5,7 @@ import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { routeMetadata } from "../data/site";
 import { sortByOrder } from "../lib/content";
 
 const entries = sortByOrder(await getCollection("sleep"));
@@ -27,8 +28,8 @@ const glanceItems = current.map((entry) => ({
 ---
 
 <BaseLayout
-  title="Sleep"
-  description="Tanner Johnson's sleep routine, environment, gear, and tracking notes."
+  title={routeMetadata["/sleep"].title}
+  description={routeMetadata["/sleep"].description}
   canonicalPath="/sleep"
 >
   <main id="main-content" class="page">
