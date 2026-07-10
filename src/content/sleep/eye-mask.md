@@ -5,6 +5,7 @@ kind: gear
 status: current
 summary: I use an eye mask as part of my sleep setup.
 order: 30
+affiliate: amazon-eye-mask
 ---
 
 I use an eye mask as part of my sleep setup.

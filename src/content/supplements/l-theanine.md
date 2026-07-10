@@ -4,6 +4,7 @@ slug: l-theanine
 status: current
 summary: L-theanine is part of my current supplement list.
 order: 20
+affiliate: amazon-l-theanine
 sources:
   - type: x
     url: https://x.com/hubermanlab/status/2059108059436421383

@@ -5,6 +5,7 @@ kind: gear
 status: current
 summary: I use mouth tape. I don't treat it as a fix for suspected sleep apnea or blocked nasal breathing.
 order: 10
+affiliate: amazon-mouth-tape
 sources:
   - type: website
     url: https://www.linkedin.com/posts/andrew-huberman_mouth-breathing-during-sleep-is-not-just-activity-6962803089330372608-i3f7

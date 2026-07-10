@@ -6,6 +6,7 @@ summary: Creatine monohydrate is part of my current supplement list.
 order: 30
 featured: true
 homepageOrder: 30
+affiliate: amazon-creatine-monohydrate
 sources:
   - type: x
     url: https://x.com/foundmyfitness/status/2034006796579573821
