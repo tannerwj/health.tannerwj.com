@@ -12,6 +12,8 @@ sources:
     accessed: "2026-07-10"
 ---
 
-Ben Patrick's [ATG Online Coaching](https://www.atgonlinecoaching.com/) frames knee, ankle, hip, and lower-leg work as progressive capacity training.
+Ben Patrick's [ATG Online Coaching](https://www.atgonlinecoaching.com/) frames knee, ankle, hip, and lower-leg work as progressive capacity training, including gradual exposure to knee-forward positions.
 
-The durable idea is to build range and strength gradually while keeping the work pain-free and specific to the person.
+The durable idea is to build range and strength gradually while keeping the work pain-free and specific to the person. A supported or shortened range can be a useful starting point before a person earns more range, control, or load.
+
+This is coach framing, not a promise to prevent or cure an injury. Progress should stay scalable, controlled, and appropriate to the person's current tolerance.

@@ -19,4 +19,6 @@ sources:
 
 Ben Patrick's [ATG knee ability writing](https://kneesovertoesguy.substack.com/p/atg-knee-ability-series-2-of-10) and [ATG site](https://www.atgonlinecoaching.com/) include backward walking and sled-style work as scalable lower-leg and knee-capacity training.
 
-The conservative takeaway is capacity work that can be progressed gradually and kept pain-free, not an injury-proofing or rehab claim.
+The conservative takeaway is capacity work that can be progressed gradually and kept pain-free, not a guarantee against injury or a clinical-treatment claim. Progression can change one variable at a time: assistance, terrain, range, duration, load, or speed.
+
+The right step is the one that preserves steady foot contact, control, and repeatable effort. A lighter or shorter version still counts when it keeps the session within the person's current tolerance.
