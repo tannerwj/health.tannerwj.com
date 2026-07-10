@@ -4,6 +4,11 @@ slug: apigenin
 summary: "Huberman Lab presents apigenin as an optional sleep-stack item, with uncertain individual response and product context."
 order: 40
 sources:
+  - type: x
+    url: https://x.com/hubermanlab/status/2059108059436421383
+    author: Andrew Huberman
+    note: Personal observation that apigenin alone may suit some people.
+    accessed: "2026-07-10"
   - type: website
     url: https://www.hubermanlab.com/newsletter/toolkit-for-sleep
     author: Andrew Huberman
@@ -19,3 +24,5 @@ sources:
 Huberman's [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep) includes apigenin as an optional sleep-stack item and suggests trying optional supplements one at a time, or none.
 
 The toolkit names Momentous and includes a discount link, making its product context explicit. Individual response and the evidence base remain limited, so the source is not a settled conclusion.
+
+In a later [personal supplement post](https://x.com/hubermanlab/status/2059108059436421383), Huberman notes that apigenin alone may suit some people. That supports trying fewer variables at once; it does not establish a universal effect.

@@ -1,12 +1,12 @@
 ---
 name: Rhonda Patrick
 slug: rhonda-patrick
-handle: foundmyfitness.com
-url: https://www.foundmyfitness.com/
+handle: "@foundmyfitness"
+url: https://x.com/foundmyfitness
 group: longevity
 summary: I read FoundMyFitness for research-heavy context on longevity, micronutrients, sleep, heat exposure, and metabolism.
 order: 30
-platform: website
+platform: x
 ---
 
 Useful when a subject benefits from source links and a deeper research trail.
