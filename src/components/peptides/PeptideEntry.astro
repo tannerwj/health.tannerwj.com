@@ -1,5 +1,8 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
+import { blends } from "../../data/calculator/blends";
+import { compounds } from "../../data/calculator/compounds";
+import { calculatorHrefForCatalogEntry } from "../../lib/calculator/catalog-query";
 
 interface Props {
   entry: CollectionEntry<"peptides">;
@@ -17,6 +20,16 @@ const evidenceLabels = {
 } as const;
 const statusLabels = { current: "Current", considering: "Considering", "previously-tried": "Previously tried" } as const;
 const composition = entry.data.components?.join(" · ") ?? entry.data.aliases?.join(" · ") ?? "Single compound";
+const calculatorHref = calculatorAvailable
+  ? calculatorHrefForCatalogEntry(
+      entry.data.form === "blend" ? "blend" : "single",
+      entry.data.calculatorId,
+      {
+        compoundIds: compounds.map((compound) => compound.id),
+        blendIds: blends.map((blend) => blend.id)
+      }
+    )
+  : null;
 ---
 
 <article class="peptide-entry" id={entry.data.slug}>
@@ -53,7 +66,7 @@ const composition = entry.data.components?.join(" · ") ?? entry.data.aliases?.j
     </div>
   </details>
 
-  {calculatorAvailable ? <a class="calculator-link" href="/peptides/calculator">Open in calculator <span aria-hidden="true">↗</span></a> : null}
+  {calculatorHref ? <a class="calculator-link" href={calculatorHref}>Open in calculator <span aria-hidden="true">↗</span></a> : null}
 </article>
 
 <style>

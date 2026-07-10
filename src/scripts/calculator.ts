@@ -28,8 +28,16 @@ import {
   getCompoundDisplayName,
   getDefaultAnchorForBlend,
   getSingleCompoundDefaults,
-  isKnownSyringeCapacity
+  isKnownSyringeCapacity,
+  moveCatalogSearchIndex,
+  searchBlendCatalog,
+  searchCompoundCatalog,
+  type CatalogSearchResult
 } from "../lib/calculator/catalog-ui";
+import {
+  replaceCalculatorSelectionInUrl,
+  resolveCalculatorSelection
+} from "../lib/calculator/catalog-query";
 import {
   CALCULATOR_PREFERENCES_STORAGE_KEY,
   parseCalculatorPreferences,
@@ -47,6 +55,8 @@ const compoundsById = Object.fromEntries(compounds.map((compound) => [compound.i
 const blendsById = Object.fromEntries(blends.map((blend) => [blend.id, blend])) as Record<string, BlendVariant>;
 const compoundIds = compounds.map((compound) => compound.id);
 const blendIds = blends.map((blend) => blend.id);
+const catalogContext = { compoundIds, blendIds };
+const SEARCH_RESULT_LIMIT = 10;
 
 const root = document.querySelector<HTMLElement>("[data-calculator-root]");
 
@@ -64,6 +74,9 @@ function initCalculator(rootElement: HTMLElement) {
   const blendSection = requireElement<HTMLElement>(rootElement, '[data-mode-section="blend"]');
 
   const compoundSearch = requireElement<HTMLInputElement>(rootElement, "[data-compound-search]");
+  const compoundSearchResults = requireElement<HTMLElement>(rootElement, "[data-compound-search-results]");
+  const compoundSearchCount = requireElement<HTMLElement>(rootElement, "[data-compound-search-count]");
+  const compoundSearchEmpty = requireElement<HTMLElement>(rootElement, "[data-compound-search-empty]");
   const compoundSelect = requireElement<HTMLSelectElement>(rootElement, "[data-compound-select]");
   const compoundSummary = requireElement<HTMLElement>(rootElement, "[data-compound-summary]");
   const singleFavorite = requireElement<HTMLButtonElement>(rootElement, "[data-single-favorite]");
@@ -78,6 +91,9 @@ function initCalculator(rootElement: HTMLElement) {
   const singleSyringes = all<HTMLInputElement>(rootElement, "[data-single-syringe]");
 
   const blendSearch = requireElement<HTMLInputElement>(rootElement, "[data-blend-search]");
+  const blendSearchResults = requireElement<HTMLElement>(rootElement, "[data-blend-search-results]");
+  const blendSearchCount = requireElement<HTMLElement>(rootElement, "[data-blend-search-count]");
+  const blendSearchEmpty = requireElement<HTMLElement>(rootElement, "[data-blend-search-empty]");
   const blendSelect = requireElement<HTMLSelectElement>(rootElement, "[data-blend-select]");
   const blendFavorite = requireElement<HTMLButtonElement>(rootElement, "[data-blend-favorite]");
   const blendComponents = requireElement<HTMLElement>(rootElement, "[data-blend-components]");
@@ -104,20 +120,38 @@ function initCalculator(rootElement: HTMLElement) {
 
   let storageWritable = true;
   const rawPreferences = readStoredPreferences();
-  const parsedPreferences = parseCalculatorPreferences(rawPreferences, { compoundIds, blendIds });
+  const parsedPreferences = parseCalculatorPreferences(rawPreferences, catalogContext);
   const unreadablePreferences = Boolean(rawPreferences && !parsedPreferences);
+  const initialSelection = resolveCalculatorSelection(window.location.search, parsedPreferences, catalogContext);
 
-  let mode: CalculatorMode = parsedPreferences?.mode ?? "single";
-  let selectedCompoundId = parsedPreferences?.compoundId ?? compounds[0].id;
-  let selectedBlendId = parsedPreferences?.blendId ?? blends[0].id;
+  let mode: CalculatorMode = initialSelection.selection.mode;
+  let selectedCompoundId =
+    initialSelection.selection.mode === "single"
+      ? initialSelection.selection.id
+      : parsedPreferences?.compoundId ?? compounds[0].id;
+  let selectedBlendId =
+    initialSelection.selection.mode === "blend"
+      ? initialSelection.selection.id
+      : parsedPreferences?.blendId ?? blends[0].id;
   let favoriteCompoundIds = new Set(parsedPreferences?.favoriteCompoundIds ?? []);
   let favoriteBlendIds = new Set(parsedPreferences?.favoriteBlendIds ?? []);
   let singleVialMode: VialMode = parsedPreferences?.single?.vialMode ?? "catalog";
   let selectedSingleVialKey = parsedPreferences?.single?.catalogVialKey;
+  let compoundSearchOpen = false;
+  let blendSearchOpen = false;
+  let activeCompoundResult = -1;
+  let activeBlendResult = -1;
+  let compoundMatches: CatalogSearchResult[] = [];
+  let blendMatches: CatalogSearchResult[] = [];
+
+  if (initialSelection.source === "url" && mode === "single") {
+    singleVialMode = "catalog";
+    selectedSingleVialKey = undefined;
+  }
 
   hydrateMode();
-  hydrateSingleControls(parsedPreferences);
-  hydrateBlendControls(parsedPreferences);
+  hydrateSingleControls(initialSelection.source === "url" && mode === "single" ? null : parsedPreferences);
+  hydrateBlendControls(initialSelection.source === "url" && mode === "blend" ? null : parsedPreferences);
   renderSelectLabels();
   updateFavoriteButtons();
   filterCompoundOptions();
@@ -126,7 +160,9 @@ function initCalculator(rootElement: HTMLElement) {
   updateStorageStatus(
     unreadablePreferences
       ? "Using catalog defaults. Saved preferences were ignored because they could not be read."
-      : parsedPreferences
+      : initialSelection.source === "url"
+        ? "Catalog link loaded. Other saved choices remain on this device."
+        : parsedPreferences
         ? "Preferences loaded and saved on this device."
         : "Using catalog defaults. Changes save locally on this device."
   );
@@ -148,8 +184,11 @@ function initCalculator(rootElement: HTMLElement) {
     hydrateBlendControls(null);
     renderSelectLabels();
     updateFavoriteButtons();
+    filterCompoundOptions();
+    filterBlendOptions();
     renderCalculator();
     removeStoredPreferences();
+    syncSelectionUrl();
     updateStorageStatus("Catalog defaults restored. Favorites and saved local preferences were cleared.");
   });
 
@@ -157,24 +196,43 @@ function initCalculator(rootElement: HTMLElement) {
     input.addEventListener("change", () => {
       if (input.checked && (input.value === "single" || input.value === "blend")) {
         mode = input.value;
-        commitChange();
+        closeSearchResults();
+        commitChange(true);
       }
     });
   }
 
-  compoundSearch.addEventListener("input", filterCompoundOptions);
+  compoundSearch.addEventListener("focus", () => {
+    compoundSearchOpen = true;
+    activeCompoundResult = 0;
+    filterCompoundOptions();
+  });
+  compoundSearch.addEventListener("input", () => {
+    compoundSearchOpen = true;
+    activeCompoundResult = 0;
+    filterCompoundOptions();
+  });
+  compoundSearch.addEventListener("keydown", handleCompoundSearchKeydown);
+  compoundSearch.addEventListener("blur", () => {
+    compoundSearchOpen = false;
+    renderCompoundSearchResults();
+  });
+  compoundSearchResults.addEventListener("pointerdown", (event) => {
+    const option = closestSearchOption(event.target);
+    if (!option?.dataset.catalogId) {
+      return;
+    }
+    event.preventDefault();
+    chooseCompound(option.dataset.catalogId);
+  });
   compoundSelect.addEventListener("change", () => {
-    selectedCompoundId = knownCompound(compoundSelect.value).id;
-    singleVialMode = "catalog";
-    selectedSingleVialKey = undefined;
-    hydrateSingleControls(null);
-    updateFavoriteButtons();
-    commitChange();
+    chooseCompound(compoundSelect.value, false);
   });
   singleFavorite.addEventListener("click", () => {
     toggleSetValue(favoriteCompoundIds, selectedCompoundId);
     renderSelectLabels();
     updateFavoriteButtons();
+    filterCompoundOptions();
     commitChange();
   });
   singleVialPresets.addEventListener("change", (event) => {
@@ -232,17 +290,37 @@ function initCalculator(rootElement: HTMLElement) {
     input.addEventListener("change", commitChange);
   }
 
-  blendSearch.addEventListener("input", filterBlendOptions);
+  blendSearch.addEventListener("focus", () => {
+    blendSearchOpen = true;
+    activeBlendResult = 0;
+    filterBlendOptions();
+  });
+  blendSearch.addEventListener("input", () => {
+    blendSearchOpen = true;
+    activeBlendResult = 0;
+    filterBlendOptions();
+  });
+  blendSearch.addEventListener("keydown", handleBlendSearchKeydown);
+  blendSearch.addEventListener("blur", () => {
+    blendSearchOpen = false;
+    renderBlendSearchResults();
+  });
+  blendSearchResults.addEventListener("pointerdown", (event) => {
+    const option = closestSearchOption(event.target);
+    if (!option?.dataset.catalogId) {
+      return;
+    }
+    event.preventDefault();
+    chooseBlend(option.dataset.catalogId);
+  });
   blendSelect.addEventListener("change", () => {
-    selectedBlendId = knownBlend(blendSelect.value).id;
-    hydrateBlendControls(null);
-    updateFavoriteButtons();
-    commitChange();
+    chooseBlend(blendSelect.value, false);
   });
   blendFavorite.addEventListener("click", () => {
     toggleSetValue(favoriteBlendIds, selectedBlendId);
     renderSelectLabels();
     updateFavoriteButtons();
+    filterBlendOptions();
     commitChange();
   });
   blendWaterPresets.addEventListener("click", (event) => {
@@ -684,21 +762,154 @@ function initCalculator(rootElement: HTMLElement) {
   }
 
   function filterCompoundOptions() {
-    const query = compoundSearch.value.trim().toLowerCase();
+    const query = compoundSearch.value.trim();
     for (const option of all<HTMLOptionElement>(compoundSelect, "option")) {
       const compound = knownCompound(option.value);
       const haystack = [compound.name, compound.id, ...(compound.aliases ?? [])].join(" ").toLowerCase();
-      option.hidden = query.length > 0 && !haystack.includes(query);
+      option.hidden = query.length > 0 && !haystack.includes(query.toLowerCase());
     }
+    compoundMatches = searchCompoundCatalog(compounds, query, favoriteCompoundIds);
+    activeCompoundResult = clampResultIndex(activeCompoundResult, compoundMatches);
+    renderCompoundSearchResults();
   }
 
   function filterBlendOptions() {
-    const query = blendSearch.value.trim().toLowerCase();
+    const query = blendSearch.value.trim();
     for (const option of all<HTMLOptionElement>(blendSelect, "option")) {
       const blend = knownBlend(option.value);
-      const haystack = [blend.name, blend.variant, blend.id].join(" ").toLowerCase();
-      option.hidden = query.length > 0 && !haystack.includes(query);
+      const componentTerms = blend.components.flatMap((component) => {
+        const compound = compoundsById[component.compoundId];
+        return [component.compoundId, compound?.name, ...(compound?.aliases ?? [])];
+      });
+      const haystack = [blend.name, blend.variant, blend.id, ...componentTerms].join(" ").toLowerCase();
+      option.hidden = query.length > 0 && !haystack.includes(query.toLowerCase());
     }
+    blendMatches = searchBlendCatalog(blends, query, compoundsById, favoriteBlendIds);
+    activeBlendResult = clampResultIndex(activeBlendResult, blendMatches);
+    renderBlendSearchResults();
+  }
+
+  function renderCompoundSearchResults() {
+    renderCatalogSearchResults({
+      input: compoundSearch,
+      container: compoundSearchResults,
+      count: compoundSearchCount,
+      empty: compoundSearchEmpty,
+      matches: compoundMatches,
+      activeIndex: activeCompoundResult,
+      open: compoundSearchOpen,
+      query: compoundSearch.value,
+      noun: "compound"
+    });
+  }
+
+  function renderBlendSearchResults() {
+    renderCatalogSearchResults({
+      input: blendSearch,
+      container: blendSearchResults,
+      count: blendSearchCount,
+      empty: blendSearchEmpty,
+      matches: blendMatches,
+      activeIndex: activeBlendResult,
+      open: blendSearchOpen,
+      query: blendSearch.value,
+      noun: "blend"
+    });
+  }
+
+  function handleCompoundSearchKeydown(event: KeyboardEvent) {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      compoundSearchOpen = true;
+      activeCompoundResult = moveCatalogSearchIndex(
+        activeCompoundResult,
+        compoundMatches.length,
+        event.key === "ArrowDown" ? 1 : -1,
+        SEARCH_RESULT_LIMIT
+      );
+      renderCompoundSearchResults();
+      return;
+    }
+    if (event.key === "Enter" && compoundSearchOpen && compoundMatches[activeCompoundResult]) {
+      event.preventDefault();
+      chooseCompound(compoundMatches[activeCompoundResult].id);
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      compoundSearchOpen = false;
+      renderCompoundSearchResults();
+    }
+  }
+
+  function handleBlendSearchKeydown(event: KeyboardEvent) {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      blendSearchOpen = true;
+      activeBlendResult = moveCatalogSearchIndex(
+        activeBlendResult,
+        blendMatches.length,
+        event.key === "ArrowDown" ? 1 : -1,
+        SEARCH_RESULT_LIMIT
+      );
+      renderBlendSearchResults();
+      return;
+    }
+    if (event.key === "Enter" && blendSearchOpen && blendMatches[activeBlendResult]) {
+      event.preventDefault();
+      chooseBlend(blendMatches[activeBlendResult].id);
+      return;
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      blendSearchOpen = false;
+      renderBlendSearchResults();
+    }
+  }
+
+  function chooseCompound(id: string, keepFocus = true) {
+    if (!compoundsById[id]) {
+      return;
+    }
+    mode = "single";
+    selectedCompoundId = id;
+    singleVialMode = "catalog";
+    selectedSingleVialKey = undefined;
+    compoundSearch.value = "";
+    compoundSearchOpen = false;
+    activeCompoundResult = -1;
+    hydrateSingleControls(null);
+    updateFavoriteButtons();
+    filterCompoundOptions();
+    commitChange(true);
+    if (keepFocus) {
+      compoundSearch.focus({ preventScroll: true });
+    }
+  }
+
+  function chooseBlend(id: string, keepFocus = true) {
+    if (!blendsById[id]) {
+      return;
+    }
+    mode = "blend";
+    selectedBlendId = id;
+    blendSearch.value = "";
+    blendSearchOpen = false;
+    activeBlendResult = -1;
+    hydrateBlendControls(null);
+    updateFavoriteButtons();
+    filterBlendOptions();
+    commitChange(true);
+    if (keepFocus) {
+      blendSearch.focus({ preventScroll: true });
+    }
+  }
+
+  function closeSearchResults() {
+    compoundSearchOpen = false;
+    blendSearchOpen = false;
+    renderCompoundSearchResults();
+    renderBlendSearchResults();
   }
 
   function readSingleVialQuantity(): Quantity<MassUnit> {
@@ -746,9 +957,24 @@ function initCalculator(rootElement: HTMLElement) {
     return blendDrawModes.find((input) => input.checked)?.value === "direct" ? "direct" : "anchor";
   }
 
-  function commitChange() {
+  function commitChange(updateUrl = false) {
     renderCalculator();
     savePreferences();
+    if (updateUrl) {
+      syncSelectionUrl();
+    }
+  }
+
+  function syncSelectionUrl() {
+    const selection = {
+      mode,
+      id: mode === "single" ? selectedCompoundId : selectedBlendId
+    };
+    const nextUrl = replaceCalculatorSelectionInUrl(window.location.href, selection);
+    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (nextUrl !== currentUrl) {
+      window.history.replaceState(window.history.state, "", nextUrl);
+    }
   }
 
   function savePreferences() {
@@ -839,6 +1065,94 @@ function metric(label: string, value: string, detail?: string): HTMLElement {
   return item;
 }
 
+interface CatalogSearchRenderOptions {
+  input: HTMLInputElement;
+  container: HTMLElement;
+  count: HTMLElement;
+  empty: HTMLElement;
+  matches: CatalogSearchResult[];
+  activeIndex: number;
+  open: boolean;
+  query: string;
+  noun: "compound" | "blend";
+}
+
+function renderCatalogSearchResults(options: CatalogSearchRenderOptions) {
+  const visibleMatches = options.matches.slice(0, SEARCH_RESULT_LIMIT);
+  const plural = options.matches.length === 1 ? options.noun : `${options.noun}s`;
+  options.count.textContent =
+    options.matches.length > SEARCH_RESULT_LIMIT
+      ? `${options.matches.length} ${plural} · showing ${SEARCH_RESULT_LIMIT}`
+      : `${options.matches.length} ${plural}`;
+
+  options.container.replaceChildren(
+    ...visibleMatches.map((match, index) => {
+      const item = document.createElement("li");
+      item.id = `${options.input.id}-option-${match.id}`;
+      item.dataset.catalogId = match.id;
+      item.setAttribute("role", "option");
+      item.setAttribute("aria-selected", String(index === options.activeIndex));
+
+      const name = document.createElement("strong");
+      appendHighlightedText(name, match.name, options.query);
+      const detail = document.createElement("small");
+      appendHighlightedText(detail, match.detail, options.query);
+      item.append(name, detail);
+
+      if (match.favorite) {
+        const favorite = document.createElement("span");
+        favorite.className = "favorite-marker";
+        favorite.textContent = "★ Favorite";
+        item.append(favorite);
+      }
+      return item;
+    })
+  );
+
+  const hasMatches = visibleMatches.length > 0;
+  options.container.hidden = !options.open || !hasMatches;
+  options.empty.hidden = !options.open || hasMatches;
+  options.input.setAttribute("aria-expanded", String(options.open && hasMatches));
+
+  const activeOption = options.open
+    ? options.container.querySelector<HTMLElement>('[aria-selected="true"]')
+    : null;
+  if (activeOption) {
+    options.input.setAttribute("aria-activedescendant", activeOption.id);
+    requestAnimationFrame(() => activeOption.scrollIntoView({ block: "nearest" }));
+  } else {
+    options.input.removeAttribute("aria-activedescendant");
+  }
+}
+
+function appendHighlightedText(node: HTMLElement, value: string, rawQuery: string) {
+  const query = rawQuery.trim();
+  const index = query ? value.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) : -1;
+  if (index < 0) {
+    node.textContent = value;
+    return;
+  }
+  node.append(
+    document.createTextNode(value.slice(0, index)),
+    createMark(value.slice(index, index + query.length)),
+    document.createTextNode(value.slice(index + query.length))
+  );
+}
+
+function createMark(value: string): HTMLElement {
+  const mark = document.createElement("mark");
+  mark.textContent = value;
+  return mark;
+}
+
+function clampResultIndex(index: number, matches: CatalogSearchResult[]): number {
+  const visibleCount = Math.min(matches.length, SEARCH_RESULT_LIMIT);
+  if (visibleCount === 0) {
+    return -1;
+  }
+  return Math.min(Math.max(index, 0), visibleCount - 1);
+}
+
 function appendDefinition(list: HTMLDListElement, term: string, description: string) {
   const wrapper = document.createElement("div");
   const dt = document.createElement("dt");
@@ -927,6 +1241,10 @@ function all<T extends Element>(rootElement: ParentNode, selector: string): T[] 
 
 function closestButton(target: EventTarget | null): HTMLButtonElement | null {
   return target instanceof Element ? target.closest("button") : null;
+}
+
+function closestSearchOption(target: EventTarget | null): HTMLElement | null {
+  return target instanceof Element ? target.closest<HTMLElement>("[data-catalog-id]") : null;
 }
 
 function toggleSetValue(values: Set<string>, value: string) {

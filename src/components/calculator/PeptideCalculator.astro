@@ -54,15 +54,25 @@ const blendWaterPresets = buildWaterPresetOptions(initialBlend.commonWaterMl);
         </div>
 
         <div class="field-stack">
-          <div class="control-block">
+          <div class="control-block catalog-finder">
             <label for="compound-search">Search compounds</label>
             <input
               id="compound-search"
               type="search"
               autocomplete="off"
               data-compound-search
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="compound-search-results"
+              aria-expanded="false"
               placeholder="Type a name or alias"
             />
+            <div class="finder-status">
+              <span data-compound-search-count aria-live="polite"></span>
+              <span>↑↓ to move · Enter to choose</span>
+            </div>
+            <ul id="compound-search-results" class="finder-results" role="listbox" data-compound-search-results hidden></ul>
+            <p class="finder-empty" data-compound-search-empty hidden>No compounds match that search.</p>
           </div>
 
           <div class="select-row">
@@ -180,15 +190,25 @@ const blendWaterPresets = buildWaterPresetOptions(initialBlend.commonWaterMl);
         </div>
 
         <div class="field-stack">
-          <div class="control-block">
+          <div class="control-block catalog-finder">
             <label for="blend-search">Search blends</label>
             <input
               id="blend-search"
               type="search"
               autocomplete="off"
               data-blend-search
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="blend-search-results"
+              aria-expanded="false"
               placeholder="Type a blend or variant"
             />
+            <div class="finder-status">
+              <span data-blend-search-count aria-live="polite"></span>
+              <span>↑↓ to move · Enter to choose</span>
+            </div>
+            <ul id="blend-search-results" class="finder-results" role="listbox" data-blend-search-results hidden></ul>
+            <p class="finder-empty" data-blend-search-empty hidden>No blends match that search.</p>
           </div>
 
           <div class="select-row">
@@ -562,6 +582,107 @@ const blendWaterPresets = buildWaterPresetOptions(initialBlend.commonWaterMl);
   .inline-fields label {
     display: grid;
     gap: 0.35rem;
+  }
+
+  .catalog-finder {
+    position: relative;
+  }
+
+  .finder-status {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.35rem 0.8rem;
+    color: var(--muted);
+    font-size: 0.65rem;
+    font-weight: 750;
+    line-height: 1.35;
+  }
+
+  .finder-results {
+    display: grid;
+    max-height: 19rem;
+    margin: 0;
+    border: 1px solid var(--line-strong);
+    padding: 0;
+    overflow-y: auto;
+    background: var(--paper);
+    list-style: none;
+  }
+
+  .finder-results[hidden] {
+    display: none;
+  }
+
+  .finder-results :global(li) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.2rem 0.75rem;
+    min-height: 48px;
+    border-bottom: 1px solid var(--line);
+    padding: 0.65rem 0.75rem;
+    cursor: pointer;
+  }
+
+  .finder-results :global(li:last-child) {
+    border-bottom: 0;
+  }
+
+  .finder-results :global(li:hover),
+  .finder-results :global(li[aria-selected="true"]) {
+    background: var(--sage-deep);
+    color: var(--paper);
+  }
+
+  .finder-results :global(strong) {
+    min-width: 0;
+    font-size: 0.82rem;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+
+  .finder-results :global(small) {
+    grid-column: 1;
+    min-width: 0;
+    color: var(--muted);
+    font-size: 0.69rem;
+    line-height: 1.3;
+  }
+
+  .finder-results :global(li:hover small),
+  .finder-results :global(li[aria-selected="true"] small) {
+    color: rgba(248, 246, 238, 0.78);
+  }
+
+  .finder-results :global(.favorite-marker) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    color: var(--clay-deep);
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .finder-results :global(li:hover .favorite-marker),
+  .finder-results :global(li[aria-selected="true"] .favorite-marker) {
+    color: var(--paper);
+  }
+
+  .finder-results :global(mark) {
+    background: rgba(181, 144, 111, 0.35);
+    color: inherit;
+  }
+
+  .finder-empty {
+    margin: 0;
+    border-left: 3px solid var(--clay-deep);
+    padding: 0.65rem 0.75rem;
+    background: rgba(181, 144, 111, 0.12);
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
   }
 
   label,

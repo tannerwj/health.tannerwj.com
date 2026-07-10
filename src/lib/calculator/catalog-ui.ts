@@ -60,6 +60,15 @@ export interface BlendDefaults {
   mode: BlendModeDefaults;
 }
 
+export interface CatalogSearchResult {
+  id: string;
+  mode: "single" | "blend";
+  name: string;
+  detail: string;
+  favorite: boolean;
+  score: number;
+}
+
 export function quantityKey(quantity: Quantity<MassUnit>): string {
   return `${quantity.unit}:${formatDecimal(quantity.value, 6)}`;
 }
@@ -200,6 +209,114 @@ export function formatBlendComponent(
   compoundsById: Record<string, Pick<Compound, "name">>
 ): string {
   return `${formatQuantity(component.amount)} ${getCompoundDisplayName(component.compoundId, compoundsById)}`;
+}
+
+export function normalizeCatalogSearch(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+export function moveCatalogSearchIndex(
+  index: number,
+  resultCount: number,
+  direction: 1 | -1,
+  visibleLimit = resultCount
+): number {
+  const count = Math.min(Math.max(resultCount, 0), Math.max(visibleLimit, 0));
+  if (count === 0) {
+    return -1;
+  }
+  const current = index < 0 ? (direction === 1 ? -1 : 0) : Math.min(index, count - 1);
+  return (current + direction + count) % count;
+}
+
+export function searchCompoundCatalog(
+  catalog: readonly Compound[],
+  query: string,
+  favoriteIds: ReadonlySet<string> = new Set()
+): CatalogSearchResult[] {
+  return rankCatalogResults(
+    catalog.map((compound) => ({
+      id: compound.id,
+      mode: "single" as const,
+      name: compound.name,
+      detail: compound.aliases?.join(" · ") || compound.id,
+      favorite: favoriteIds.has(compound.id),
+      fields: [compound.name, compound.id, ...(compound.aliases ?? [])]
+    })),
+    query
+  );
+}
+
+export function searchBlendCatalog(
+  catalog: readonly BlendVariant[],
+  query: string,
+  compoundsById: Record<string, Compound>,
+  favoriteIds: ReadonlySet<string> = new Set()
+): CatalogSearchResult[] {
+  return rankCatalogResults(
+    catalog.map((blend) => {
+      const componentFields = blend.components.flatMap((component) => {
+        const compound = compoundsById[component.compoundId];
+        return [component.compoundId, compound?.name, ...(compound?.aliases ?? [])].filter(
+          (value): value is string => Boolean(value)
+        );
+      });
+      return {
+        id: blend.id,
+        mode: "blend" as const,
+        name: blend.name,
+        detail: blend.variant,
+        favorite: favoriteIds.has(blend.id),
+        fields: [blend.name, blend.variant, blend.id, ...componentFields]
+      };
+    }),
+    query
+  );
+}
+
+function rankCatalogResults(
+  candidates: Array<Omit<CatalogSearchResult, "score"> & { fields: string[] }>,
+  query: string
+): CatalogSearchResult[] {
+  const normalizedQuery = normalizeCatalogSearch(query);
+  const matches = candidates.flatMap((candidate) => {
+    const fields = candidate.fields.map(normalizeCatalogSearch).filter(Boolean);
+    const score = normalizedQuery ? bestCatalogMatchScore(fields, normalizedQuery) : 4;
+    if (score === null) {
+      return [];
+    }
+    const { fields: _fields, ...result } = candidate;
+    return [{ ...result, score }];
+  });
+
+  return matches.sort((left, right) =>
+    left.score - right.score ||
+    Number(right.favorite) - Number(left.favorite) ||
+    left.name.localeCompare(right.name) ||
+    left.detail.localeCompare(right.detail)
+  );
+}
+
+function bestCatalogMatchScore(fields: string[], query: string): number | null {
+  if (fields.some((field) => field === query)) {
+    return 0;
+  }
+  if (fields.some((field) => field.startsWith(query))) {
+    return 1;
+  }
+  if (fields.some((field) => field.split(" ").some((word) => word.startsWith(query)))) {
+    return 2;
+  }
+  if (fields.some((field) => field.includes(query))) {
+    return 3;
+  }
+  return null;
 }
 
 export function isKnownSyringeCapacity(value: number): value is SyringeCapacityMl {
