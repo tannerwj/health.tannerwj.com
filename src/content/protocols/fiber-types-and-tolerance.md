@@ -14,4 +14,4 @@ sources:
 
 Peter Attia's [AMA on fiber](https://peterattiamd.com/ama77/) treats fiber as several related categories with different jobs.
 
-The durable idea is to increase fiber in a way the person can tolerate, instead of assuming every source or jump in intake will feel the same.
+Fiber can support satiety and dietary adherence for some people, without every source or intake change feeling the same. The durable idea is to build tolerance gradually rather than assuming a large jump will be comfortable or sustainable.

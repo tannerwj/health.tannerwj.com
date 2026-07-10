@@ -14,4 +14,6 @@ sources:
 
 Peter Attia's [DEXA discussion](https://peterattiamd.com/ai-dexa-and-mortality/) treats body composition as more than scale weight.
 
-The high-level idea is that DEXA can separate lean mass, fat mass, visceral fat, and bone density. Interpretation belongs in clinical context, not as a standalone score.
+The high-level idea is that DEXA can separate lean mass, fat mass, visceral fat, and bone density. Individual readings carry measurement noise, so comparable conditions and trends are often more useful than over-reading one scan.
+
+Interpretation belongs in clinical context, not as a standalone score.
