@@ -42,8 +42,9 @@ assert.equal(count(homepage, /class="skip-link"/g), 1, "homepage should render o
 assert.equal(count(homepage, /<header\b/g), 1, "homepage should render one header landmark");
 assert.equal(count(homepage, /<main\b/g), 1, "homepage should render one main landmark");
 assert.equal(count(homepage, /<footer\b/g), 1, "homepage should render one footer landmark");
-assert.equal(count(homepage, /<script\b/g), 1, "homepage should emit only structured data");
-assert.equal(count(homepage, /<script\b(?![^>]*type="application\/ld\+json")/g), 0, "homepage should not emit executable JavaScript");
+assert.equal(count(homepage, /<script\b/g), 2, "homepage should emit structured data and the mobile navigation controller");
+assert.equal(count(homepage, /<script\b(?![^>]*type="application\/ld\+json")/g), 1, "homepage should emit only the mobile navigation controller as executable JavaScript");
+assert.match(homepage, /<script type="module">[^<]*data-mobile-menu-toggle[^<]*<\/script>/, "homepage JavaScript should stay scoped to the mobile navigation");
 
 assert.match(robots, /Sitemap: https:\/\/health\.tannerwj\.com\/sitemap\.xml/);
 
@@ -55,6 +56,9 @@ for (const route of siteRoutes) {
   const expectedTitle = `${metadata.title} | ${SITE_NAME}`;
   const expectedCanonical = new URL(route, SITE_ORIGIN).toString();
   const socialImage = new URL(SOCIAL_IMAGE_PATH, SITE_ORIGIN).toString();
+
+  assert.match(html, /aria-controls="mobile-navigation"/);
+  assert.match(html, /id="mobile-navigation"/);
 
   assert.equal(tagContent(html, "title"), expectedTitle, `${route} title`);
   assert.equal(metaContent(html, "name", "description"), metadata.description, `${route} description`);

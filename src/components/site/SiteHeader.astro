@@ -1,5 +1,8 @@
 ---
 import { calculatorRoute, editorialSections } from "../../data/site";
+
+const currentPath = Astro.url.pathname === "/" ? "/" : Astro.url.pathname.replace(/\/$/, "");
+const isCurrent = (href: string) => currentPath === href;
 ---
 
 <header class="site-header">
@@ -23,8 +26,87 @@ import { calculatorRoute, editorialSections } from "../../data/site";
       </span>
     </a>
     <nav class="primary-nav" aria-label="Primary navigation">
-      {editorialSections.map((section) => <a href={section.href}>{section.title}</a>)}
-      <a href={calculatorRoute.href}>{calculatorRoute.title}</a>
+      {
+        editorialSections.map((section) => (
+          <a href={section.href} aria-current={isCurrent(section.href) ? "page" : undefined}>
+            {section.title}
+          </a>
+        ))
+      }
+      <a href={calculatorRoute.href} aria-current={isCurrent(calculatorRoute.href) ? "page" : undefined}>
+        {calculatorRoute.title}
+      </a>
     </nav>
+    <button
+      class="mobile-menu-toggle"
+      type="button"
+      aria-label="Open primary navigation"
+      aria-expanded="false"
+      aria-controls="mobile-navigation"
+      data-mobile-menu-toggle
+    >
+      <span>Menu</span>
+      <svg viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M3 5.5h14M3 10h14M3 14.5h14"></path>
+      </svg>
+    </button>
   </div>
+  <nav id="mobile-navigation" class="mobile-nav" aria-label="Mobile primary navigation" hidden data-mobile-navigation>
+    <div class="mobile-nav-inner">
+      {
+        editorialSections.map((section) => (
+          <a href={section.href} aria-current={isCurrent(section.href) ? "page" : undefined}>
+            <span>{section.number}</span>
+            {section.title}
+          </a>
+        ))
+      }
+      <a href={calculatorRoute.href} aria-current={isCurrent(calculatorRoute.href) ? "page" : undefined}>
+        <span aria-hidden="true">↗</span>
+        {calculatorRoute.title}
+      </a>
+    </div>
+  </nav>
 </header>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".site-header");
+  const toggle = header?.querySelector<HTMLButtonElement>("[data-mobile-menu-toggle]");
+  const navigation = header?.querySelector<HTMLElement>("[data-mobile-navigation]");
+  const desktopQuery = window.matchMedia("(min-width: 48rem)");
+
+  if (header && toggle && navigation) {
+    const setOpen = (open: boolean, returnFocus = false) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", `${open ? "Close" : "Open"} primary navigation`);
+      navigation.hidden = !open;
+      header.classList.toggle("menu-open", open);
+
+      if (!open && returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    navigation.addEventListener("click", (event) => {
+      if ((event.target as Element).closest("a")) setOpen(false);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (toggle.getAttribute("aria-expanded") === "true" && !header.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+        setOpen(false, true);
+      }
+    });
+
+    desktopQuery.addEventListener("change", (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>
