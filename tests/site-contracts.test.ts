@@ -88,6 +88,17 @@ test("homepage current entries exclude peptide source notes", () => {
   );
 });
 
+test("peptide library introduction stays neutral about sourced entries", () => {
+  const page = readFileSync(join(process.cwd(), "src", "pages", "peptides", "index.astro"), "utf8");
+
+  assert.match(
+    page,
+    /A reference library of single peptides and named blends, with source context and evidence labels\./
+  );
+  assert.match(page, /These are sourced notes, not a record of what I use\./);
+  assert.doesNotMatch(page, /I want close at hand\./);
+});
+
 test("static SEO endpoints expose canonical production routes", async () => {
   const robots = await getRobots({} as never);
   const robotsText = await robots.text();

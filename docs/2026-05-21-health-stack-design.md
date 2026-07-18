@@ -1,8 +1,10 @@
-# health.tannerwj.com — Design Spec
+# health.tannerwj.com — Design Spec (Historical Context)
+
+> **Historical planning document.** The implemented site has evolved beyond this spec. For current editing, start with [content-authoring.md](./content-authoring.md); executable schemas are in [src/content.config.ts](../src/content.config.ts). For the current conceptual map, see [content-model.md](./content-model.md). This document is retained for original product intent, not as an operational instruction.
 
 **Date:** 2026-05-21 (revised 2026-07-09)
 **Owner:** Tanner Johnson
-**Status:** Approved for planning
+**Status:** Historical planning context; implementation and current authoring rules supersede it.
 
 ## Summary
 
@@ -12,7 +14,7 @@ This is not a scientific reference library or an attempt to publish definitive h
 
 "Living" means the site stays current, not that it shows history: when Tanner changes his stack (often prompted by an X post from someone he trusts), he has his agent read the source and update the site in one short session → one commit. The content model exists to make that workflow reliable.
 
-Replaces the existing `peptides` site (complete redesign, not a port) and 301-redirects `peptides.tannerwj.com`.
+Replaces the existing `peptides` site (complete redesign, not a port). Preserve the legacy peptide deployment and redirect behavior unless a replacement has been verified.
 
 ## Goals
 
@@ -67,11 +69,11 @@ The content model is the core of the site — it powers every section, homepage 
 - Sources are practical provenance, not a formal evidence system. An entry may point to an X post, Pep-Pedia page, website, study, person, or conversation.
 - Validation is strict for mechanical facts—IDs, units, numeric amounts, relationships, URLs, and blend math—and flexible for prose and evolving section structure.
 
-The detailed models and validation rules live in [`content-model.md`](./content-model.md).
+Current detailed models and validation rules live in [`content-authoring.md`](./content-authoring.md).
 
 ## Authoring & Update Workflow
 
-- Voice: first person, terse, no hedging. "I take X mg of Y in the morning because Z." Not "Some experts suggest…"
+- Personal voice is first person and terse; sourced notes use natural named attribution. Never invent Tanner’s dose, cadence, use, outcome, or equipment ownership.
 - Pages are glanceable first, detailed second: current stack at the top, optional detail below
 - Typical update: Tanner sees a useful post or source → the source is summarized in the context of the site's taxonomy and Tanner's current stack → Tanner approves an addition or change → the relevant entry is updated → schemas and integrity checks validate → commit → auto-deploy
 - Success bar: a new supplement entry is a single commit and under 2 minutes of Tanner's attention
@@ -87,7 +89,7 @@ The detailed models and validation rules live in [`content-model.md`](./content-
 
 **Customization path:** Establish a project-specific `DESIGN.md` and `PRODUCT.md` once the direction is chosen. Iterate with craft/polish/critique passes.
 
-**No tagline.** The wordmark `health.tannerwj.com` carries it.
+The original wordmark decision is superseded by the implemented Stone & Sage / Tanner's Field Notes identity and navigation treatment.
 
 ## Polish Requirements
 
@@ -102,7 +104,7 @@ The detailed models and validation rules live in [`content-model.md`](./content-
 - **Framework:** Astro (latest stable), **static output** — chosen deliberately: zero-JS-by-default content pages, islands for the calculator, first-class content collections and MDX. No SSR, so **no `@astrojs/cloudflare` adapter**
 - **Routing:** File-based via `src/pages/`
 - **Styling:** Decided by the visual-treatment bake-off (see Visual Design)
-- **JavaScript:** Zero by default. Calculator ships as a client island only on `/peptides/calculator`
+- **JavaScript:** static editorial routes plus narrowly scoped client behavior where implemented (including calculator and mobile navigation); do not use this historical sentence as a current performance contract.
 - **Content:** Content collections in `src/content/` for editorial material; typed data in `src/data/` for calculator entities and affiliate URLs
 
 **Deployment:**
@@ -118,7 +120,7 @@ The detailed models and validation rules live in [`content-model.md`](./content-
 
 The existing site (`~/repos/peptides`) was a first draft of this idea. Nothing is ported wholesale:
 
-- **Editorial content:** Start from the hand-curated entries in the old `index.html`, then keep only peptides Tanner is using, has used, or might use. Rewrite them around Tanner's experience and practical notes rather than porting the old presentation.
+- **Editorial content:** Current implementation also permits sourced peptide reference notes, clearly separate from Tanner's personal entries. Do not port old claims wholesale.
 - **Calculator catalog:** Treat the 68-entry Pep-Pedia-derived dataset as discovery/source material, not as a production-ready schema. Curate useful common entries into a clean typed catalog with explicit units and source notes. The catalog may be broader than Tanner's editorial peptide page.
 - **Calculator:** Rebuild as an Astro client island matching the new visual system. Preserve reconstitution/BAC math, per-component blend math, dose-reference status, and URL sharing. Add a syringe visual, guardrails, doses per vial, unit and syringe selectors, presets, favorites, recent selections, and custom saved presets in `localStorage`.
 - **Named blends:** Support common multi-compound vial formulations such as GLOW, KLOW, Wolverine, and Beauty. Every component amount has an explicit unit, and users can edit compositions because formulations vary.

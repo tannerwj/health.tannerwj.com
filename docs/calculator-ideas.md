@@ -1,11 +1,14 @@
-# Peptide Calculator — Ideas to Assimilate
+# Peptide Calculator — Historical Ideas and Context
+
+> **Historical idea backlog.** The calculator is implemented and its current data contract lives in [content-authoring.md](./content-authoring.md#calculator-catalog), [src/data/calculator/types.ts](../src/data/calculator/types.ts), [src/data/calculator/compounds.ts](../src/data/calculator/compounds.ts), and [src/data/calculator/blends.ts](../src/data/calculator/blends.ts). Treat this document as product context, not a specification for current behavior or a license to add personal defaults.
 
 From a survey of 13 calculators (PeptideFox, PeptideDoseCalculator, PeptideMind, CalcMyPeptide, Rite Aid, Jay Campbell, Cellgenic, PeptIndex, et al.). Goal: clean, intuitive, useful — a broad catalog of common peptides and named blends, with Tanner's own choices and defaults featured where relevant.
 
-The calculator is a utility on its own page, not the center of the health site. Its data model is separate from the editorial `/peptides` page: the editorial page covers what Tanner uses, has used, or might use; the calculator may include other common compounds.
+The calculator is a utility on its own page, not the center of the health site. Its data model is separate from the editorial `/peptides` page: the implemented editorial page contains both Tanner’s personal entries and sourced reference notes, while the calculator may include other common compounds.
 
-## Baseline: what the current one already does well
-Peptide picker, BAC-water math, per-unit dose, green/yellow/red dose-range status, pre-built + custom blends, URL share links. The blend + share features already beat most competitors — keep them.
+## Historical baseline
+
+This list predates the current implementation. Verify current UI behavior, tests, and data before treating any item as present or planned.
 
 ## Table stakes (must have)
 - Vial mg + BAC water mL → concentration
@@ -38,7 +41,7 @@ Peptide picker, BAC-water math, per-unit dose, green/yellow/red dose-range statu
 ## The personalization payoff (why a curated personal tool wins)
 A generic calculator starts empty with a 100-peptide dropdown. Tanner's leads with useful common entries and makes his own peptides and blends especially easy to find:
 
-1. **Per-peptide baked-in defaults** — each peptide ships with his real vial size, usual BAC volume, target dose, frequency, dose range. Selecting it fully configures the calculator, zero typing.
+1. **Per-peptide baked-in defaults** — only when Tanner explicitly approves them. Community/reference catalog values must remain labeled as such.
 2. **Named blend vials as first-class objects** — GLOW, KLOW, Wolverine, Beauty, and other common blends load their components, explicit amounts/units, water, and dose defaults in one tap. Formulations remain editable because the same name may be sold in different ratios.
 3. **Local preferences** — favorites, recent selections, preferred syringe, display unit, last-used values, and custom saved presets persist in `localStorage` without accounts.
 4. **Personalized dose-range status** — green/yellow/red tuned to his target and titration stage, not a wide population band.

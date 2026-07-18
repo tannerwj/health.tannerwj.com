@@ -1,8 +1,11 @@
 # Implementation Plan — health.tannerwj.com
 
+> **Historical planning context — implementation is complete.** This document records the initial July 2026 plan and includes statements that are no longer current (for example, references to future application code, an undecided visual system, and a future calculator). Do not use it to direct new work.
+>
+> For current instructions, read [`../AGENTS.md`](../AGENTS.md). For normal edits, use [`content-authoring.md`](./content-authoring.md); for previews and production, use [`deployment.md`](./deployment.md). The current product and design references are [`../PRODUCT.md`](../PRODUCT.md) and [`../DESIGN.md`](../DESIGN.md).
+
 **Date:** 2026-07-09  
-**Status:** Ready for implementation planning review  
-**Constraint:** This document defines the work; no application code has been created yet.
+**Historical status:** Planning record
 
 ## Outcome
 

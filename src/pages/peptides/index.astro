@@ -44,7 +44,7 @@ const glanceItems = glanceSlugs.flatMap((slug) => {
 
 <BaseLayout title={routeMetadata["/peptides"].title} description={routeMetadata["/peptides"].description} canonicalPath="/peptides">
   <main id="main-content" class="page peptides-page">
-    <PageIntro eyebrow="05 / Peptides" title="Peptides" description="A working reference library for the singles and blends I want close at hand." />
+    <PageIntro eyebrow="05 / Peptides" title="Peptides" description="A reference library of single peptides and named blends, with source context and evidence labels." />
     <AtAGlance items={glanceItems} description={`${singleEntries.length} singles, ${blendEntries.length} blends, and clear evidence labels before the longer notes.`} />
 
     <section class="calculator-band" aria-labelledby="calculator-heading">
