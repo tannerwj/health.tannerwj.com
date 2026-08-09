@@ -3,8 +3,12 @@ import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { parse as parseYaml } from "yaml";
-import { validateIntegrity, type ValidationInput } from "../scripts/validate-content";
+import {
+  parseFrontmatter,
+  readTextFile,
+  validateIntegrity,
+  type ValidationInput
+} from "../scripts/validate-content";
 import { blends as catalogBlends } from "../src/data/calculator/blends";
 import { compounds as catalogCompounds } from "../src/data/calculator/compounds";
 
@@ -64,15 +68,65 @@ const validInput: ValidationInput = {
 
 const workspaceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
+test("frontmatter parses identically from LF and CRLF checkouts", () => {
+  const body = ["---", "name: Example", "slug: example", "order: 10", "---", "", "Body text."].join("\n");
+  const expected = { name: "Example", slug: "example", order: 10 };
+
+  assert.deepEqual(parseFrontmatter(body, "lf.md"), expected);
+  assert.deepEqual(parseFrontmatter(body.replaceAll("\n", "\r\n"), "crlf.md"), expected);
+});
+
+test("every content file is committed with LF newlines", () => {
+  const contentRoot = path.join(workspaceRoot, "src/content");
+  const offenders = readdirSync(contentRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .flatMap((collection) => {
+      const dir = path.join(contentRoot, collection.name);
+      return readdirSync(dir)
+        .filter((file) => file.endsWith(".md"))
+        .filter((file) => readFileSync(path.join(dir, file), "utf8").includes("\r\n"))
+        .map((file) => `${collection.name}/${file}`);
+    });
+
+  assert.deepEqual(offenders, [], "content files must use LF newlines; see .gitattributes");
+});
+
+test("the bedtime pair stays coupled and surfaces on the sleep stack", () => {
+  const read = (slug: string) =>
+    parseFrontmatter(
+      readTextFile(path.join(workspaceRoot, "src/content/supplements", `${slug}.md`)),
+      slug
+    ) as Record<string, unknown>;
+
+  for (const slug of ["magnesium-glycinate", "l-theanine"]) {
+    const entry = read(slug);
+    assert.equal(entry.status, "current", `${slug} is a personal current item`);
+    assert.equal(entry.when, "bedtime", `${slug} must group with the bedtime pair`);
+    assert.equal(entry.tier, "foundational", `${slug} is a start-here recommendation`);
+    assert.deepEqual(entry.stacks, ["sleep"], `${slug} must surface on the sleep page`);
+    assert.equal(entry.dose, "200 mg");
+  }
+
+  // The sleep page renders opted-in supplements by linking back, not by copying.
+  const sleepPage = readTextFile(path.join(workspaceRoot, "src/pages/sleep.astro"));
+  assert.match(sleepPage, /getCollection\("supplements"\)/);
+  assert.match(sleepPage, /stacks\?\.includes\("sleep"\)/);
+  assert.match(sleepPage, /\/supplements#\$\{entry\.data\.slug\}/);
+});
+
+test("supplement time-of-day groups keep every current item reachable", () => {
+  const supplementsPage = readTextFile(path.join(workspaceRoot, "src/pages/supplements.astro"));
+  // Items without a recorded time must still render, or they vanish from the page.
+  assert.match(supplementsPage, /currentUngrouped/);
+  assert.match(supplementsPage, /current\.filter\(\(entry\) => !entry\.data\.when\)/);
+});
+
 test("statusless sourced supplements remain separate from personal stack groups", () => {
   const supplementsDir = path.join(workspaceRoot, "src/content/supplements");
   const entries = readdirSync(supplementsDir)
     .filter((file) => file.endsWith(".md"))
     .map((file) => {
-      const content = readFileSync(path.join(supplementsDir, file), "utf8");
-      const frontmatter = content.match(/^---\n([\s\S]*?)\n---/);
-      assert(frontmatter, `${file} must have frontmatter`);
-      return parseYaml(frontmatter[1]) as {
+      return parseFrontmatter(readTextFile(path.join(supplementsDir, file)), file) as {
         slug: string;
         order: number;
         status?: string;
@@ -252,10 +306,7 @@ test("curated peptide library has the accepted shape and calculator coverage", (
   const entries = readdirSync(peptideDir)
     .filter((file) => file.endsWith(".md"))
     .map((file) => {
-      const content = readFileSync(path.join(peptideDir, file), "utf8");
-      const frontmatter = content.match(/^---\n([\s\S]*?)\n---/);
-      assert(frontmatter, `${file} must have frontmatter`);
-      return parseYaml(frontmatter[1]) as {
+      return parseFrontmatter(readTextFile(path.join(peptideDir, file)), file) as {
         slug: string;
         entryType: string;
         form: string;

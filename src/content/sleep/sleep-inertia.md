@@ -2,16 +2,16 @@
 name: Sleep inertia
 slug: sleep-inertia
 kind: tracking
-summary: "Matthew Walker describes a temporary period of slower attention and decision-making after waking."
+summary: "The groggy window after waking, when your judgment is genuinely worse. It passes, but leave room for it."
 order: 190
 sources:
   - type: x
     url: https://x.com/sleepdiplomat/status/2064067438665400547
     author: Matthew Walker
-    note: Attention and decisions can remain slower for a period after waking.
+    note: Attention and decision-making lag for a period after waking.
     accessed: "2026-07-10"
 ---
 
-Matthew Walker's [sleep-inertia post](https://x.com/sleepdiplomat/status/2064067438665400547) describes the groggy transition after waking, when attention and decision-making can temporarily lag even after an adequate night.
+Walker [describes](https://x.com/sleepdiplomat/status/2064067438665400547) the period after waking when attention and decision-making are measurably slower, even after a good night.
 
-It is a useful reason to leave some margin before a demanding decision or safety-critical task when possible. Duration and severity vary, and persistent or extreme morning impairment belongs in a broader sleep or medical evaluation.
+Practical version: do not schedule anything that matters in the first stretch after your alarm, and be suspicious of decisions you make there.

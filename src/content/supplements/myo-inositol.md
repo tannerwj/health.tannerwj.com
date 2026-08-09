@@ -1,16 +1,16 @@
 ---
 name: Myo-inositol
 slug: myo-inositol
-summary: "Huberman Lab discusses myo-inositol in a narrower, occasional context around sleep and night waking."
+summary: "Comes up in Huberman's sleep material mainly around falling back asleep after waking, not as a general sleep supplement. I don't take it."
 order: 60
 sources:
   - type: website
     url: https://www.hubermanlab.com/episode/sleep-toolkit-tools-for-optimizing-sleep-and-sleep-wake-timing
     author: Andrew Huberman
-    note: Additional supplement and falling-back-asleep discussion.
+    note: Discussed among additional supplements, in the falling-back-asleep context.
     accessed: "2026-07-10"
 ---
 
-The [sleep-toolkit episode](https://www.hubermanlab.com/episode/sleep-toolkit-tools-for-optimizing-sleep-and-sleep-wake-timing) discusses myo-inositol in a smaller group of additional supplements, alongside a separate conversation about falling back asleep.
+In the [sleep-toolkit episode](https://www.hubermanlab.com/episode/sleep-toolkit-tools-for-optimizing-sleep-and-sleep-wake-timing), myo-inositol sits in a small group of extras, and the conversation around it is specifically about getting back to sleep after waking at 3am.
 
-That is narrower than a general sleep recommendation. The source does not establish broad applicability for night waking or a predictable response for everyone.
+That is a narrower use than most places selling it imply.

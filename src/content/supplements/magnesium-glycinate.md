@@ -2,31 +2,35 @@
 name: Magnesium glycinate
 slug: magnesium-glycinate
 status: current
-summary: Magnesium glycinate is part of my current supplement list.
+tier: foundational
+when: bedtime
+stacks:
+  - sleep
+summary: 200 mg before bed, paired with L-theanine. I've taken it for years and it's the first thing I'd tell anyone to try for sleep.
 order: 10
 featured: true
 homepageOrder: 10
+dose: 200 mg
+timing: Before bed
+frequency: Nightly
+brand: Nootropics Depot
+product: Magnesium Glycinate, 200 mg elemental
 affiliate: amazon-magnesium-glycinate
 sources:
-  - type: x
-    url: https://x.com/hubermanlab/status/2059108059436421383
-    author: Andrew Huberman
-    note: Personal supplement guidance that emphasizes third-party testing and individual response.
-    accessed: "2026-07-10"
   - type: website
     url: https://www.hubermanlab.com/newsletter/toolkit-for-sleep
     author: Andrew Huberman
-    note: Sleep toolkit context for magnesium use.
+    note: Where the 200 mg magnesium bisglycinate figure comes from.
     accessed: "2026-07-10"
   - type: website
     url: https://www.foundmyfitness.com/episodes/magnesium
     author: FoundMyFitness
-    note: Magnesium overview and research context.
+    note: Background on magnesium generally.
     accessed: "2026-07-10"
 ---
 
-Magnesium glycinate is part of my current supplement list. Huberman Lab's [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep) mentions magnesium bisglycinate and threonate as optional sleep-supplement forms; this recorded item remains magnesium glycinate, not a claim that the forms are interchangeable.
+I take this with [L-theanine](#l-theanine) every night before bed, and have for years. It's straight off Huberman's [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep), which lists 200 mg of magnesium bisglycinate — the product I use is that, sold as "glycinate."
 
-The toolkit also names Momentous and includes a discount link, so its supplement guidance carries product context. FoundMyFitness' [magnesium overview](https://www.foundmyfitness.com/episodes/magnesium) is additional context for why magnesium comes up in sleep and relaxation discussions.
+I know it works for me because I stopped once to get clean bloodwork. Within a few days my sleep was noticeably worse. That's the whole reason this pair sits at the top of the list instead of somewhere in the middle.
 
-In a later [personal supplement post](https://x.com/hubermanlab/status/2059108059436421383), Huberman emphasizes independent third-party testing. That is a product-quality filter, not evidence that magnesium improves sleep for everyone.
+Two things worth knowing before you copy it: magnesium gives roughly one in twenty people an upset stomach, and Huberman's own advice is to start with one supplement at a time — or none — rather than adding five at once.

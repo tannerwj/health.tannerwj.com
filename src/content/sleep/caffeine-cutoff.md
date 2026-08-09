@@ -2,21 +2,21 @@
 name: Caffeine cutoff before bed
 slug: caffeine-cutoff
 kind: routine
-summary: "Huberman Lab and Matthew Walker discuss caffeine timing before sleep, but the useful buffer varies by person and context."
+summary: "Caffeine has a long tail. Where your cutoff lands depends on the dose and how fast you clear it."
 order: 90
 sources:
   - type: website
     url: https://www.hubermanlab.com/newsletter/improve-your-sleep
     author: Andrew Huberman
-    note: Sleep guidance that includes caffeine timing.
+    note: Caffeine timing as part of sleep hygiene.
     accessed: "2026-07-10"
   - type: website
     url: https://www.foundmyfitness.com/episodes/matthew-walker
     author: FoundMyFitness
-    note: Matthew Walker sleep discussion.
+    note: Matthew Walker on caffeine and sleep.
     accessed: "2026-07-10"
 ---
 
-Huberman Lab's [sleep guidance](https://www.hubermanlab.com/newsletter/improve-your-sleep) and FoundMyFitness' [Matthew Walker conversation](https://www.foundmyfitness.com/episodes/matthew-walker) both treat caffeine timing as relevant to sleep.
+[Huberman](https://www.hubermanlab.com/newsletter/improve-your-sleep) and [Walker](https://www.foundmyfitness.com/episodes/matthew-walker) both flag afternoon caffeine as a sleep problem people fail to connect to their sleep, because it usually costs quality rather than the ability to fall asleep at all.
 
-The durable idea is to leave enough buffer before bed for the person, dose, and sensitivity involved rather than forcing one universal cutoff.
+People vary enough in how fast they clear it that arguing about a universal cutoff hour is not worth it. Move yours earlier and see what changes.

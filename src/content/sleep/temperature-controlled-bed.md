@@ -3,10 +3,8 @@ name: Temperature-controlled bed
 slug: temperature-controlled-bed
 kind: environment
 status: current
-summary: I use an Eight Sleep temperature-controlled bed.
+summary: An Eight Sleep temperature-controlled bed. The most expensive thing in my sleep setup.
 order: 20
 brand: Eight Sleep
-spec: Temperature-controlled bed; model not recorded
+spec: Temperature-controlled bed
 ---
-
-I use an Eight Sleep temperature-controlled bed.

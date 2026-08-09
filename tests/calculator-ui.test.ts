@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync } from "node:fs";
+import { readdirSync } from "node:fs";
+import { readTextFile } from "../scripts/validate-content";
 import test from "node:test";
 import { blends } from "../src/data/calculator/blends";
 import { compounds } from "../src/data/calculator/compounds";
@@ -224,7 +225,7 @@ test("every calculator-linked peptide record maps to a validated mode and id dee
   const linkedRecords = readdirSync(peptideDirectory)
     .filter((file) => file.endsWith(".md"))
     .flatMap((file) => {
-      const source = readFileSync(new URL(file, peptideDirectory), "utf8");
+      const source = readTextFile(new URL(file, peptideDirectory));
       const form = source.match(/^form:\s*(single|blend)$/m)?.[1] as "single" | "blend" | undefined;
       const id = source.match(/^calculatorId:\s*([^\s]+)$/m)?.[1];
       return form && id ? [{ file, form, id }] : [];

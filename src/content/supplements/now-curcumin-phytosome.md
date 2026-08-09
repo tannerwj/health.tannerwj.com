@@ -1,7 +1,7 @@
 ---
 name: NOW Curcumin Phytosome
 slug: now-curcumin-phytosome
-summary: A specific curcumin phytosome supplement linked here for reference.
+summary: Curcumin bound to phospholipid, the form used to get around how poorly plain curcumin absorbs.
 order: 120
 brand: NOW
 product: Curcumin Phytosome, 60 capsules

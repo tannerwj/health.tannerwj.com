@@ -5,7 +5,7 @@ import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
 
 interface Props {
   title: string;
-  description: string;
+  description?: string;
   entries: CollectionEntry<"exercise">[];
 }
 
@@ -18,7 +18,7 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
     <header>
       <p class="section-label">Training / {title}</p>
       <h2 id={id}>{title}</h2>
-      <p>{description}</p>
+      {description ? <p>{description}</p> : null}
     </header>
     <ol>
       {entries.map(async (entry) => {

@@ -25,14 +25,14 @@ const glanceItems = Array.from(futureByKind).slice(0, 4).map(([kind, entries]) =
 <BaseLayout title={routeMetadata["/protocols"].title} description={routeMetadata["/protocols"].description} canonicalPath="/protocols">
   <main id="main-content" class="page protocols-page">
     <PageIntro eyebrow="04 / Protocols" title="Protocols" description="Testing, therapy, nutrition, and recovery notes. This is not a log of my results." />
-    <AtAGlance items={glanceItems} description="Source-led notes grouped by the question they help answer." />
+    <AtAGlance items={glanceItems} />
 
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice entries below are not Tanner’s protocols.</PracticeDataNotice></div> : null}
 
     {current.length ? (
       <section class="current-section" aria-labelledby="current-heading">
         <div class="wrap">
-          <div class="section-heading"><div><p class="section-label">Current</p><h2 id="current-heading">Current notes.</h2></div><p>Testing context and other notes appear here when published.</p></div>
+          <div class="section-heading"><div><p class="section-label">Current</p><h2 id="current-heading">Current notes.</h2></div></div>
           <div class="current-list">{current.map((entry) => <ProtocolEntry entry={entry} featured />)}</div>
         </div>
       </section>
@@ -40,7 +40,7 @@ const glanceItems = Array.from(futureByKind).slice(0, 4).map(([kind, entries]) =
 
     <section class="future-section" aria-labelledby="future-heading">
       <div class="wrap">
-        <div class="future-heading"><p class="section-label">Other notes</p><h2 id="future-heading">Therapy, nutrition, recovery, and testing.</h2><p>Source-led notes and context across these areas.</p></div>
+        <div class="future-heading"><p class="section-label">Other notes</p><h2 id="future-heading">Therapy, nutrition, recovery, and testing.</h2></div>
         {futureByKind.size ? Array.from(futureByKind).map(([kind, entries]) => <section class="kind-group" aria-labelledby={`${kind}-heading`}><h3 id={`${kind}-heading`}>{kindLabels[kind]}</h3>{entries.map((entry) => <ProtocolEntry entry={entry} />)}</section>) : <p class="empty-state">Other protocol kinds will appear here as they are added.</p>}
       </div>
     </section>

@@ -2,21 +2,21 @@
 name: Darkness and dim evening light
 slug: darkness-and-dim-evening-light
 kind: environment
-summary: "Huberman Lab and FoundMyFitness discuss evening darkness and dim light as context for melatonin and sleep timing."
+summary: "Bright light late tells your body it is still daytime. Dimming the evening is the other half of getting light in the morning."
 order: 70
 sources:
   - type: website
     url: https://www.hubermanlab.com/newsletter/toolkit-for-sleep
     author: Andrew Huberman
-    note: Sleep toolkit context for evening light.
+    note: Evening light guidance in the sleep toolkit.
     accessed: "2026-07-10"
   - type: website
     url: https://www.foundmyfitness.com/episodes/bright-light-exposure-melatonin
     author: FoundMyFitness
-    note: Bright light exposure and melatonin context.
+    note: How bright evening light suppresses melatonin.
     accessed: "2026-07-10"
 ---
 
-Huberman Lab's [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep) and FoundMyFitness' [bright light and melatonin discussion](https://www.foundmyfitness.com/episodes/bright-light-exposure-melatonin) both make evening light part of the sleep conversation.
+The [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep) and FoundMyFitness' [light and melatonin discussion](https://www.foundmyfitness.com/episodes/bright-light-exposure-melatonin) are two angles on the same mechanism: bright light in the evening suppresses the melatonin release that is supposed to be starting.
 
-The durable idea is to make late-evening light lower and less stimulating when sleep is the goal.
+Overhead lights are the usual offender, more than phones.

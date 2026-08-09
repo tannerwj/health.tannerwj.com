@@ -10,14 +10,19 @@ import { routeMetadata } from "../data/site";
 import { sortByOrder } from "../lib/content";
 
 const entries = sortByOrder(await getCollection("sleep"));
+// Supplements that opt into the sleep stack render here too, linking back to
+// their own entry rather than duplicating the content.
+const sleepSupplements = sortByOrder(await getCollection("supplements")).filter(
+  (entry) => entry.data.status === "current" && entry.data.stacks?.includes("sleep")
+);
 const current = entries
   .filter((entry) => entry.data.status === "current")
   .sort((a, b) => Number(Boolean(b.data.featured)) - Number(Boolean(a.data.featured)) || a.data.order - b.data.order);
 const kinds = [
-  ["Routine", "Sleep routines and timing ideas.", "routine"],
-  ["Environment", "Sleep environment notes and context.", "environment"],
-  ["Gear", "Sleep gear, including what I use now.", "gear"],
-  ["Tracking", "Sleep tracking notes and patterns.", "tracking"]
+  ["Routine", "routine"],
+  ["Environment", "environment"],
+  ["Gear", "gear"],
+  ["Tracking", "tracking"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
 const hasAffiliateLinks = entries.some((entry) => entry.data.affiliate || entry.data.affiliates?.length);
@@ -37,14 +42,38 @@ const glanceItems = current.map((entry) => ({
   <main id="main-content" class="page">
     <PageIntro eyebrow="02 / Sleep" title="Sleep" description="My routine, room, gear, and sleep tracking." />
 
-    <AtAGlance items={glanceItems} description="The sleep gear and setup I have recorded as current." />
+    <AtAGlance items={glanceItems} />
 
     {hasPracticeEntries ? <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's routine.</PracticeDataNotice></div> : null}
     {hasAffiliateLinks ? <div class="wrap"><AmazonDisclosure /></div> : null}
 
     <div class="wrap sleep-layout">
-      {kinds.map(([title, description, kind]) => (
-        <SleepGroup title={title} description={description} entries={entries.filter((entry) => entry.data.kind === kind)} />
+      {sleepSupplements.length ? (
+        <section class="sleep-supplements" aria-labelledby="sleep-supplements-heading">
+          <header>
+            <p class="section-label">Night / Supplements</p>
+            <h2 id="sleep-supplements-heading">Supplements</h2>
+            <p>Full notes on the supplements page.</p>
+          </header>
+          <ul>
+            {sleepSupplements.map((entry) => (
+              <li>
+                <a href={`/supplements#${entry.data.slug}`}>
+                  <span class="supplement-label">
+                    {entry.data.tier === "foundational" ? "Start here" : "Current"}
+                    {entry.data.dose ? ` · ${entry.data.dose}` : ""}
+                  </span>
+                  <strong>{entry.data.name}</strong>
+                  <span class="supplement-summary">{entry.data.summary}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {kinds.map(([title, kind]) => (
+        <SleepGroup title={title} entries={entries.filter((entry) => entry.data.kind === kind)} />
       ))}
     </div>
   </main>
@@ -52,4 +81,27 @@ const glanceItems = current.map((entry) => ({
 
 <style>
   .sleep-layout { padding-bottom: 2.5rem; }
+  .sleep-supplements { padding-block: 1.8rem 2.4rem; border-top: 1px solid var(--line-strong); }
+  .sleep-supplements header { display: grid; gap: .65rem; max-width: 43rem; margin-bottom: 1.25rem; }
+  .sleep-supplements h2 { margin: 0; font-family: var(--serif); font-size: clamp(1.9rem, 7vw, 3.2rem); font-weight: 400; line-height: .96; }
+  .sleep-supplements header > p:last-child { margin: 0; color: var(--muted); line-height: 1.45; }
+  .sleep-supplements ul { display: grid; gap: .85rem; margin: 0; padding: 0; list-style: none; }
+  .sleep-supplements a {
+    display: grid;
+    gap: .3rem;
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--sage);
+    padding: 1rem;
+    background: rgba(248, 246, 238, .42);
+    color: inherit;
+    text-decoration: none;
+  }
+  .supplement-label { color: var(--muted); font-size: .62rem; font-weight: 900; letter-spacing: .11em; text-transform: uppercase; }
+  .sleep-supplements strong { font-family: var(--serif); font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 400; line-height: 1; }
+  .supplement-summary { color: var(--ink); line-height: 1.5; }
+  .sleep-supplements a:hover strong { color: var(--sage-deep); }
+
+  @media (min-width: 48rem) {
+    .sleep-supplements a { padding: 1.35rem 1.45rem; }
+  }
 </style>

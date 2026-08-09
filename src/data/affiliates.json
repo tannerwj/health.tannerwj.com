@@ -1,15 +1,17 @@
 {
   "amazon-magnesium-glycinate": {
     "vendor": "Amazon",
-    "product": "Magnesium glycinate search results",
-    "kind": "search",
-    "url": "https://www.amazon.com/s?k=magnesium%20glycinate&tag=tannerwj-20"
+    "product": "Nootropics Depot Magnesium Glycinate, 200 mg elemental, 360 capsules",
+    "kind": "product",
+    "asin": "B0C2XSJ9H5",
+    "url": "https://amzn.to/3Si6EG2"
   },
   "amazon-l-theanine": {
     "vendor": "Amazon",
-    "product": "L-theanine search results",
-    "kind": "search",
-    "url": "https://www.amazon.com/s?k=l-theanine&tag=tannerwj-20"
+    "product": "Nootropics Depot L-Theanine, 200 mg, 180 capsules",
+    "kind": "product",
+    "asin": "B01F261E88",
+    "url": "https://amzn.to/4xOz2yT"
   },
   "amazon-mouth-tape": {
     "vendor": "Amazon",

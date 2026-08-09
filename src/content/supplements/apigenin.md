@@ -1,28 +1,21 @@
 ---
 name: Apigenin
 slug: apigenin
-summary: "Huberman Lab presents apigenin as an optional sleep-stack item, with uncertain individual response and product context."
+summary: "The chamomile-derived compound Huberman lists at 50 mg as an optional sleep add-on. I don't take it."
 order: 40
 sources:
-  - type: x
-    url: https://x.com/hubermanlab/status/2059108059436421383
-    author: Andrew Huberman
-    note: Personal observation that apigenin alone may suit some people.
-    accessed: "2026-07-10"
   - type: website
     url: https://www.hubermanlab.com/newsletter/toolkit-for-sleep
     author: Andrew Huberman
-    note: Optional sleep-supplement list and one-at-a-time context.
+    note: Lists apigenin at 50 mg, and argues for adding one supplement at a time.
     accessed: "2026-07-10"
-  - type: website
-    url: https://www.hubermanlab.com/episode/sleep-toolkit-tools-for-optimizing-sleep-and-sleep-wake-timing
+  - type: x
+    url: https://x.com/hubermanlab/status/2059108059436421383
     author: Andrew Huberman
-    note: Sleep toolkit episode with supplement and sponsor context.
+    note: Some people do well on apigenin alone.
     accessed: "2026-07-10"
 ---
 
-Huberman's [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep) includes apigenin as an optional sleep-stack item and suggests trying optional supplements one at a time, or none.
+Huberman's [sleep toolkit](https://www.hubermanlab.com/newsletter/toolkit-for-sleep) puts apigenin at 50 mg alongside magnesium and theanine, and he's [said](https://x.com/hubermanlab/status/2059108059436421383) some people do fine on it by itself.
 
-The toolkit names Momentous and includes a discount link, making its product context explicit. Individual response and the evidence base remain limited, so the source is not a settled conclusion.
-
-In a later [personal supplement post](https://x.com/hubermanlab/status/2059108059436421383), Huberman notes that apigenin alone may suit some people. That supports trying fewer variables at once; it does not establish a universal effect.
+His own framing is the useful part: add one thing at a time so you know what is doing the work. I stopped at magnesium and theanine and never had a reason to keep going.

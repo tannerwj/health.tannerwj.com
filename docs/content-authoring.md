@@ -47,7 +47,6 @@ Editorial entries are Markdown with YAML frontmatter. Calculator data is TypeScr
 | order | yes | Non-negative integer; lower values appear first within a page group. |
 | featured | no | Makes an eligible current item available to the homepage. It is not a guarantee. |
 | homepageOrder | no | Non-negative integer; unique among featured items that specify it. Lower appears first. |
-| started | no | Personal timeline only: YYYY or YYYY-MM. Never infer it from a source date. |
 | sources | no | Practical provenance records; shape below. |
 | practiceOnly | no | Literal true for a temporary, visibly marked placeholder only. Requires practiceNote. |
 | practiceNote | conditional | Required when practiceOnly is true; explains the placeholder. |
@@ -93,6 +92,9 @@ Required: shared fields. status is optional.
 
 | Field | Meaning |
 | --- | --- |
+| when | morning, daytime, evening, or bedtime. Personal items only. Groups the Current section by when you actually take the item, so things taken together render together. A current item with no `when` falls into a trailing "Current" group. |
+| tier | Only `foundational`. The short "start here" list you would hand a curious friend. Renders a badge; do not apply it to a sourced note. |
+| stacks | Other stack pages a personal item also belongs on, e.g. `[sleep]`. The target page links back to the supplement entry rather than duplicating it. |
 | dose, timing, frequency | Approved display strings only; not calculator inputs. |
 | brand, product | Optional product context displayed on the card. |
 | affiliate | One affiliate registry key. |
@@ -499,6 +501,16 @@ The integrity check covers collection presence (peptides may be empty), duplicat
 | missing-unit / invalid-quantity | Use a positive numeric calculator quantity and mg or mcg. |
 | unknown-blend-compound / unknown-blend-anchor | Add/correct the compound or anchor ID. |
 | Source note reads as Tanner's practice | Remove first-person copy and status; identify the source. |
+
+## Voice
+
+Write like Tanner explaining something to a friend who asked, not like a paper defending itself.
+
+- **Hedge once, not every paragraph.** State the caveat that would actually change someone's decision — an interaction, a side effect, a reason to skip it — and stop. Trailing disclaimers like "that is not evidence that…", "does not establish a universal effect", or "not a settled conclusion" are the single clearest tell of machine-written copy. One real caveat beats three defensive ones.
+- **Don't restate the summary as the first line of the body.** The card already shows it. Open with something the summary didn't say.
+- **Lead personal entries with the specifics**, not the category: dose, when, how long, and what happened. Put them in `dose`/`timing`/`frequency` so the cards and at-a-glance strip carry them, rather than burying them in prose.
+- **Sources are "who convinced me," not a citation wall.** Name the person, say what they contribute, link once. A source `note` should say something; "Sleep toolkit context for X" is a label, not information.
+- **Genuine uncertainty still gets stated plainly** — peptides especially. Plain and once is the standard, not hedged and repeatedly.
 
 ## Editorial quality bar
 

@@ -2,16 +2,16 @@
 name: Wind-down and bedroom technology
 slug: wind-down-and-bedroom-technology
 kind: routine
-summary: "Matthew Walker discusses a wind-down that addresses light, technology, racing thoughts, and relaxation."
+summary: "A wind-down is more than dimming lights. It also means dealing with the clock, the phone, and a mind that will not stop."
 order: 140
 sources:
   - type: website
     url: https://www.hubermanlab.com/episode/guest-series-dr-matthew-walker-protocols-to-improve-your-sleep
     author: Huberman Lab with Matthew Walker
-    note: Wind-down routines, bedroom technology, thoughts, and relaxation.
+    note: Wind-down routines, bedroom tech, and pre-sleep thoughts.
     accessed: "2026-07-10"
 ---
 
-Matthew Walker's [sleep-protocols conversation](https://www.hubermanlab.com/episode/guest-series-dr-matthew-walker-protocols-to-improve-your-sleep) treats a wind-down as more than turning the lights down. It also covers bedroom technology, clocks and phones, and strategies for pre-sleep thoughts.
+Walker's [protocols conversation](https://www.hubermanlab.com/episode/guest-series-dr-matthew-walker-protocols-to-improve-your-sleep) covers the parts of a wind-down people skip: the visible clock that turns a bad night into a math problem, the phone within reach, and having something to do with racing thoughts other than lying there.
 
-Relaxation or imagery can be useful when the mind is activated, but the approach is not one-size-fits-all. This complements the separate note on keeping evening light dim.
+Pairs with keeping [evening light dim](#darkness-and-dim-evening-light).

@@ -1,0 +1,13 @@
+# Normalize line endings so the repo behaves identically on Windows, macOS, and Linux.
+* text=auto eol=lf
+
+# Content and source files are parsed with line-anchored patterns; they must be LF.
+*.md text eol=lf
+*.astro text eol=lf
+*.ts text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+
+*.png binary
+*.svg text eol=lf

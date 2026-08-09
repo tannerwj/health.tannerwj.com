@@ -460,21 +460,33 @@ export function readEditorialEntries(rootDir: string): EditorialEntry[] {
   return entries;
 }
 
-export function readFrontmatter(filePath: string): Record<string, unknown> {
-  const source = readFileSync(filePath, "utf8");
-  if (!source.startsWith("---\n")) {
-    throw new Error(`${filePath} is missing YAML frontmatter.`);
+/**
+ * Reads a text file with newlines normalized to \n. Every reader that matches on
+ * line structure must go through this: a Windows checkout produces CRLF files,
+ * and `^---\n` anchors silently stop matching.
+ */
+export function readTextFile(filePath: string | URL): string {
+  return readFileSync(filePath, "utf8").replace(/\r\n/g, "\n");
+}
+
+export function parseFrontmatter(source: string, label: string): Record<string, unknown> {
+  const normalized = source.replace(/\r\n/g, "\n");
+  if (!normalized.startsWith("---\n")) {
+    throw new Error(`${label} is missing YAML frontmatter.`);
   }
-  const end = source.indexOf("\n---", 4);
+  const end = normalized.indexOf("\n---", 4);
   if (end === -1) {
-    throw new Error(`${filePath} has unterminated YAML frontmatter.`);
+    throw new Error(`${label} has unterminated YAML frontmatter.`);
   }
-  const yaml = source.slice(4, end);
-  const parsed = parseYaml(yaml);
+  const parsed = parseYaml(normalized.slice(4, end));
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error(`${filePath} frontmatter must be a mapping.`);
+    throw new Error(`${label} frontmatter must be a mapping.`);
   }
   return parsed as Record<string, unknown>;
+}
+
+export function readFrontmatter(filePath: string): Record<string, unknown> {
+  return parseFrontmatter(readTextFile(filePath), filePath);
 }
 
 function pushQuantityIssues(

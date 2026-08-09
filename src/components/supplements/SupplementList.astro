@@ -7,7 +7,7 @@ interface Props {
   entries: CollectionEntry<"supplements">[];
   heading: string;
   sectionLabel?: string;
-  description: string;
+  description?: string;
   emptyMessage: string;
 }
 
@@ -23,7 +23,7 @@ const statusLabels = {
   <header class="group-heading">
     <p class="section-label">{sectionLabel} / {heading}</p>
     <h2 id={`supplements-${heading.toLowerCase().replaceAll(" ", "-")}`}>{heading}</h2>
-    <p>{description}</p>
+    {description ? <p>{description}</p> : null}
   </header>
 
   {
@@ -39,7 +39,10 @@ const statusLabels = {
               <article class="supplement-entry" id={entry.data.slug}>
                 <div class="entry-heading">
                   <div>
-                    <p class="entry-status">{entry.data.status ? statusLabels[entry.data.status] : entry.data.sources?.length ? "Source note" : "Saved product"}</p>
+                    <p class="entry-status">
+                      {entry.data.status ? statusLabels[entry.data.status] : entry.data.sources?.length ? "Source note" : "Saved product"}
+                      {entry.data.tier === "foundational" ? <span class="tier-badge">Start here</span> : null}
+                    </p>
                     <h3>{entry.data.name}</h3>
                   </div>
                   {entry.data.product || entry.data.brand ? (
@@ -117,6 +120,7 @@ const statusLabels = {
   .supplement-entry { border: 1px solid var(--line); border-top: 3px solid var(--sage); padding: 1rem; background: rgba(248, 246, 238, .42); scroll-margin-top: 1rem; }
   .entry-heading { display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
   .entry-status, .product-context { margin: 0; color: var(--muted); font-size: 0.62rem; font-weight: 900; letter-spacing: .11em; line-height: 1.35; text-transform: uppercase; }
+  .tier-badge { display: inline-block; margin-left: .5rem; border: 1px solid var(--sage-deep); padding: .08rem .38rem; color: var(--sage-deep); }
   .product-context { max-width: 14rem; text-align: right; }
   .supplement-entry h3 { margin-top: .3rem; font-size: clamp(1.75rem, 6vw, 2.55rem); line-height: .98; }
   .summary { max-width: 47rem; margin: .75rem 0 0; color: var(--ink); line-height: 1.5; }

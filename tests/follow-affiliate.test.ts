@@ -1,20 +1,17 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { parse as parseYaml } from "yaml";
+import { parseFrontmatter, readTextFile } from "../scripts/validate-content";
 
 const workspaceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function read(relativePath: string) {
-  return readFileSync(path.join(workspaceRoot, relativePath), "utf8");
+  return readTextFile(path.join(workspaceRoot, relativePath));
 }
 
 function frontmatter(relativePath: string) {
-  const match = read(relativePath).match(/^---\n([\s\S]*?)\n---/);
-  assert(match, `${relativePath} must have frontmatter`);
-  return parseYaml(match[1]) as Record<string, unknown>;
+  return parseFrontmatter(read(relativePath), relativePath);
 }
 
 test("Amazon links preserve generic searches and exact amzn.to product links", () => {
@@ -39,7 +36,9 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
     ["amazon-medpride-alcohol-prep-pads", "B07F2MQ9NJ", "https://amzn.to/4vjF8Fz"],
     ["amazon-avmacol-sulforaphane", "B07V485YZH", "https://amzn.to/44sq7q2"],
     ["amazon-nutricost-ubiquinol", "B0C87VT8CW", "https://amzn.to/4aNBRHn"],
-    ["amazon-now-curcumin-phytosome", "B004AC0676", "https://amzn.to/4wzaclH"]
+    ["amazon-now-curcumin-phytosome", "B004AC0676", "https://amzn.to/4wzaclH"],
+    ["amazon-magnesium-glycinate", "B0C2XSJ9H5", "https://amzn.to/3Si6EG2"],
+    ["amazon-l-theanine", "B01F261E88", "https://amzn.to/4xOz2yT"]
   ] as const;
 
   assert.equal(Object.keys(affiliates).length, 14);

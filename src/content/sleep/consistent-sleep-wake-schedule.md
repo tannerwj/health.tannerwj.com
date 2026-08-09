@@ -2,21 +2,19 @@
 name: Consistent sleep/wake schedule
 slug: consistent-sleep-wake-schedule
 kind: routine
-summary: "Huberman Lab and Matthew Walker both emphasize regular sleep and wake timing as a core sleep lever."
+summary: "Same bedtime, same wake time. Walker and Huberman both put regularity ahead of the fancier stuff."
 order: 60
 sources:
   - type: website
     url: https://www.hubermanlab.com/newsletter/improve-your-sleep
     author: Andrew Huberman
-    note: Sleep consistency guidance.
+    note: Consistency as a first-order sleep lever.
     accessed: "2026-07-10"
   - type: website
     url: https://www.sleepdiplomat.com/
     author: Matthew Walker
-    note: Sleep Diplomat context for regular sleep timing.
+    note: Regularity of timing as a foundation.
     accessed: "2026-07-10"
 ---
 
-Huberman Lab's [sleep guidance](https://www.hubermanlab.com/newsletter/improve-your-sleep) and Matthew Walker's [Sleep Diplomat](https://www.sleepdiplomat.com/) work both point toward regularity as a simple foundation.
-
-The durable idea is that a repeatable wake time and bedtime usually matter before finer details.
+[Huberman](https://www.hubermanlab.com/newsletter/improve-your-sleep) and [Walker](https://www.sleepdiplomat.com/) land in the same place here: a repeatable wake time does more than any supplement, and it is the thing most people skip because it is boring and costs them their weekends.

@@ -2,16 +2,16 @@
 name: Diet quality and sleep
 slug: diet-quality-and-sleep
 kind: routine
-summary: "Rhonda Patrick highlights an association between higher-fiber, more diverse plant intake and better sleep."
+summary: "More fiber and more plant variety tracks with better sleep. An association, not a lever you can pull tonight."
 order: 210
 sources:
   - type: x
     url: https://x.com/foundmyfitness/status/2029273849397952567
     author: Rhonda Patrick
-    note: Higher-fiber and more diverse plant intake was associated with better sleep.
+    note: Higher-fiber, more diverse plant intake associated with better sleep.
     accessed: "2026-07-10"
 ---
 
-Rhonda Patrick's [post on diet and sleep](https://x.com/foundmyfitness/status/2029273849397952567) highlights research linking higher-fiber, more diverse plant intake with better sleep measures.
+Patrick [highlights the research](https://x.com/foundmyfitness/status/2029273849397952567) linking fiber and plant diversity to better sleep measures.
 
-This is an association, not proof that adding a particular food will fix sleep. Diet quality may travel with many other health behaviors, and tolerance differs. It is a broader nutrition signal, not a substitute for evaluating persistent sleep problems.
+The honest read is that diet quality travels with a lot of other things people who sleep well tend to do, so treat it as a nutrition reason rather than a sleep intervention.

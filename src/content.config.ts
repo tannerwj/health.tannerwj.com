@@ -3,7 +3,6 @@ import { glob } from "astro/loaders";
 
 const slugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 const statusSchema = z.enum(["current", "considering", "previously-tried"]);
-const startedSchema = z.string().regex(/^\d{4}(?:-\d{2})?$/);
 const sourceTypeSchema = z.enum([
   "x",
   "pep-pedia",
@@ -28,11 +27,20 @@ const sharedFields = {
   order: z.number().int().nonnegative(),
   featured: z.boolean().optional(),
   homepageOrder: z.number().int().nonnegative().optional(),
-  started: startedSchema.optional(),
   sources: z.array(sourceSchema).optional(),
   practiceOnly: z.literal(true).optional(),
   practiceNote: z.string().optional()
 };
+
+// When a personal item is actually taken. Drives grouping so timing, not a
+// hand-maintained integer, decides which items sit together on the page.
+const whenSchema = z.enum(["morning", "daytime", "evening", "bedtime"]);
+
+// The short list worth recommending as a starting point within its own stack.
+const tierSchema = z.literal("foundational");
+
+// Other stack pages this personal item should also surface on.
+const stacksSchema = z.array(z.enum(["sleep", "exercise", "protocols"])).min(1);
 
 const productFields = {
   brand: z.string().optional(),
@@ -46,6 +54,9 @@ const supplements = defineCollection({
   schema: z.object({
     ...sharedFields,
     status: statusSchema.optional(),
+    when: whenSchema.optional(),
+    tier: tierSchema.optional(),
+    stacks: stacksSchema.optional(),
     dose: z.string().optional(),
     timing: z.string().optional(),
     frequency: z.string().optional(),
@@ -59,6 +70,7 @@ const sleep = defineCollection({
     ...sharedFields,
     kind: z.enum(["routine", "environment", "gear", "tracking"]),
     status: statusSchema.optional(),
+    tier: tierSchema.optional(),
     timing: z.string().optional(),
     frequency: z.string().optional(),
     spec: z.string().optional(),
@@ -72,6 +84,7 @@ const exercise = defineCollection({
     ...sharedFields,
     kind: z.enum(["split", "session", "principle", "equipment", "recovery"]),
     status: statusSchema.optional(),
+    tier: tierSchema.optional(),
     schedule: z.string().optional(),
     frequency: z.string().optional(),
     duration: z.string().optional(),
@@ -86,6 +99,7 @@ const protocols = defineCollection({
     ...sharedFields,
     kind: z.enum(["testing", "therapy", "nutrition", "recovery", "other"]),
     status: statusSchema.optional(),
+    tier: tierSchema.optional(),
     cadence: z.string().optional(),
     provider: z.string().optional(),
     service: z.string().optional(),
