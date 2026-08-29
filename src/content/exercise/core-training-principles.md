@@ -2,21 +2,21 @@
 name: Core training follows normal training rules
 slug: core-training-principles
 kind: principle
-summary: "Andy Galpin treats the core like other muscle groups: use appropriate load, progression, and recovery rather than assuming it needs daily work."
+summary: "Galpin: the core is muscle like any other. It does not need daily work and it does not get a recovery exemption."
 order: 210
 sources:
   - type: x
     url: https://x.com/DrAndyGalpin/status/2039428464596685287
     author: Andy Galpin
-    note: Core training should use ordinary loading and progression principles.
+    note: Core training uses ordinary loading and progression rules.
     accessed: "2026-07-10"
   - type: x
     url: https://x.com/DrAndyGalpin/status/2042022002576519321
     author: Andy Galpin
-    note: The core does not have a special ability to recover from hard work every day.
+    note: The core has no special daily-recovery ability.
     accessed: "2026-07-10"
 ---
 
-Andy Galpin's [core-training post](https://x.com/DrAndyGalpin/status/2039428464596685287) applies familiar training ideas to the trunk: choose a movement for the goal, load it appropriately, and progress it over time. His [follow-up](https://x.com/DrAndyGalpin/status/2042022002576519321) pushes back on the idea that hard core work has a special daily-recovery exemption.
+Galpin [applies the boring rules](https://x.com/DrAndyGalpin/status/2039428464596685287) to the trunk: pick a movement for the goal, load it, progress it. Then [pushes back](https://x.com/DrAndyGalpin/status/2042022002576519321) on the idea that abs are special and can be hammered daily.
 
-Frequency still depends on the exercise, intensity, volume, and the rest of the program. Easy skill or bracing practice is not the same recovery demand as hard loaded flexion, extension, rotation, or anti-movement work.
+If a set of loaded core work is genuinely hard, it needs recovery like anything else. Light bracing practice is a different story, but so is a light set of anything.

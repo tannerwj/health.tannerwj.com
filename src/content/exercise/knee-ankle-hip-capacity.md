@@ -2,18 +2,16 @@
 name: Pain-free knee, ankle, and hip capacity
 slug: knee-ankle-hip-capacity
 kind: principle
-summary: "Ben Patrick's ATG work emphasizes progressive lower-leg and joint-capacity work kept within pain-free ranges."
+summary: "The ATG premise: joints get more durable through gradual exposure to the ranges people usually avoid, including knees past toes."
 order: 70
 sources:
   - type: website
     url: https://www.atgonlinecoaching.com/
     author: ATG Online Coaching
-    note: Official ATG training context.
+    note: Progressive joint-capacity training including knee-forward positions.
     accessed: "2026-07-10"
 ---
 
-Ben Patrick's [ATG Online Coaching](https://www.atgonlinecoaching.com/) frames knee, ankle, hip, and lower-leg work as progressive capacity training, including gradual exposure to knee-forward positions.
+The [ATG approach](https://www.atgonlinecoaching.com/) inverts the old advice about never letting knees pass the toes. The argument is that a range you never train is a range you have no strength in, and that is exactly where things go wrong.
 
-The durable idea is to build range and strength gradually while keeping the work pain-free and specific to the person. A supported or shortened range can be a useful starting point before a person earns more range, control, or load.
-
-This is coach framing, not a promise to prevent or cure an injury. Progress should stay scalable, controlled, and appropriate to the person's current tolerance.
+The word doing the work is "gradual." Start supported, in a short range, and earn the rest. Pain is the signal to back off a step, not to push through — and this is coaching, not treatment for an injury you already have.

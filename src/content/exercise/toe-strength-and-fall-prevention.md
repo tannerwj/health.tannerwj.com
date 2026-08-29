@@ -2,16 +2,16 @@
 name: Toe strength and fall-prevention context
 slug: toe-strength-and-fall-prevention
 kind: principle
-summary: "Peter Attia includes toe strength in the lower-leg capacity and balance conversation around later-life falls."
+summary: "Feet and toes are part of how you sense the ground and catch yourself. One small piece of a much larger falls picture."
 order: 230
 sources:
   - type: x
     url: https://x.com/PeterAttiaMD/status/1950557256774222208
     author: Peter Attia
-    note: Toe strength can be one part of lower-leg capacity and fall-prevention work.
+    note: Toe strength within lower-leg capacity and fall prevention.
     accessed: "2026-07-10"
 ---
 
-Peter Attia's [post on toe strength](https://x.com/PeterAttiaMD/status/1950557256774222208) places the feet and toes inside a larger balance and fall-prevention picture. The feet are part of how someone senses the ground and controls force, so their capacity is worth training rather than ignoring.
+[Attia puts the feet](https://x.com/PeterAttiaMD/status/1950557256774222208) inside the balance conversation, on the reasonable grounds that they are the part touching the ground and doing the correcting when you stumble.
 
-Toe work is one small component, not a stand-alone fall-prevention program. Balance, vision, medications, environment, strength, gait, vestibular function, and medical conditions can all matter.
+Falls in later life are driven by vision, medications, vestibular function, strength, and the layout of the house. Toe work is worth doing and is nowhere near the whole answer.

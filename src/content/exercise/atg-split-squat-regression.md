@@ -2,18 +2,16 @@
 name: ATG split squat regression
 slug: atg-split-squat-regression
 kind: session
-summary: "ATG's split-squat coaching uses assistance, front-foot elevation, and range changes before adding load or deeper lunge demands."
+summary: "A progression, not a pass-or-fail movement. Elevate the front foot, hold something, shorten the range - then earn the rest."
 order: 150
 sources:
   - type: website
     url: https://www.atgonlinecoaching.com/articles/article-knees-over-toes-lunge-coaching-guide-for-f45
     author: Ben Patrick and ATG Online Coaching
-    note: ATG lunge coaching, assistance, elevation, and range progressions.
+    note: Assistance, elevation, and range progressions for the split squat.
     accessed: "2026-07-10"
 ---
 
-Ben Patrick's [ATG lunge coaching guide](https://www.atgonlinecoaching.com/articles/article-knees-over-toes-lunge-coaching-guide-for-f45) treats the split squat as a progression rather than a single pass-or-fail movement. Assistance, a higher front foot, a shorter range, or a stable setup can make the demand more manageable.
+The [ATG lunge guide](https://www.atgonlinecoaching.com/articles/article-knees-over-toes-lunge-coaching-guide-for-f45) treats the split squat as a dial rather than a movement you can or cannot do. Raise the front foot, hold a support, or cut the range, and it becomes accessible to almost anyone.
 
-As control improves, the coach's progression can move toward more range, less assistance, or a lower front-foot elevation before load is added. A deep lunge is an advanced option, not a starting requirement.
-
-The conservative takeaway is to use the most challenging pain-free version that remains controlled. ATG's progressions are coaching ideas, not clinical-treatment promises, and they should be scaled to the person.
+Work the dial in one direction at a time: more range, then less assistance, then lower elevation. Load comes last, not first, and the deep version is the destination rather than the starting line.

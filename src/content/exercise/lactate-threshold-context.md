@@ -2,18 +2,16 @@
 name: Lactate and threshold in context
 slug: lactate-threshold-context
 kind: principle
-summary: "Lactate can serve as fuel and signal, while threshold work remains distinct from easy aerobic work and should not be wrapped in mechanism hype."
+summary: "Lactate is fuel, not the burn and not a waste product. Useful for reading intensity, oversold as a mechanism."
 order: 120
 sources:
   - type: website
     url: https://www.performpodcast.com/episodes/how-lactate-metabolism-influence-performance/
     author: Perform Podcast
-    note: Lactate metabolism, threshold, and performance context.
+    note: Lactate as fuel and signal rather than waste.
     accessed: "2026-07-10"
 ---
 
-The Perform Podcast's [lactate discussion](https://www.performpodcast.com/episodes/how-lactate-metabolism-influence-performance/) presents lactate as a usable fuel and a signal of changing exercise demands, not simply a waste product. That framing helps explain why lactate appears across different intensities.
+The [lactate episode](https://www.performpodcast.com/episodes/how-lactate-metabolism-influence-performance/) corrects the version most people learned: lactate is a usable fuel and a signal, not the thing making your legs burn and not a metabolic waste product to be cleared.
 
-Threshold work is still a distinct training demand from easy, sustainable aerobic work. It sits closer to the edge of what can be maintained and therefore carries a different fatigue and recovery cost.
-
-The conservative takeaway is to use threshold language to describe an intensity context, not to promise a special metabolic switch. Training response depends on the person, the task, and how the rest of the week is arranged.
+Practically, threshold work is just a distinct intensity with its own fatigue cost, sitting above easy aerobic work and below all-out. Useful as a description. Be skeptical when someone sells it as a special metabolic switch.

@@ -139,11 +139,10 @@ test("statusless sourced supplements remain separate from personal stack groups"
     .filter((entry) => !entry.status && entry.sources?.length)
     .sort((a, b) => a.order - b.order);
 
+  // The supplements page lists what Tanner actually takes plus saved product
+  // links. It is deliberately not a catalog of supplements he does not take.
   assert.equal(personalEntries.length, 3);
-  assert.deepEqual(
-    sourceNotes.map((entry) => entry.slug),
-    ["apigenin", "glycine", "myo-inositol", "melatonin-caution"]
-  );
+  assert.deepEqual(sourceNotes, []);
 
   const supplementsPage = readFileSync(path.join(workspaceRoot, "src/pages/supplements.astro"), "utf8");
   const supplementList = readFileSync(

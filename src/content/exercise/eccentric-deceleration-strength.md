@@ -2,18 +2,16 @@
 name: Eccentric deceleration strength
 slug: eccentric-deceleration-strength
 kind: principle
-summary: "Peter Attia highlights controlled lowering, step-downs, hills, and tempo work as ways to learn to absorb force without promising injury prevention."
+summary: "Being able to absorb force, not just produce it. Step-downs and downhill walking are where most people find out they cannot."
 order: 190
 sources:
   - type: website
     url: https://peterattiamd.com/avoiding-injury-part-i-eccentric-strength/
     author: Peter Attia
-    note: Eccentric strength and force-absorption context.
+    note: Eccentric strength and controlled force absorption.
     accessed: "2026-07-10"
 ---
 
-Peter Attia's [eccentric-strength discussion](https://peterattiamd.com/avoiding-injury-part-i-eccentric-strength/) emphasizes the ability to control the lowering or braking portion of movement. Step-downs, downhill walking, controlled landings, and tempo work can all expose a person to deceleration demands in scalable ways.
+[Attia's argument](https://peterattiamd.com/avoiding-injury-part-i-eccentric-strength/) is that most training is about producing force while most bad outcomes involve absorbing it — landing, stumbling, going downhill, catching yourself. Those are different capacities, and the second one is usually untrained.
 
-The useful progression is the version that preserves alignment, balance, and control. Range, speed, support, terrain, and load can be adjusted so the person learns to absorb force without needing maximal intensity.
-
-Eccentric work is a training quality, not an injury guarantee or a substitute for clinical care. Build it gradually and keep the work appropriate to current tolerance and the demands the person actually wants to meet.
+Slow step-downs are the cheapest test and the cheapest fix. Downhill walking counts too, which is why it makes you sorer than the climb did.

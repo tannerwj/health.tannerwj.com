@@ -2,18 +2,16 @@
 name: Progressive overload with reps in reserve
 slug: progressive-overload-with-reps-in-reserve
 kind: principle
-summary: "Progress can come from more load, reps, or movement quality while leaving a recoverable margin instead of treating failure as the default."
+summary: "Add a little over time, and stop a couple of reps short. Training to failure every set costs more recovery than it returns."
 order: 200
 sources:
   - type: website
     url: https://peterattiamd.com/strengthandmuscle/
     author: Peter Attia
-    note: Strength, muscle growth, progression, and recovery context.
+    note: Progression, effort, and recovery in strength training.
     accessed: "2026-07-10"
 ---
 
-Peter Attia's [strength and muscle discussion](https://peterattiamd.com/strengthandmuscle/) treats progressive overload as a gradual increase in the training challenge. That increase can come from load, repetitions, range, control, or a better-quality version of the same movement.
+Progress can come from load, reps, range, or just a cleaner version of the same movement — [Attia's overview](https://peterattiamd.com/strengthandmuscle/) counts all of them. It does not have to be weight on the bar every week.
 
-Leaving some reps in reserve can make the work more repeatable and gives room for day-to-day variation in sleep, stress, and readiness. Training to failure may have a place, but it does not need to be the default for every set or every exercise.
-
-The durable rule is to progress only when the current workload is controlled and recoverable. If quality or recovery deteriorates, holding steady or reducing the demand is part of intelligent progression.
+Leaving two reps in reserve is what makes the whole thing repeatable. Failure on every set buys a little extra stimulus at a large recovery cost, and it means a bad night's sleep wrecks the session instead of just making it harder.

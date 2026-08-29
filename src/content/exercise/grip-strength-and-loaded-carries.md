@@ -2,23 +2,21 @@
 name: Grip strength and loaded carries
 slug: grip-strength-and-loaded-carries
 kind: principle
-summary: "Grip is both an observable marker and a trainable capacity, with carries, hangs, and pulling work offering practical ways to load it."
+summary: "Grip predicts a lot in the epidemiology and is trainable with carries and hangs. Predicting is not the same as causing."
 order: 180
 sources:
   - type: website
     url: https://peterattiamd.com/avoiding-injury-part-ii-grip-strength/
     author: Peter Attia
-    note: Grip-strength and loaded-carry training context.
+    note: Grip as a trainable capacity, and how to load it.
     accessed: "2026-07-10"
   - type: study
     url: https://pubmed.ncbi.nlm.nih.gov/25982160/
     author: Darryl P. Leong et al.
-    note: Prospective Urban Rural Epidemiology grip-strength association study.
+    note: PURE study associating grip strength with mortality outcomes.
     accessed: "2026-07-10"
 ---
 
-Peter Attia presents grip as a capacity that matters for real tasks and can be trained with carries, hangs, pulling, and other loaded holds. The task-based value is straightforward: the hands must keep an object secure while the rest of the body moves.
+Grip shows up constantly in longevity discussion because of studies like [PURE](https://pubmed.ncbi.nlm.nih.gov/25982160/), which linked weaker grip to worse outcomes across a large population. Worth being clear about what that means: grip is standing in for overall strength and health, and squeezing a gripper will not move the underlying thing.
 
-Leong and colleagues' PURE study found associations between lower grip strength and some health outcomes, but an association is not proof that grip training causes those outcomes. Grip is a useful marker and a trainable quality, not a magic measure of overall health.
-
-Choose a scalable load and position that preserve control. Carries, hangs, and pulls can be adjusted for equipment, duration, distance, and grip demand without turning a marker into a diagnosis.
+It is still worth training, for the ordinary reason that [Attia gives](https://peterattiamd.com/avoiding-injury-part-ii-grip-strength/) — your hands are the limiting factor on carrying and pulling anything. Farmer's carries and dead hangs cover it.
