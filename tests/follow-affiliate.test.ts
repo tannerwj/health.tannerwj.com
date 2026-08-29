@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -132,18 +133,17 @@ test("affiliate calls to action are transparent and sponsored", () => {
 
   const affiliateHelper = read("src/lib/affiliates.ts");
   assert.match(affiliateHelper, /View \$\{affiliate\.product\} on Amazon/);
-  const disclosure = read("src/components/site/AmazonDisclosure.astro");
-  assert.match(disclosure, /As an Amazon Associate I earn from qualifying purchases\./);
-  assert.match(disclosure, /font-size: \.88rem/);
+  // Affiliate disclosure lives once in the site footer, not per page.
+  assert(!existsSync(path.join(workspaceRoot, "src/components/site/AmazonDisclosure.astro")));
+  assert.match(read("src/data/site.ts"), /Some links are affiliate links/);
 
-  for (const [renderer, publicSurface] of [
-    ["src/components/supplements/SupplementList.astro", "src/pages/supplements.astro"],
-    ["src/components/sleep/SleepEntry.astro", "src/pages/sleep.astro"],
-    ["src/components/exercise/ExerciseGroup.astro", "src/pages/exercise.astro"],
-    ["src/components/peptides/PeptideSupplies.astro", "src/components/peptides/PeptideSupplies.astro"]
+  for (const renderer of [
+    "src/components/supplements/SupplementList.astro",
+    "src/components/sleep/SleepEntry.astro",
+    "src/components/exercise/ExerciseGroup.astro",
+    "src/components/peptides/PeptideSupplies.astro"
   ]) {
     assert.match(read(renderer), /getAffiliateEntries/);
-    assert.match(read(publicSurface), /AmazonDisclosure/);
   }
 });
 

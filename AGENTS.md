@@ -54,7 +54,7 @@ These sources answer different questions. Never use prose to override an enforce
 
 - Reuse keys from `src/data/affiliates.json`; never paste product URLs into arbitrary page markup.
 - Exact product links and generic search links are deliberately different. Do not present a search link as a product Tanner selected.
-- Preserve the Amazon disclosure and `rel="sponsored noreferrer"` behavior in shared affiliate rendering.
+- The affiliate disclosure lives once, in the site footer. Do not reintroduce per-page or per-item disclosures. Preserve `rel="sponsored noreferrer"` behavior in shared affiliate rendering.
 - Affiliate links must not drive editorial claims, rankings, or invented product experience.
 
 ### Calculator and peptide links

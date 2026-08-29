@@ -72,7 +72,7 @@ curl --fail --show-error --silent --location "$PREVIEW_URL/robots.txt" >/dev/nul
 curl --fail --show-error --silent --location "$PREVIEW_URL/sitemap.xml" >/dev/null
 ```
 
-Visually smoke the preview on a phone-width viewport and a desktop viewport. Check navigation, the changed page, internal links, affiliate disclosure where applicable, the calculator's search and selected-item flow, and that no page scrolls horizontally. For a content change, also confirm the new record is visibly in the intended group and no source note is presented as Tanner's practice.
+Visually smoke the preview on a phone-width viewport and a desktop viewport. Check navigation, the changed page, internal links, the calculator's search and selected-item flow, and that no page scrolls horizontally. For a content change, also confirm the new record is visibly in the intended group and no source note is presented as Tanner's practice.
 
 ## Exact-commit production promotion
 
@@ -113,7 +113,7 @@ Before calling a release complete, verify:
 - Page title, canonical URL, description, social image, and X sharing link are correct on the changed route.
 - The desktop header and mobile hamburger menu work; focus remains usable and no narrow viewport has horizontal overflow.
 - Editorial routes remain statically generated with only the shared mobile-navigation controller; calculator-specific JavaScript stays isolated to `/peptides/calculator/`.
-- Affiliate links have the visible Amazon disclosure, are the intended exact links, and do not link to peptide vendors.
+- Affiliate links are the intended exact links, do not link to peptide vendors, and the footer disclosure is present.
 - Content records render with their intended personal or sourced label, and no placeholder/practice data has returned.
 - Calculator math, deep links from peptide records, live search, and local preferences still work after the release.
 

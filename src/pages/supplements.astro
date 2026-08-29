@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import SupplementList from "../components/supplements/SupplementList.astro";
-import AmazonDisclosure from "../components/site/AmazonDisclosure.astro";
 import AtAGlance from "../components/site/AtAGlance.astro";
 import PageIntro from "../components/site/PageIntro.astro";
 import PracticeDataNotice from "../components/site/PracticeDataNotice.astro";
@@ -53,7 +52,6 @@ const glanceItems = glanceEntries.map((entry) => ({
       <div class="wrap"><PracticeDataNotice>Practice placeholders below are not Tanner's stack.</PracticeDataNotice></div>
     ) : null}
 
-    <div class="wrap"><AmazonDisclosure /></div>
 
     <div class="wrap stack" id="supplement-details">
       {currentByWhen.map((group) => (

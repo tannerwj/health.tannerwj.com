@@ -391,7 +391,7 @@ Rules:
 - A present asin is exactly ten uppercase letters/digits; never invent it.
 - Preserve supplied Amazon short URLs exactly. Do not exchange a known product link for a search result or alter its tag.
 - affiliate is one key. affiliates is ordered plural keys for variants. Supplements, Sleep, Exercise, and Supplies support plural links; Protocols supports only singular.
-- Pages with Amazon links use the shared disclosure component. Do not handwrite a competing disclosure in an item body.
+- The affiliate disclosure is stated once in the site footer (`FOOTER_DISCLOSURE` in `src/data/site.ts`). Do not add a per-page disclosure component or handwrite one in an item body.
 - Registry rendering provides the sponsored link relationship; do not bypass it with raw Markdown product links.
 
 ## Calculator catalog

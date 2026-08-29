@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
-import AmazonDisclosure from "../site/AmazonDisclosure.astro";
 
 interface Props {
   entries: CollectionEntry<"supplies">[];
@@ -16,7 +15,6 @@ const { entries } = Astro.props;
       <p class="section-label">Products / Supplies</p>
       <h2 id="supplies-heading">Supply links.</h2>
       <p>These links do not describe my current setup.</p>
-      <AmazonDisclosure />
     </header>
     <div class="supply-grid">
       {entries.map((entry) => {
