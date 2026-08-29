@@ -5,8 +5,8 @@ entryType: source-note
 form: blend
 category: repair
 evidenceMaturity: component-extrapolation
-summary: A vendor-specific blend name without one standard composition.
-atAGlance: “Beauty” is not a stable formula; the vial label and vendor documentation have to define the ingredients.
+summary: A marketing name, not a formula. Two vials labelled Beauty can contain entirely different things.
+atAGlance: No standard composition exists. Read the actual label.
 components:
   - Vendor-specific composition; verify the vial label
 commonContext: Usually marketed with skin, hair, or cosmetic-recovery language.
@@ -25,4 +25,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-This entry intentionally has no calculator ID. A formula should not be guessed from the product name.
+This entry deliberately has no calculator link, because there is no formula to compute against. Anyone selling you "Beauty" has to tell you what is in it before the question of evidence can even be asked.

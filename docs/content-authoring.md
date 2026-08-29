@@ -1,523 +1,157 @@
 # Content Authoring Guide
 
-**Status:** Canonical operating guide for the live site.  
-**Executable source of truth:** src/content.config.ts, then scripts/validate-content.ts. This guide explains those rules; it does not replace them.
+**Executable source of truth:** [`src/content.config.ts`](../src/content.config.ts), then [`scripts/validate-content.ts`](../scripts/validate-content.ts). This guide explains those rules and does not replace them. When they disagree, the code is right.
 
-This site contains two kinds of public information:
+## The one rule that matters
 
-1. **Personal entries** are facts Tanner explicitly supplied or approved as his own current, considering, or previously tried practice.
-2. **Sourced notes** preserve useful ideas, products, or reference material from someone else. They must not imply Tanner uses them.
+Two kinds of information live here:
 
-Never turn a source into a claim about Tanner. Never guess a dose, cadence, start date, product, outcome, provider, equipment list, or peptide use. Omit an unknown field.
+1. **Personal entries** — what Tanner actually does, supplied or approved by him.
+2. **Sourced notes** — ideas worth keeping from someone else, written so they cannot be mistaken for his practice.
+
+Never turn a source into a claim about Tanner. Never invent a dose, cadence, product, outcome, provider, or peptide use. Omit unknown fields rather than guessing or writing a placeholder.
+
+The supplements page is a special case: it lists what Tanner takes plus saved product links. It is deliberately **not** a catalog of supplements he does not take.
 
 ## Fast path
 
-1. Choose the collection below.
-2. Create or edit src/content/<collection>/<slug>.md; filename and kebab-case slug must match.
-3. Use first person only for Tanner-approved personal facts. Attribute sourced notes naturally.
-4. Add an affiliate key, never a raw retailer URL, when a product link belongs on the card.
-5. Run validation, tests, build, and build assertions before publishing.
-
-The build clears stale Astro content caches. Do not commit or manually restore Astro cache files.
-
-## Repository map
-
-| Change | Live location |
-| --- | --- |
-| Supplements | src/content/supplements/ |
-| Sleep | src/content/sleep/ |
-| Exercise | src/content/exercise/ |
-| Protocols | src/content/protocols/ |
-| Peptide reference entries | src/content/peptides/ |
-| Peptide-preparation supplies | src/content/supplies/ |
-| Follow profiles | src/content/follow/ |
-| Affiliate registry | src/data/affiliates.json |
-| Calculator compounds | src/data/calculator/compounds.ts |
-| Calculator blend variants | src/data/calculator/blends.ts |
-
-Editorial entries are Markdown with YAML frontmatter. Calculator data is TypeScript; display strings from Markdown are never calculator inputs.
-
-## Shared editorial fields
-
-| Field | Required | Rule / behavior |
-| --- | --- | --- |
-| name | yes | Human-readable card title. |
-| slug | yes | Lowercase kebab-case. Must equal the filename without .md; becomes the URL fragment. |
-| summary | yes | Short, specific card copy. First person only for approved personal facts. |
-| order | yes | Non-negative integer; lower values appear first within a page group. |
-| featured | no | Makes an eligible current item available to the homepage. It is not a guarantee. |
-| homepageOrder | no | Non-negative integer; unique among featured items that specify it. Lower appears first. |
-| sources | no | Practical provenance records; shape below. |
-| practiceOnly | no | Literal true for a temporary, visibly marked placeholder only. Requires practiceNote. |
-| practiceNote | conditional | Required when practiceOnly is true; explains the placeholder. |
-
-Where supported, status is exactly current, considering, or previously-tried. It is not universal.
-
-### Homepage eligibility
-
-Only collections that support status can feed the homepage's current-item module. An entry needs featured: true **and** status: current; a peptide must additionally have entryType: personal. Follow profiles have no status field, so their featured and homepageOrder fields are currently unused by that module. Sourced notes and saved products do not become personal homepage highlights.
-
-Use homepageOrder only for deliberate cross-section placement. Keep values unique and spaced, such as 10, 20, 30.
-
-### Sources
-
-~~~yaml
-sources:
-  - type: x # x | pep-pedia | website | study | person | conversation
-    url: https://x.com/example/status/123 # required for x, website, and study
-    author: Example Person
-    note: What the source contributes; not a fabricated citation abstract.
-    accessed: "2026-07-18" # YYYY-MM-DD
-~~~
-
-The collection schema permits URL, author, note, and accessed to be absent, but the validator requires a valid HTTP(S) URL for x, website, and study. pep-pedia, person, and conversation may honestly have no URL. local-file is for calculator source records only, not editorial Markdown.
-
-## Personal entries versus sourced notes
-
-| Situation | Correct shape |
-| --- | --- |
-| Tanner confirms personal use / consideration / prior use | A record with status, personal wording, and only approved facts. |
-| A product is useful but Tanner has not said he uses it | Statusless product record; no personal language. |
-| An idea is useful to retain from a source | Statusless entry with sources, neutral attribution, and no invented personal facts. |
-| A peptide is library context, not Tanner's practice | entryType: source-note; source required and personal dosing/outcome fields forbidden. |
-
-On Supplements, a statusless affiliate record with no sources is a **Saved product link**. A statusless record with sources is a **Source note**. Sleep, Exercise, and Protocols show statusless sourced records as **Source note**. Do not describe these as Tanner's stack, routine, plan, protocol, or equipment.
-
-## Supplements
-
-**Path:** src/content/supplements/  
-**Page groups:** Current, Saved product links, Considering, Previously tried, Source notes.
-
-Required: shared fields. status is optional.
-
-| Field | Meaning |
-| --- | --- |
-| when | morning, daytime, evening, or bedtime. Personal items only. Groups the Current section by when you actually take the item, so things taken together render together. A current item with no `when` falls into a trailing "Current" group. |
-| tier | Only `foundational`. The short "start here" list you would hand a curious friend. Renders a badge; do not apply it to a sourced note. |
-| stacks | Other stack pages a personal item also belongs on, e.g. `[sleep]`. The target page links back to the supplement entry rather than duplicating it. |
-| dose, timing, frequency | Approved display strings only; not calculator inputs. |
-| brand, product | Optional product context displayed on the card. |
-| affiliate | One affiliate registry key. |
-| affiliates | Ordered nonempty keys for intentional product variants. Do not set both singular and plural forms. |
-
-Personal example:
-
-~~~markdown
----
-name: Magnesium glycinate
-slug: magnesium-glycinate
-status: current
-summary: I take this before bed as part of my current supplement list.
-order: 10
-featured: true
-homepageOrder: 10
-dose: 200 mg
-timing: Before bed
-frequency: Most evenings
-affiliate: amazon-magnesium-glycinate
-sources:
-  - type: website
-    url: https://example.com/magnesium-context
-    author: Example publication
-    note: Background reading; not a record of my dose.
-    accessed: "2026-07-18"
----
-
-Optional context without an unapproved personal outcome.
-~~~
-
-Saved product example:
-
-~~~markdown
----
-name: Example Ubiquinol
-slug: example-ubiquinol
-summary: A product link saved for future reference; it is not listed as part of my current stack.
-order: 90
-brand: Example
-product: Ubiquinol 100 mg
-affiliate: amazon-nutricost-ubiquinol
----
-~~~
-
-## Sleep
-
-**Path:** src/content/sleep/  
-**Page groups:** routine, environment, gear, then tracking, preserving order.
-
-Required: shared fields plus kind: routine, environment, gear, or tracking.
-
-Additional fields: status, timing, frequency, spec, brand, product, affiliate, and affiliates. spec is a concrete setup detail, not a made-up product claim. Personal current cards feed the at-a-glance section.
-
-~~~markdown
----
-name: Eye mask
-slug: eye-mask
-kind: gear
-status: current
-summary: I use an eye mask as part of my sleep setup.
-order: 30
-spec: Blackout-style mask
-affiliate: amazon-eye-mask
----
-
-Optional setup context.
-~~~
-
-## Exercise
-
-**Path:** src/content/exercise/  
-**Page groups:** current split first, then session, principle, equipment, recovery, and other splits.
-
-Required: shared fields plus kind: split, session, principle, equipment, or recovery.
-
-Additional fields: status, schedule, frequency, duration, spec, brand, product, affiliate, and affiliates.
-
-Only a split with status: current receives the dedicated current-split treatment. Use equipment only for confirmed home-gym items; an author's recommendation belongs in a sourced note.
-
-~~~markdown
----
-name: Adjustable dumbbells
-slug: adjustable-dumbbells
-kind: equipment
-status: current
-summary: I keep adjustable dumbbells in my home gym for compact strength work.
-order: 40
-spec: Adjustable pair; exact model not recorded
----
-~~~
-
-Sourced exercise-note example:
-
-~~~markdown
----
-name: Split squat progression
-slug: split-squat-progression
-kind: session
-summary: ATG coaching uses assistance, range, and elevation changes before adding load.
-order: 150
-sources:
-  - type: website
-    url: https://example.com/atg-guide
-    author: Example coach
-    note: Progression context only.
-    accessed: "2026-07-18"
----
-~~~
-
-## Protocols
-
-**Path:** src/content/protocols/  
-**Page groups:** personal current records first; remaining records group by kind.
-
-Required: shared fields plus kind: testing, therapy, nutrition, recovery, or other.
-
-Additional fields: status, cadence, provider, service, location, markers (a string list), and a singular affiliate. Protocols do **not** support plural affiliates.
-
-This is not a lab-result log. Do not publish raw bloodwork, diagnoses, or sensitive provider information without an explicit product decision.
-
-~~~markdown
----
-name: Vitamin D status
-slug: vitamin-d-status
-kind: testing
-summary: Rhonda Patrick discusses testing vitamin D, addressing low status, and retesting rather than guessing indefinitely.
-order: 70
-sources:
-  - type: website
-    url: https://example.com/vitamin-d
-    author: FoundMyFitness
-    note: Status-and-retesting context.
-    accessed: "2026-07-18"
----
-~~~
-
-## Peptide reference library
-
-**Path:** src/content/peptides/  
-**Page groups:** personal entries by status; source-note blends first, then source-note singles by category. The collection may honestly have zero entries.
-
-Every peptide entry requires the shared core plus:
-
-| Field | Values / purpose |
-| --- | --- |
-| entryType | personal or source-note |
-| form | single or blend |
-| category | repair, growth-hormone, metabolic, immune, pigmentation-sexual-health, or longevity-sleep |
-| evidenceMaturity | established-human-use, human-trial, limited-human, preclinical, or component-extrapolation |
-| atAGlance | Compact card-level takeaway. |
-| commonContext | What it is commonly discussed around; never a prescription. |
-| evidenceNote | Plain-language evidence context and limitation. |
-
-Optional fields are calculatorId, aliases, components, mechanism, route, dose, timing, frequency, cycle, vial, reconstitution, storage, effects, sideEffects, contraindications, and sources.
-
-calculatorId must exactly match a compound ID in compounds.ts or a blend ID in blends.ts. A valid relationship makes the card's calculator link preselect that item. An invalid nonempty value fails validation.
-
-### Personal peptide
-
-A personal peptide **requires status**. Add route, dose, timing, cycle, effects, or other personal facts only when Tanner approves them.
-
-~~~markdown
----
-name: Example peptide
-slug: example-peptide
-entryType: personal
-status: considering
-form: single
-category: metabolic
-evidenceMaturity: limited-human
-summary: I am considering this item and have not recorded a personal protocol here.
-atAGlance: A single-compound item I am considering.
-commonContext: Often discussed in metabolic research contexts.
-evidenceNote: Human evidence is limited and does not establish an individual outcome.
-order: 20
-sources:
-  - type: website
-    url: https://example.com/source
-    author: Example source
-    note: Identity and evidence context.
-    accessed: "2026-07-18"
----
-~~~
-
-This schematic example deliberately omits calculatorId. Add that field only when its value exactly matches a curated compound or blend catalog ID.
-
-### Peptide source note
-
-A source-note requires at least one source and may **not** contain dose, timing, frequency, cycle, or effects. Do not move those personal details into the summary or Markdown body.
-
-~~~markdown
----
-name: GLOW
-slug: glow
-entryType: source-note
-form: blend
-category: repair
-evidenceMaturity: component-extrapolation
-calculatorId: glow-57-27-12-54-10-45
-summary: A named GHK-Cu, BPC-157, and TB-500 blend.
-atAGlance: A three-component blend whose evidence is inherited from its ingredients, not the named vial.
-components:
-  - 57.27 mg GHK-Cu
-  - 12.54 mg BPC-157
-  - 10.45 mg TB-500
-commonContext: Marketed in tissue, skin, and recovery conversations.
-evidenceNote: The named blend has no established clinical evidence as a combined formulation.
-order: 10
-sources:
-  - type: pep-pedia
-    author: Pep-Pedia-derived dataset
-    note: Identity context only; dosing and outcome claims excluded.
-    accessed: "2026-07-18"
----
-~~~
-
-For a blend, components is human-readable reference copy; the exact mathematical formulation belongs in the calculator blend record. A market name is not a universal formula.
-
-## Peptide-preparation supplies
-
-**Path:** src/content/supplies/  
-**Page behavior:** separate Supply links section on /peptides; it does not describe Tanner's current setup.
-
-Required: name, slug, summary, order, category: peptide-preparation, and a nonempty plural affiliates list. No body or source is required by the current schema.
-
-~~~markdown
----
-name: Easy Touch Insulin Syringes
-slug: easy-touch-insulin-syringes
-summary: 31-gauge, 0.3 cc syringes with 5/16-inch needles, supplied in a 100-count box.
-order: 10
-category: peptide-preparation
-affiliates:
-  - amazon-easy-touch-insulin-syringes
----
-~~~
-
-Do not add peptide vendor links. These are supply links, not endorsements or current-use records.
-
-## Follow profiles
-
-**Path:** src/content/follow/  
-**Page groups:** longevity, training, sleep, nutrition, then general.
-
-Required: name, slug, handle, url, group, summary, and order. group is exactly one of the listed page groups. platform defaults to x.
-
-Use profiles for a primary account plus related accounts. If omitted, the top-level handle, url, and platform form the one profile. Write a first-person reason only when Tanner actually follows the account.
-
-~~~markdown
----
-name: Rhonda Patrick
-slug: rhonda-patrick
-handle: "@foundmyfitness"
-url: https://x.com/foundmyfitness
-profiles:
-  - handle: "@foundmyfitness"
-    url: https://x.com/foundmyfitness
-    platform: x
-  - handle: "@fmfclips"
-    url: https://x.com/fmfclips
-    platform: x
-group: longevity
-summary: I read FoundMyFitness for research-heavy context on longevity, micronutrients, sleep, heat exposure, and metabolism.
-order: 30
----
-~~~
-
-## Affiliate registry and disclosure
-
-**Registry:** src/data/affiliates.json. Every registry key is kebab-case and represents a single exact product or a search/options page.
-
-~~~json
-{
-  "amazon-example-product": {
-    "vendor": "Amazon",
-    "product": "Example Product, 60 capsules",
-    "kind": "product",
-    "asin": "B012345678",
-    "url": "https://amzn.to/example"
-  },
-  "amazon-example-search": {
-    "vendor": "Amazon",
-    "product": "Example product search results",
-    "kind": "search",
-    "url": "https://www.amazon.com/s?k=example&tag=tannerwj-20"
-  }
-}
-~~~
-
-Rules:
-
-- kind: product is an exact product; kind: search is a search/options page. Use a kind for new records.
-- A present asin is exactly ten uppercase letters/digits; never invent it.
-- Preserve supplied Amazon short URLs exactly. Do not exchange a known product link for a search result or alter its tag.
-- affiliate is one key. affiliates is ordered plural keys for variants. Supplements, Sleep, Exercise, and Supplies support plural links; Protocols supports only singular.
-- The affiliate disclosure is stated once in the site footer (`FOOTER_DISCLOSURE` in `src/data/site.ts`). Do not add a per-page disclosure component or handwrite one in an item body.
-- Registry rendering provides the sponsored link relationship; do not bypass it with raw Markdown product links.
-
-## Calculator catalog
-
-The calculator is separate from the editorial peptide library. A catalog record can be broadly useful without being Tanner's practice, while an editorial peptide record can deep-link into it.
-
-### Compounds
-
-**File:** src/data/calculator/compounds.ts  
-**Type:** Compound in src/data/calculator/types.ts
-
-Every mathematical mass is a positive structured number with an explicit unit:
-
-~~~ts
-{
-  id: "example-peptide",
-  name: "Example Peptide",
-  commonVials: [{ value: 5, unit: "mg" }],
-  commonWaterMl: [1, 2],
-  dosePresets: [{ label: "Community reference", value: 250, unit: "mcg" }],
-  referenceRanges: [{
-    label: "Community reference",
-    kind: "community",
-    min: { value: 250, unit: "mcg" },
-    max: { value: 500, unit: "mcg" },
-    sourceIds: ["example-source"]
-  }],
-  sources: [{
-    id: "example-source",
-    type: "website",
-    url: "https://example.com/source",
-    note: "Identity and reference context.",
-    accessed: "2026-07-18"
-  }]
-}
-~~~
-
-Allowed mass units are only mcg and mg; water is a positive numeric mL value. Never use a display string such as "5 mg" for calculator math. IDs are unique across compounds and blends. A range's sourceIds must exist in its compound's own sources. Calculator sources support editorial source types plus local-file.
-
-practiceOnly: true requires practiceNote. It never turns community data into Tanner defaults. Reference-range kind is tanner, community, or other, according to actual context.
-
-### Blend variants
-
-**File:** src/data/calculator/blends.ts  
-**Type:** BlendVariant
-
-A blend needs a unique ID, name, variant label, at least two distinct known compound IDs, and an explicit positive amount for every component:
-
-~~~ts
-{
-  id: "example-blend-5-2",
-  name: "Example Blend",
-  variant: "5 mg Example A / 2 mg Example B",
-  components: [
-    { compoundId: "example-a", amount: { value: 5, unit: "mg" } },
-    { compoundId: "example-b", amount: { value: 2, unit: "mg" } }
-  ],
-  commonWaterMl: [2, 3],
-  dosePresets: [{
-    label: "Reference anchored to Example A",
-    anchorCompoundId: "example-a",
-    target: { value: 250, unit: "mcg" }
-  }],
-  featured: true,
-  editable: true,
-  sources: [{
-    id: "example-blend-source",
-    type: "website",
-    url: "https://example.com/blend",
-    note: "Exact composition context.",
-    accessed: "2026-07-18"
-  }]
-}
-~~~
-
-anchorCompoundId must identify a component in that blend. Calculator featured and editable control calculator behavior, not homepage layout. Create a separate variant for a different composition; do not overwrite a blend because a market name matches.
-
-Favorites, recents, display/syringe preferences, and saved custom presets belong to browser localStorage, never to editorial Markdown or committed user data.
-
-## Validation and review
-
-Run from the repository root:
-
-~~~sh
-npm run validate
-npm test
-npm run build
-npm run assert:build
-~~~
-
-npm run check runs the first two. Use all four before a production content change. Also inspect the affected route on desktop and mobile; for affiliate, calculator, or deep-link changes, verify the rendered card/link as well as the source file.
-
-The integrity check covers collection presence (peptides may be empty), duplicate and filename-mismatched slugs, affiliate keys/URLs/ASINs, calculator relationships, peptide source-note restrictions, source URL/date shape, homepage-order collisions, and calculator units, sources, ranges, blend components, and anchors.
-
-## Common failures
-
-| Failure | Fix |
-| --- | --- |
-| slug-filename-mismatch | Make filename and frontmatter slug exactly match. |
-| unknown-affiliate | Add a registry record first or use the existing exact key. |
-| unknown-calculator-id | Use a compound/blend ID that exists or omit the deep link until curated. |
-| missing-personal-status | Add a real status to a personal peptide, or use a source note. |
-| source-note-personal-field | Remove personal dose/timing/frequency/cycle/effects from peptide source notes. |
-| missing-source-url | Add HTTP(S) URL to an x, website, or study source. |
-| homepage-order-collision | Give featured records distinct homepage order values. |
-| invalid-asin | Use a verified 10-character ASIN or omit it. |
-| missing-unit / invalid-quantity | Use a positive numeric calculator quantity and mg or mcg. |
-| unknown-blend-compound / unknown-blend-anchor | Add/correct the compound or anchor ID. |
-| Source note reads as Tanner's practice | Remove first-person copy and status; identify the source. |
+1. Pick the collection: `src/content/<collection>/<slug>.md`.
+2. Filename and frontmatter `slug` must match exactly, lowercase kebab-case.
+3. First person only for approved personal facts.
+4. Product links use an affiliate key from [`src/data/affiliates.json`](../src/data/affiliates.json), never a raw URL.
+5. Run `npm run check && npm run build && npm run assert:build`.
 
 ## Voice
 
 Write like Tanner explaining something to a friend who asked, not like a paper defending itself.
 
-- **Hedge once, not every paragraph.** State the caveat that would actually change someone's decision — an interaction, a side effect, a reason to skip it — and stop. Trailing disclaimers like "that is not evidence that…", "does not establish a universal effect", or "not a settled conclusion" are the single clearest tell of machine-written copy. One real caveat beats three defensive ones.
-- **Don't restate the summary as the first line of the body.** The card already shows it. Open with something the summary didn't say.
-- **Lead personal entries with the specifics**, not the category: dose, when, how long, and what happened. Put them in `dose`/`timing`/`frequency` so the cards and at-a-glance strip carry them, rather than burying them in prose.
-- **Sources are "who convinced me," not a citation wall.** Name the person, say what they contribute, link once. A source `note` should say something; "Sleep toolkit context for X" is a label, not information.
-- **Genuine uncertainty still gets stated plainly** — peptides especially. Plain and once is the standard, not hedged and repeatedly.
+- **Hedge once, not every paragraph.** State the caveat that would change someone's decision — an interaction, a side effect, a reason to skip it — then stop. Trailing disclaimers like "that is not evidence that…", "the durable idea is…", or "not a settled conclusion" are the clearest tell of machine-written copy.
+- **Don't restate the summary in the first line of the body.** The card already shows it.
+- **Lead personal entries with specifics:** dose, when, how long, what happened. Put them in `dose`/`timing`/`frequency` so the cards carry them.
+- **Sources are "who convinced me," not a citation wall.** A source `note` should say something; "Sleep toolkit context for X" is a label, not information.
+- **Peptides keep their caveats.** These are unregulated injectables and the warnings are load-bearing. Plain and once, not hedged and repeatedly.
+- **No filler section descriptions.** If a heading says "Before bed," it does not need a subtitle explaining that this is what he takes before bed.
 
-## Editorial quality bar
+## Shared fields
 
-- Use ordinary, specific language rather than generic “optimized,” “evidence-led,” or “useful when…” copy.
-- Make cards glanceable: what it is, whose idea or practice it is, and the one detail that matters.
-- Treat source links as context, not a veneer of certainty. Preserve caveats, especially for peptides.
-- Use exact product links for exact products and search/options links only when the exact item is unknown.
-- If a real repeated item does not fit, propose a schema change and update this guide with the code. Do not smuggle a new schema into arbitrary YAML.
+| Field | Required | Rule |
+| --- | --- | --- |
+| `name` | yes | Card title. |
+| `slug` | yes | Kebab-case, equals the filename, becomes the URL fragment. |
+| `summary` | yes | Short, specific card copy. |
+| `order` | yes | Non-negative integer; sorts within a page group. |
+| `featured` | no | Makes an eligible current item available to the homepage. |
+| `homepageOrder` | no | **Unique site-wide** across featured entries. Space them: 10, 20, 30. |
+| `sources` | no | See below. |
+| `practiceOnly` / `practiceNote` | no | Literal `true` plus an explanation, for visibly marked placeholders only. |
 
-For a concise conceptual overview, see content-model.md. For a session-oriented intake checklist, see seed-data-brief.md.
+Where supported, `status` is exactly `current`, `considering`, or `previously-tried`.
+
+**Homepage eligibility:** `featured: true` **and** `status: current`; peptides additionally need `entryType: personal`. Follow profiles have no status, so their `featured`/`homepageOrder` are unused.
+
+**Sources:**
+
+~~~yaml
+sources:
+  - type: x            # x | pep-pedia | website | study | person | conversation
+    url: https://...   # required by the validator for x, website, and study
+    author: Example Person
+    note: What this source actually contributes.
+    accessed: "2026-07-18"
+~~~
+
+`pep-pedia`, `person`, and `conversation` may honestly have no URL. `local-file` is for calculator sources only.
+
+## Collections
+
+Each collection adds fields to the shared set. The authoritative list is [`src/content.config.ts`](../src/content.config.ts); below is the intent behind the ones that need explaining.
+
+### Supplements
+
+Page groups: time-of-day groups for current items, then Saved product links, Considering, Previously tried, Source notes.
+
+| Field | Meaning |
+| --- | --- |
+| `when` | `morning`, `daytime`, `evening`, or `bedtime`. Groups current items by when they are actually taken, so things taken together render together. A current item with no `when` falls into a trailing "Current" group. |
+| `tier` | Only `foundational` — the short "start here" list you would hand a curious friend. Renders a badge. Never on a sourced note. |
+| `stacks` | Other stack pages this item belongs on, e.g. `[sleep]`. The target page links back rather than duplicating. |
+| `dose`, `timing`, `frequency` | Approved display strings. Never calculator inputs. |
+| `brand`, `product` | Product context on the card. |
+| `affiliate` / `affiliates` | One key, or an ordered list for intentional variants. Never both. |
+
+### Sleep
+
+Requires `kind`: `routine`, `environment`, `gear`, or `tracking`. Adds `status`, `tier`, `timing`, `frequency`, `spec`, and product fields. Current personal cards feed the at-a-glance strip. Supplements with `stacks: [sleep]` render in their own section linking back to `/supplements`.
+
+### Exercise
+
+Requires `kind`: `split`, `session`, `principle`, `equipment`, or `recovery`. Adds `status`, `tier`, `schedule`, `frequency`, `duration`, `spec`, and product fields. Only a split with `status: current` gets the dedicated treatment. Use `equipment` only for confirmed home-gym items.
+
+### Protocols
+
+Requires `kind`: `testing`, `therapy`, `nutrition`, `recovery`, or `other`. Adds `status`, `tier`, `cadence`, `provider`, `service`, `location`, `markers`, and a **singular** `affiliate` only. Not a lab-result log — no raw bloodwork or sensitive provider details.
+
+### Peptides
+
+Requires `entryType` (`personal` | `source-note`), `form` (`single` | `blend`), `category`, `evidenceMaturity`, plus `atAGlance`, `commonContext`, and `evidenceNote`.
+
+- A **personal** entry requires `status`.
+- A **source-note** requires at least one source and may **not** contain `dose`, `timing`, `frequency`, `cycle`, or `effects` — including smuggled into the summary or body.
+- `calculatorId` must exactly match a compound ID in `compounds.ts` or a blend ID in `blends.ts`. Omit it rather than guessing; a blend name is not a formula.
+
+### Supplies
+
+Requires `name`, `slug`, `summary`, `order`, `category: peptide-preparation`, and a nonempty `affiliates` list. Supply links only — no peptide vendors.
+
+### Follow
+
+Requires `name`, `slug`, `handle`, `url`, `group`, `summary`, `order`. Use `profiles` for a primary account plus related ones. Write a first-person reason only if Tanner actually follows the account.
+
+## Affiliates
+
+Every key in `src/data/affiliates.json` is kebab-case and points at one exact product or one search page.
+
+- `kind: product` is an exact item; `kind: search` is an options page. Never present a search link as a product he chose.
+- A present `asin` is exactly ten uppercase alphanumerics. Never invent one — resolve it from the real link or omit it.
+- Preserve supplied `amzn.to` short URLs exactly; do not append parameters.
+- The affiliate disclosure is stated **once, in the site footer** (`FOOTER_DISCLOSURE` in `src/data/site.ts`). Do not add a per-page disclosure component or handwrite one in an item body.
+- Shared rendering supplies `rel="sponsored noreferrer"`. Do not bypass it with raw Markdown links.
+
+## Calculator catalog
+
+Separate from the editorial library. Editorial Markdown never feeds calculator math.
+
+- Masses are structured and positive with an explicit unit — `mcg` or `mg` only. Never a display string like `"5 mg"`.
+- IDs are unique across compounds and blends. A range's `sourceIds` must exist in that compound's own sources.
+- A blend needs a unique ID, a variant label, at least two distinct known compound IDs, and an explicit positive amount per component. `anchorCompoundId` must name one of its own components.
+- A different composition means a new variant, never an overwrite.
+- Favorites, recents, and saved presets are browser `localStorage`. Never committed.
+
+## Validation
+
+~~~sh
+npm run check        # validate + tests
+npm run build
+npm run assert:build
+~~~
+
+The whole gate runs in under ten seconds. Also look at the affected route at mobile and desktop width.
+
+Content files are LF-only, enforced by `.gitattributes` and a test. Frontmatter readers go through `readTextFile` / `parseFrontmatter` in `scripts/validate-content.ts`, which normalize newlines — do not hand-roll a `^---\n` match.
+
+## Common failures
+
+| Failure | Fix |
+| --- | --- |
+| `slug-filename-mismatch` | Make filename and `slug` match exactly. |
+| `unknown-affiliate` | Add the registry record first, or use the existing key. |
+| `unknown-calculator-id` | Use a real compound/blend ID, or omit the deep link. |
+| `missing-personal-status` | Add a status, or make it a source note. |
+| `source-note-personal-field` | Remove dose/timing/frequency/cycle/effects from peptide source notes. |
+| `missing-source-url` | Add an HTTP(S) URL to an `x`, `website`, or `study` source. |
+| `homepage-order-collision` | `homepageOrder` is unique site-wide, not per collection. |
+| `invalid-asin` | Use a verified 10-character ASIN or omit it. |
+| `missing-unit` / `invalid-quantity` | Positive number plus `mg` or `mcg`. |
+| Source note reads as practice | Remove first-person copy and status; name the source. |
+
+Calculator feature ideas that are not yet built live in [calculator-ideas.md](./calculator-ideas.md).

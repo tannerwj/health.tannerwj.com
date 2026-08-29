@@ -6,8 +6,8 @@ form: blend
 category: repair
 evidenceMaturity: component-extrapolation
 calculatorId: glow-57-27-12-54-10-45
-summary: A named GHK-Cu, BPC-157, and TB-500 blend.
-atAGlance: A three-component repair blend whose evidence is inherited from its individual ingredients, not the combined vial.
+summary: A named GHK-Cu, BPC-157, and TB-500 vial. The name is the vendor's; the evidence belongs to the three ingredients separately.
+atAGlance: Three ingredients in one vial. Nothing has been studied about the combination itself.
 components:
   - 57.27 mg GHK-Cu
   - 12.54 mg BPC-157
@@ -33,4 +33,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-The calculator composition is the identity layer for this named vial. The label does not create evidence for the blend as a whole.
+The composition here exists so the calculator can do the math. Putting three compounds in one vial and naming it does not create evidence for the mixture, and the injectable GHK-Cu claims are considerably weaker than the topical research they borrow from.

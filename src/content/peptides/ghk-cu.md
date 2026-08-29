@@ -8,8 +8,8 @@ evidenceMaturity: limited-human
 calculatorId: ghk-cu
 aliases:
   - Copper tripeptide-1
-summary: A copper-binding tripeptide with skin and tissue-signaling research.
-atAGlance: The topical skin evidence is more mature than claims made for injectable GHK-Cu.
+summary: A copper peptide with real topical skin research - which is regularly used to sell injections it says nothing about.
+atAGlance: Decent evidence on skin. Much thinner evidence in a syringe.
 commonContext: Topical skin-care and hair products; also appears in injectable community blends.
 evidenceNote: Human cosmetic research is largely topical. It should not be used as direct support for injectable dosing, systemic outcomes, or proprietary blends.
 mechanism: Binds copper and is studied in extracellular-matrix, wound-remodeling, and gene-signaling contexts.
@@ -26,4 +26,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-Route matters here. Topical data should stay labeled as topical rather than silently migrating into injectable claims.
+Route is the entire question. GHK-Cu has a legitimate cosmetic research base, and all of it is topical. That data quietly migrates into marketing for injectable blends where it does not apply.

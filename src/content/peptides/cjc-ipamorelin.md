@@ -6,8 +6,8 @@ form: blend
 category: growth-hormone
 evidenceMaturity: component-extrapolation
 calculatorId: cjc-ipamorelin-2-5
-summary: A named CJC-1295 without DAC and ipamorelin blend.
-atAGlance: A paired growth-hormone-axis blend combining GHRH- and ghrelin-receptor signaling.
+summary: The most common growth-hormone pairing - a GHRH analog plus a ghrelin-receptor agonist, hitting the same axis two ways.
+atAGlance: Two compounds pushing growth-hormone release through different receptors.
 components:
   - 2 mg CJC-1295 without DAC
   - 5 mg Ipamorelin
@@ -27,4 +27,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-The “without DAC” distinction matters because it separates this entry from the longer-acting CJC-1295 with DAC record.
+The pairing has a real physiological rationale: the two compounds act on different receptors that both feed GH release. That is a reason to expect something, not evidence that this fixed ratio does what is claimed. Note the "without DAC" - the [long-acting version](#cjc-1295-with-dac) is a different drug.

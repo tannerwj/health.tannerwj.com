@@ -8,8 +8,8 @@ evidenceMaturity: limited-human
 calculatorId: dsip
 aliases:
   - Delta sleep-inducing peptide
-summary: A small peptide studied historically in sleep and stress-related experiments.
-atAGlance: The name promises more clarity than the inconsistent and limited research actually provides.
+summary: Named delta sleep-inducing peptide in the 1970s. The research since has never reliably supported the name.
+atAGlance: The name is a hypothesis from decades ago, not a finding.
 commonContext: Experimental sleep, stress, and pain discussions.
 evidenceNote: Small and older studies are heterogeneous, and the peptide’s endogenous role remains debated. It is not an established insomnia treatment.
 mechanism: Proposed to influence sleep and neuroendocrine regulation, but a consistent therapeutic mechanism has not been established.
@@ -26,4 +26,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-“Sleep-inducing” is part of the name, not a reliable summary of clinical effect.
+The studies are old, small, and inconsistent, and researchers still disagree about what it does naturally. If you want something for sleep, the [boring options](/sleep) have far better evidence.

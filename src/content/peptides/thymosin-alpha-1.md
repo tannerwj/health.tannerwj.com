@@ -8,8 +8,8 @@ evidenceMaturity: human-trial
 calculatorId: thymosin-alpha-1
 aliases:
   - Thymalfasin
-summary: An immune-modulating peptide with human clinical research and use in some countries.
-atAGlance: More clinically studied than many research peptides, but evidence remains condition- and jurisdiction-specific.
+summary: An immune modulator with genuine clinical trials and approved use in several countries - for specific conditions.
+atAGlance: Real clinical evidence, tied to particular diseases and places.
 commonContext: Immune modulation, infection, and oncology-adjunct research.
 evidenceNote: Human trials and international medical use exist, but results depend on the condition and regimen. That does not support general “immune boosting” claims.
 mechanism: Modulates innate and adaptive immune signaling, including dendritic-cell and T-cell activity.
@@ -26,4 +26,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-“Immune modulation” is more accurate than “immune boost” because the clinical question changes by disease and immune state.
+Modulation, not boosting. The distinction is not pedantry: the trials are in people with specific conditions - hepatitis, sepsis, some cancers - and what helps a compromised immune system is not a general upgrade for a working one.

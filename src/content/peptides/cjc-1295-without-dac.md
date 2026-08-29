@@ -8,8 +8,8 @@ evidenceMaturity: limited-human
 calculatorId: cjc-1295
 aliases:
   - Modified GRF 1-29
-summary: A short-acting GHRH analog used as the CJC component in common secretagogue blends.
-atAGlance: The short-acting “without DAC” version is distinct from long-acting CJC-1295 with DAC.
+summary: The short-acting CJC, and the one in most blends. Frequently confused with the long-acting DAC version, which is a different drug.
+atAGlance: Short-acting. Not the DAC version, despite the shared name.
 commonContext: Growth-hormone-axis research and paired CJC/ipamorelin formulations.
 evidenceNote: Human evidence for this short-acting formulation and common compounded protocols is limited. Findings from CJC-1295 with DAC should not be silently transferred to it.
 mechanism: Mimics growth-hormone-releasing hormone signaling at the pituitary, with a shorter exposure profile than the DAC-bound analog.
@@ -26,4 +26,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-The label needs the “without DAC” qualifier because the two CJC entries have materially different pharmacologic intent.
+The qualifier matters. This one clears quickly and is meant to mimic natural GH pulses; [the DAC version](#cjc-1295-with-dac) sticks around for days. Findings about one do not transfer to the other, and vendors are careless about which they are selling.

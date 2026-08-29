@@ -8,8 +8,8 @@ evidenceMaturity: limited-human
 calculatorId: melanotan-1
 aliases:
   - Afamelanotide-related analog
-summary: A melanocortin analog associated with pigmentation research.
-atAGlance: Community “Melanotan I” products should not be treated as equivalent to the regulated afamelanotide implant.
+summary: Shares its chemistry with an approved implant, and shares nothing else with what is sold under this name online.
+atAGlance: Afamelanotide is a regulated implant. A research vial is not that.
 commonContext: Experimental tanning and pigmentation discussions.
 evidenceNote: Afamelanotide has condition-specific human evidence as a controlled implant. That formulation and oversight do not validate unregulated products sold as Melanotan I.
 mechanism: Activates melanocortin-1 receptors and promotes eumelanin production.
@@ -26,4 +26,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-Related molecule names do not make the sourcing, formulation, or evidence interchangeable.
+Afamelanotide is approved for a rare light-sensitivity disorder, delivered as a controlled implant under supervision. Sharing a molecule name with a grey-market vial does not transfer any of the manufacturing, dosing, or oversight that evidence depended on.

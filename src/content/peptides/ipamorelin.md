@@ -6,8 +6,8 @@ form: single
 category: growth-hormone
 evidenceMaturity: limited-human
 calculatorId: ipamorelin
-summary: A selective ghrelin-receptor agonist studied as a growth-hormone secretagogue.
-atAGlance: Often paired with a GHRH analog, but direct outcome evidence for community protocols is limited.
+summary: A selective ghrelin-receptor agonist, usually the second half of a CJC pairing.
+atAGlance: Clean pharmacology, thin outcome evidence for how it is actually used.
 commonContext: Growth-hormone-axis and paired CJC/ipamorelin discussions.
 evidenceNote: Pharmacology and small studies do not establish the recovery, sleep, body-composition, or longevity claims commonly attached to compounded use.
 mechanism: Activates the ghrelin receptor to stimulate growth-hormone release, with selectivity that differentiates it from some earlier secretagogues.
@@ -24,4 +24,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-The pairing rationale is physiological; it is not equivalent to clinical validation of a fixed blend.
+Its selectivity is the selling point - it triggers GH release without much of the cortisol and prolactin effect older secretagogues had. Real pharmacology. It still does not demonstrate the recovery, sleep, or body-composition results attached to it.

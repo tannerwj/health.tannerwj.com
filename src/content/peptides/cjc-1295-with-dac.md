@@ -8,8 +8,8 @@ evidenceMaturity: human-trial
 calculatorId: cjc-1295-dac
 aliases:
   - CJC-1295 DAC
-summary: A longer-acting GHRH analog designed with a drug-affinity complex.
-atAGlance: Human studies show prolonged GH/IGF-1 signaling, but that is not the same as proven long-term health benefit.
+summary: The long-acting CJC. It binds to albumin and keeps signalling for days rather than minutes.
+atAGlance: Human studies show it raises GH and IGF-1. What that buys you is a separate question.
 commonContext: Long-acting growth-hormone-axis research.
 evidenceNote: Early human trials characterize hormone responses and pharmacokinetics. They do not establish broad anti-aging, body-composition, or performance outcomes.
 mechanism: The DAC design binds circulating albumin and extends GHRH-receptor stimulation compared with short-acting analogs.
@@ -26,4 +26,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-Hormone elevation is an intermediate measurement, not proof of a desired clinical outcome.
+Raising a hormone is a measurement, not an outcome. The trials establish that GH and IGF-1 go up and stay up; they do not establish that this makes anyone healthier, and sustained elevation is a different physiological state from the natural pulses.

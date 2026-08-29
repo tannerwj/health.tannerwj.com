@@ -17,8 +17,6 @@ These sources answer different questions. Never use prose to override an enforce
 5. [`PRODUCT.md`](PRODUCT.md) and [`DESIGN.md`](DESIGN.md) provide product and visual intent where no enforced contract or user instruction says otherwise.
 6. [`docs/deployment.md`](docs/deployment.md) governs preview, release, rollback, and production verification.
 
-[`docs/implementation-plan.md`](docs/implementation-plan.md) is historical planning context, not an instruction source.
-
 ## Repository map
 
 - `src/content/<collection>/` — public editorial records in Markdown with YAML frontmatter.

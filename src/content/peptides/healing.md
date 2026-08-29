@@ -6,8 +6,8 @@ form: blend
 category: repair
 evidenceMaturity: component-extrapolation
 calculatorId: healing-5-2-5-2
-summary: A named TB-500, BPC-157, and KPV blend.
-atAGlance: A repair-oriented three-component vial whose name should not be mistaken for a demonstrated outcome.
+summary: TB-500, BPC-157, and KPV in one vial. The word on the label is a product name, not a result.
+atAGlance: A three-part repair blend named after the outcome it has not demonstrated.
 components:
   - 5 mg TB-500
   - 2.5 mg BPC-157
@@ -28,4 +28,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-“Healing” is the product name, not an evidence claim.
+Worth stating plainly: "Healing" is what the vendor called it. No study attaches to this combination.

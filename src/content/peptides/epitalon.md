@@ -8,8 +8,8 @@ evidenceMaturity: limited-human
 calculatorId: epitalon
 aliases:
   - Epithalon
-summary: A synthetic tetrapeptide associated with pineal and aging research.
-atAGlance: Longevity claims run well ahead of the small, difficult-to-verify human evidence base.
+summary: A longevity-community favourite whose telomerase and lifespan claims rest on a small, hard-to-verify body of work.
+atAGlance: Big claims, thin and largely unreplicated evidence.
 commonContext: Experimental healthy-aging, circadian, and telomere discussions.
 evidenceNote: Much of the cited work is small, older, or not easily generalized. Telomerase and lifespan narratives should be treated as hypotheses rather than demonstrated human outcomes.
 mechanism: Proposed effects include pineal signaling, oxidative-stress pathways, and telomerase-related activity, with uncertain clinical relevance.
@@ -26,4 +26,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-This is an entry where source quality matters as much as the headline finding.
+Most of the cited research traces to a small number of older studies from one research group, much of it difficult to access or independently verify. That is a reason for caution regardless of how appealing the telomerase story sounds.

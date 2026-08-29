@@ -8,8 +8,8 @@ evidenceMaturity: preclinical
 calculatorId: kpv
 aliases:
   - Lysine-proline-valine
-summary: A short alpha-MSH-derived research peptide studied in inflammatory models.
-atAGlance: A three-amino-acid peptide with mostly laboratory and animal evidence around inflammatory signaling.
+summary: A three-amino-acid fragment of alpha-MSH, studied for inflammation almost entirely in cells and animals.
+atAGlance: Interesting inflammatory research, essentially all preclinical.
 commonContext: Experimental gut, skin, and inflammatory-signaling discussions; also included in named blends.
 evidenceNote: The research base is predominantly preclinical. Community use and blend inclusion do not establish clinical efficacy.
 mechanism: Studied for effects on inflammatory transcription and immune signaling, including pathways often described around NF-kappa-B.
@@ -26,4 +26,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-KPV is best treated as an early research topic rather than a settled anti-inflammatory therapy.
+Early research, not a therapy. Appearing as an ingredient in several sold blends says something about marketing, not about evidence.

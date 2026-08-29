@@ -6,8 +6,8 @@ form: single
 category: metabolic
 evidenceMaturity: human-trial
 calculatorId: retatrutide
-summary: An investigational triple agonist targeting GIP, GLP-1, and glucagon receptors.
-atAGlance: Promising human trial results, but it remains an emerging therapy rather than an established finished story.
+summary: A triple agonist still in trials. Striking early results, and not an approved drug.
+atAGlance: Promising and unfinished. Long-term safety is not yet in.
 commonContext: Obesity, metabolic disease, and next-generation incretin research.
 evidenceNote: Human trials support meaningful metabolic effects, while longer-term outcomes and broader claims remain under study. Attia’s geroprotection/cognition comments and Patrick’s genetics context are emerging hypotheses, not settled indications.
 mechanism: Combines GIP and GLP-1 receptor agonism with glucagon-receptor activity to affect appetite, glucose regulation, and energy expenditure.

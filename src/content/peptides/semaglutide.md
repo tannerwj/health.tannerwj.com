@@ -6,8 +6,8 @@ form: single
 category: metabolic
 evidenceMaturity: established-human-use
 calculatorId: semaglutide
-summary: A GLP-1 receptor agonist with a large human evidence base and established medical uses.
-atAGlance: Strong outcome evidence in defined populations; benefits, tradeoffs, and appropriateness remain individual.
+summary: The best-evidenced compound in this library by a wide margin, with large trials and approved uses.
+atAGlance: Strong outcome data in the studied populations. Whether it suits you is a medical conversation.
 commonContext: Type 2 diabetes, obesity treatment, and cardiometabolic-risk discussions.
 evidenceNote: This has far more mature evidence than most entries here. Layne Norton emphasizes reduced energy intake as a major mechanism and questions universal use; that framing does not replace individualized medical assessment.
 mechanism: Activates GLP-1 receptors, affecting appetite, gastric emptying, insulin signaling, and glucagon regulation.

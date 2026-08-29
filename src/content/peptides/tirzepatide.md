@@ -6,8 +6,8 @@ form: single
 category: metabolic
 evidenceMaturity: established-human-use
 calculatorId: tirzepatide
-summary: A dual GIP and GLP-1 receptor agonist with established human trial and clinical-use evidence.
-atAGlance: A mature incretin therapy whose average trial results still do not answer every individual-use question.
+summary: Hits two incretin receptors instead of one, with large trials and approved uses behind it.
+atAGlance: Mature evidence. Trial averages still do not tell you your own answer.
 commonContext: Type 2 diabetes, obesity treatment, and cardiometabolic-risk discussions.
 evidenceNote: Evidence supports substantial metabolic effects in studied populations. Layne Norton’s energy-intake framing and non-universal-use question keep the mechanism and decision context grounded.
 mechanism: Activates GIP and GLP-1 receptors, influencing appetite, glucose regulation, insulin signaling, and gastric function.

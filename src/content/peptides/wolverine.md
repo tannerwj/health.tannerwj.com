@@ -6,8 +6,8 @@ form: blend
 category: repair
 evidenceMaturity: component-extrapolation
 calculatorId: wolverine-5-5
-summary: A named TB-500 and BPC-157 blend.
-atAGlance: A two-component repair blend built from two research compounds with limited or absent controlled human evidence.
+summary: TB-500 and BPC-157 in one vial, sold for injury recovery under a comic-book name.
+atAGlance: Two research compounds, neither with controlled human evidence behind the claims.
 components:
   - 5 mg TB-500
   - 5 mg BPC-157
@@ -27,4 +27,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-The memorable name is marketing language. Each component needs to be judged independently.
+The name is marketing. Judge the two ingredients separately: BPC-157 has no randomized human trials, and TB-500 is not the same thing as the full-length thymosin beta-4 its research is borrowed from.

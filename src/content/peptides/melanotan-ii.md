@@ -6,8 +6,8 @@ form: single
 category: pigmentation-sexual-health
 evidenceMaturity: limited-human
 calculatorId: melanotan-ii
-summary: A nonselective melanocortin agonist studied around pigmentation and sexual response.
-atAGlance: Human exposure exists, but community tanning use is not an established regulated indication.
+summary: Hits melanocortin receptors indiscriminately, which is why it affects tanning, appetite, and arousal at once.
+atAGlance: No approved version. Sold for tanning through research-product channels.
 commonContext: Experimental tanning and sexual-function discussions.
 evidenceNote: Small human studies and derivative-drug development do not establish the safety or quality of Melanotan II sold through research-product channels.
 mechanism: Activates multiple melanocortin receptors, affecting pigmentation and central pathways involved in appetite and sexual response.
@@ -24,4 +24,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-The broad receptor activity is part of both the interest and the uncertainty around this compound.
+The lack of selectivity is the point and the problem: the same broad receptor activity that drives pigmentation also drives nausea, appetite suppression, and arousal effects. Sold entirely through unregulated channels, so identity and purity are open questions on top of that.

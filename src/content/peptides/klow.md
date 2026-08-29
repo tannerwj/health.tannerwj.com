@@ -6,8 +6,8 @@ form: blend
 category: repair
 evidenceMaturity: component-extrapolation
 calculatorId: klow-15-5-5-2
-summary: A named GHK-Cu, TB-500, BPC-157, and KPV blend.
-atAGlance: A four-component blend commonly framed around skin, tissue, and inflammatory signaling.
+summary: Four compounds in one vial - GHK-Cu, TB-500, BPC-157, and KPV. Every claim about it is extrapolated from the parts.
+atAGlance: A four-way repair blend, sold on skin and inflammation language.
 components:
   - 15 mg GHK-Cu
   - 5 mg TB-500
@@ -34,4 +34,4 @@ sources:
     accessed: "2026-07-10"
 ---
 
-The component list is useful for catalog and calculator identity. It should not be read as proof that the ingredients work better together.
+The component list is here for identification and dose math. Four ingredients means four separate evidence questions, and several of them are answered mostly by animal studies.
