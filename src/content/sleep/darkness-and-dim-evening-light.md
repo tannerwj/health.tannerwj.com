@@ -3,7 +3,7 @@ name: Darkness and dim evening light
 slug: darkness-and-dim-evening-light
 kind: environment
 summary: "Bright light late tells your body it is still daytime. Dimming the evening is the other half of getting light in the morning."
-order: 70
+order: 30
 sources:
   - type: website
     url: https://www.hubermanlab.com/newsletter/toolkit-for-sleep

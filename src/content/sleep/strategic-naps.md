@@ -17,6 +17,6 @@ sources:
     accessed: "2026-07-10"
 ---
 
-Walker's [nap episode](https://themattwalkerpodcast.buzzsprout.com/1821163/episodes/13400936-54-the-art-of-napping) frames it as a trade: longer naps can buy more alertness, but you pay for them in [sleep inertia](#sleep-inertia) on the way out.
+Walker's [nap episode](https://themattwalkerpodcast.buzzsprout.com/1821163/episodes/13400936-54-the-art-of-napping) frames it as a trade: longer naps can buy more alertness, but you pay on the way out in grogginess that can last a while.
 
-In his [Huberman conversation](https://www.hubermanlab.com/episode/guest-series-dr-matt-walker-how-to-structure-your-sleep-use-naps-time-caffeine) he adds the bigger catch. If your nights are already fragile, a late nap spends the sleep pressure you need that evening.
+In his [Huberman conversation](https://www.hubermanlab.com/episode/guest-series-dr-matt-walker-how-to-structure-your-sleep-use-naps-time-caffeine) he adds the bigger catch. If your nights are already fragile, a late nap spends the sleep pressure you need that evening. [NSDR](/protocols#nsdr-yoga-nidra) is the lower-risk version when you just need a reset.

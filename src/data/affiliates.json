@@ -13,23 +13,11 @@
     "asin": "B01F261E88",
     "url": "https://amzn.to/4xOz2yT"
   },
-  "amazon-mouth-tape": {
-    "vendor": "Amazon",
-    "product": "Mouth tape search results",
-    "kind": "search",
-    "url": "https://www.amazon.com/s?k=mouth%20tape%20for%20sleep&tag=tannerwj-20"
-  },
   "amazon-eye-mask": {
     "vendor": "Amazon",
     "product": "Sleep eye mask search results",
     "kind": "search",
     "url": "https://www.amazon.com/s?k=sleep%20eye%20mask&tag=tannerwj-20"
-  },
-  "amazon-10000-lux-light": {
-    "vendor": "Amazon",
-    "product": "10,000-lux light search results",
-    "kind": "search",
-    "url": "https://www.amazon.com/s?k=10000%20lux%20light%20therapy%20lamp&tag=tannerwj-20"
   },
   "amazon-thorne-basic-nutrients-2-day": {
     "vendor": "Amazon",
@@ -93,5 +81,45 @@
     "kind": "product",
     "asin": "B004AC0676",
     "url": "https://amzn.to/4wzaclH"
+  },
+  "amazon-pure-encapsulations-one-multivitamin": {
+    "vendor": "Amazon",
+    "product": "Pure Encapsulations O.N.E. Multivitamin, 60 capsules",
+    "kind": "product",
+    "asin": "B00CBYG1L0",
+    "url": "https://amzn.to/4zJ7nkm"
+  },
+  "amazon-nordic-naturals-ultimate-omega": {
+    "vendor": "Amazon",
+    "product": "Nordic Naturals Ultimate Omega, 1280 mg, 90 soft gels",
+    "kind": "product",
+    "asin": "B0739KKHWL",
+    "url": "https://amzn.to/4h0SgeM"
+  },
+  "amazon-nexcare-mouth-tape": {
+    "vendor": "Amazon",
+    "product": "Nexcare Absolute Waterproof First Aid Tape",
+    "kind": "product",
+    "asin": "B00KOC7FFM",
+    "url": "https://amzn.to/4h3h1pN"
+  },
+  "amazon-carex-day-light-classic-plus": {
+    "vendor": "Amazon",
+    "product": "Carex Day-Light Classic Plus, 10,000 lux therapy lamp",
+    "kind": "product",
+    "asin": "B00PCN4UVU",
+    "url": "https://amzn.to/4y8ObLl"
+  },
+  "eight-sleep-pod": {
+    "vendor": "Eight Sleep",
+    "product": "Eight Sleep Pod temperature-controlled mattress cover",
+    "kind": "product",
+    "url": "https://refer.eight.sl/tanner85"
+  },
+  "ultrahuman-ring-pro": {
+    "vendor": "Ultrahuman",
+    "product": "Ultrahuman Ring AIR / Ring PRO",
+    "kind": "product",
+    "url": "https://www.ultrahuman.com/ring-pro/buy/?referral=1zjotd"
   }
 }

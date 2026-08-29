@@ -23,9 +23,11 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
   const expectedMappings = new Map([
     ["src/content/supplements/magnesium-glycinate.md", "amazon-magnesium-glycinate"],
     ["src/content/supplements/l-theanine.md", "amazon-l-theanine"],
-    ["src/content/sleep/mouth-tape.md", "amazon-mouth-tape"],
+    ["src/content/sleep/mouth-tape.md", "amazon-nexcare-mouth-tape"],
     ["src/content/sleep/eye-mask.md", "amazon-eye-mask"],
-    ["src/content/sleep/10000-lux-light.md", "amazon-10000-lux-light"]
+    ["src/content/sleep/10000-lux-light.md", "amazon-carex-day-light-classic-plus"],
+    ["src/content/sleep/temperature-controlled-bed.md", "eight-sleep-pod"],
+    ["src/content/sleep/ultrahuman-ring.md", "ultrahuman-ring-pro"]
   ]);
 
   const exactProducts = [
@@ -39,15 +41,33 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
     ["amazon-nutricost-ubiquinol", "B0C87VT8CW", "https://amzn.to/4aNBRHn"],
     ["amazon-now-curcumin-phytosome", "B004AC0676", "https://amzn.to/4wzaclH"],
     ["amazon-magnesium-glycinate", "B0C2XSJ9H5", "https://amzn.to/3Si6EG2"],
-    ["amazon-l-theanine", "B01F261E88", "https://amzn.to/4xOz2yT"]
+    ["amazon-l-theanine", "B01F261E88", "https://amzn.to/4xOz2yT"],
+    ["amazon-pure-encapsulations-one-multivitamin", "B00CBYG1L0", "https://amzn.to/4zJ7nkm"],
+    ["amazon-nordic-naturals-ultimate-omega", "B0739KKHWL", "https://amzn.to/4h0SgeM"],
+    ["amazon-nexcare-mouth-tape", "B00KOC7FFM", "https://amzn.to/4h3h1pN"],
+    ["amazon-carex-day-light-classic-plus", "B00PCN4UVU", "https://amzn.to/4y8ObLl"]
   ] as const;
 
-  assert.equal(Object.keys(affiliates).length, 14);
+  // Referral links from vendors that run their own programs, not Amazon.
+  const directVendors = new Map([
+    ["eight-sleep-pod", "https://refer.eight.sl/tanner85"],
+    ["ultrahuman-ring-pro", "https://www.ultrahuman.com/ring-pro/buy/?referral=1zjotd"]
+  ]);
+
+  assert.equal(Object.keys(affiliates).length, 18);
   assert(!JSON.stringify(affiliates).includes("example.com"));
   assert(!JSON.stringify(affiliates).includes("practice"));
 
   for (const [key, affiliate] of Object.entries(affiliates)) {
     const url = new URL(affiliate.url);
+    if (directVendors.has(key)) {
+      // A direct vendor referral has no ASIN and is not an amzn.to short link.
+      assert.notEqual(affiliate.vendor, "Amazon", `${key} is a direct vendor link`);
+      assert.equal(affiliate.url, directVendors.get(key));
+      assert.equal(affiliate.asin, undefined, `${key} must not claim an ASIN`);
+      assert.equal(url.protocol, "https:");
+      continue;
+    }
     assert.equal(affiliate.vendor, "Amazon");
     if (affiliate.kind === "product") {
       assert.equal(url.origin, "https://amzn.to");
@@ -73,8 +93,7 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
     assert(affiliates[affiliateKey], `${affiliateKey} must exist in the affiliate registry`);
   }
 
-  assert.equal(frontmatter("src/content/sleep/temperature-controlled-bed.md").affiliate, undefined);
-
+  
   assert.deepEqual(frontmatter("src/content/supplements/creatine-monohydrate.md").affiliates, [
     "amazon-bucked-up-creatine-blue-raspberry",
     "amazon-bucked-up-creatine-mango-pineapple"
@@ -90,10 +109,12 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
   ]);
   for (const [file, affiliateKey] of productMappings) {
     const data = frontmatter(file);
-    assert.equal(data.status, undefined, `${file} must not imply personal use`);
-    assert.equal(data.dose, undefined, `${file} must not invent a dose`);
-    assert.equal(data.timing, undefined, `${file} must not invent timing`);
     assert.equal(data.affiliate, affiliateKey);
+    // Anything not currently taken must not carry a live dose or timing.
+    if (data.status !== "current") {
+      assert.equal(data.dose, undefined, `${file} is not current and must not state a dose`);
+      assert.equal(data.timing, undefined, `${file} is not current and must not state timing`);
+    }
   }
 
   const avmacol = frontmatter("src/content/supplements/avmacol-sulforaphane.md");
@@ -125,14 +146,16 @@ test("affiliate calls to action are transparent and sponsored", () => {
     "src/components/peptides/PeptideSupplies.astro"
   ]) {
     const component = read(file);
-    assert.match(component, /rel="sponsored noreferrer"/);
+    // Every outbound product link opens in a new tab.
+    assert.match(component, /target="_blank" rel="sponsored noreferrer noopener"/);
     assert.doesNotMatch(component, /Search Amazon for/);
     assert.doesNotMatch(component, />\s*Buy\b/i);
     assert.doesNotMatch(component, /Product context:/);
   }
 
   const affiliateHelper = read("src/lib/affiliates.ts");
-  assert.match(affiliateHelper, /View \$\{affiliate\.product\} on Amazon/);
+  // The label names the actual vendor, now that not every link is Amazon.
+  assert.match(affiliateHelper, /View \$\{affiliate\.product\} on \$\{affiliate\.vendor\}/);
   // Affiliate disclosure lives once in the site footer, not per page.
   assert(!existsSync(path.join(workspaceRoot, "src/components/site/AmazonDisclosure.astro")));
   assert.match(read("src/data/site.ts"), /Some links are affiliate links/);

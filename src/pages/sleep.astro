@@ -17,10 +17,12 @@ const sleepSupplements = sortByOrder(await getCollection("supplements")).filter(
 const current = entries
   .filter((entry) => entry.data.status === "current")
   .sort((a, b) => Number(Boolean(b.data.featured)) - Number(Boolean(a.data.featured)) || a.data.order - b.data.order);
+// Environment and gear come before routine: the setup is the part people can
+// act on immediately, and the routine notes read better after it.
 const kinds = [
-  ["Routine", "routine"],
   ["Environment", "environment"],
   ["Gear", "gear"],
+  ["Routine", "routine"],
   ["Tracking", "tracking"]
 ] as const;
 const hasPracticeEntries = entries.some((entry) => entry.data.practiceOnly);
@@ -48,16 +50,16 @@ const glanceItems = current.map((entry) => ({
       {sleepSupplements.length ? (
         <section class="sleep-supplements" aria-labelledby="sleep-supplements-heading">
           <header>
-            <p class="section-label">Night / Supplements</p>
-            <h2 id="sleep-supplements-heading">Supplements</h2>
-            <p>Full notes on the supplements page.</p>
+            <p class="section-label">Night / Foundational</p>
+            <h2 id="sleep-supplements-heading">Start here</h2>
+            <p>The two I take every night. Full notes on the supplements page.</p>
           </header>
           <ul>
             {sleepSupplements.map((entry) => (
               <li>
                 <a href={`/supplements#${entry.data.slug}`}>
                   <span class="supplement-label">
-                    {entry.data.tier === "foundational" ? "Start here" : "Current"}
+                    {entry.data.tier === "foundational" ? "Foundational" : "Current"}
                     {entry.data.dose ? ` · ${entry.data.dose}` : ""}
                   </span>
                   <strong>{entry.data.name}</strong>
@@ -83,17 +85,21 @@ const glanceItems = current.map((entry) => ({
   .sleep-supplements h2 { margin: 0; font-family: var(--serif); font-size: clamp(1.9rem, 7vw, 3.2rem); font-weight: 400; line-height: .96; }
   .sleep-supplements header > p:last-child { margin: 0; color: var(--muted); line-height: 1.45; }
   .sleep-supplements ul { display: grid; gap: .85rem; margin: 0; padding: 0; list-style: none; }
+
+  @media (min-width: 48rem) {
+    .sleep-supplements ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
   .sleep-supplements a {
     display: grid;
-    gap: .3rem;
-    border: 1px solid var(--line);
-    border-top: 3px solid var(--sage);
-    padding: 1rem;
-    background: rgba(248, 246, 238, .42);
+    gap: .35rem;
+    border: 1px solid var(--sage-deep);
+    border-top: 6px solid var(--sage-deep);
+    padding: 1.15rem 1rem;
+    background: rgba(248, 246, 238, .78);
     color: inherit;
     text-decoration: none;
   }
-  .supplement-label { color: var(--muted); font-size: .62rem; font-weight: 900; letter-spacing: .11em; text-transform: uppercase; }
+  .supplement-label { color: var(--sage-deep); font-size: .62rem; font-weight: 900; letter-spacing: .11em; text-transform: uppercase; }
   .sleep-supplements strong { font-family: var(--serif); font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 400; line-height: 1; }
   .supplement-summary { color: var(--ink); line-height: 1.5; }
   .sleep-supplements a:hover strong { color: var(--sage-deep); }

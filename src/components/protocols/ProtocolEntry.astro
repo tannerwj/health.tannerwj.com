@@ -50,7 +50,7 @@ const details = [
       <ul>
         {entry.data.sources.map((source) => (
           <li>
-            {source.url ? <a href={source.url} target="_blank" rel="noreferrer">{source.type}</a> : source.type}
+            {source.url ? <a href={source.url} target="_blank" rel="noreferrer noopener">{source.type}</a> : source.type}
             {source.note ? ` — ${source.note}` : null}
           </li>
         ))}

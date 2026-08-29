@@ -25,7 +25,7 @@ const { entries } = Astro.props;
             <h3>{entry.data.name}</h3>
             <p>{entry.data.summary}</p>
             {affiliateEntries.map((affiliate) => (
-              <a href={affiliate.url} rel="sponsored noreferrer">
+              <a href={affiliate.url} target="_blank" rel="sponsored noreferrer noopener">
                 {amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span>
               </a>
             ))}

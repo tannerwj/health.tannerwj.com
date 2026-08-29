@@ -21,6 +21,6 @@ export function getAffiliateEntries(data: {
 
 export function amazonLinkLabel(affiliate: AffiliateEntry, fallbackName: string): string {
   return affiliate.kind === "product"
-    ? `View ${affiliate.product} on Amazon`
-    : `View ${fallbackName} options on Amazon`;
+    ? `View ${affiliate.product} on ${affiliate.vendor}`
+    : `View ${fallbackName} options on ${affiliate.vendor}`;
 }

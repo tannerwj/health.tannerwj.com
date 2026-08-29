@@ -33,7 +33,7 @@ const hasNotes = Boolean(entry.body?.trim());
     </dl>
   ) : null}
 
-  {affiliateEntries.map((affiliate) => <a class="product-link" href={affiliate.url} rel="sponsored noreferrer">{amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span></a>)}
+  {affiliateEntries.map((affiliate) => <a class="product-link" href={affiliate.url} target="_blank" rel="sponsored noreferrer noopener">{amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span></a>)}
 
   {entry.data.practiceOnly ? (
     <PracticeDataNotice label="Practice entry">{entry.data.practiceNote ?? "Practice data only — not Tanner's sleep routine."}</PracticeDataNotice>
