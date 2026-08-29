@@ -2,16 +2,16 @@
 name: Fat-loss hierarchy
 slug: fat-loss-hierarchy
 kind: nutrition
-summary: "Layne Norton prioritizes adherence, calories, protein, fiber, sleep, and self-monitoring before supplements."
+summary: "Adherence, calories, protein, fiber, sleep - then, distantly, supplements. The order is the whole point."
 order: 40
 sources:
   - type: website
     url: https://biolayne.com/podcasts/dr-layne-norton-podcast/what-really-matters-for-fat-loss-episode-6/
     author: Layne Norton
-    note: BioLayne discussion of fat-loss priorities.
+    note: The priority order for fat loss.
     accessed: "2026-07-10"
 ---
 
-Layne Norton's [fat-loss priorities discussion](https://biolayne.com/podcasts/dr-layne-norton-podcast/what-really-matters-for-fat-loss-episode-6/) puts adherence and energy balance ahead of supplements.
+[Norton's ordering](https://biolayne.com/podcasts/dr-layne-norton-podcast/what-really-matters-for-fat-loss-episode-6/) puts adherence first, which is the part people skip: the best diet is the one you will still be doing in six months, and that usually beats the theoretically superior one you quit.
 
-The durable idea is to keep the order plain: adherence, calories, protein, fiber, sleep, and self-monitoring before looking for smaller levers. Self-monitoring can be a useful behavior tool, but it can be counterproductive for some people and is not an obligation.
+Supplements sit at the bottom, well below sleep. Worth remembering how much of the fat-loss market is selling the bottom of the list.

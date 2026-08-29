@@ -2,16 +2,16 @@
 name: Fiber types and tolerance
 slug: fiber-types-and-tolerance
 kind: nutrition
-summary: "Peter Attia discusses different fiber types and the need to build tolerance rather than treating fiber as one uniform thing."
+summary: "Fiber is several different things doing different jobs. Increase it slowly or you will regret it."
 order: 30
 sources:
   - type: website
     url: https://peterattiamd.com/ama77/
     author: Peter Attia
-    note: Fiber types and intake context.
+    note: Fiber types and how intake affects tolerance.
     accessed: "2026-07-10"
 ---
 
-Peter Attia's [AMA on fiber](https://peterattiamd.com/ama77/) treats fiber as several related categories with different jobs.
+[Attia's fiber AMA](https://peterattiamd.com/ama77/) breaks it into categories that behave differently — soluble and insoluble are not interchangeable, and neither is every high-fiber food.
 
-Fiber can support satiety and dietary adherence for some people, without every source or intake change feeling the same. The durable idea is to build tolerance gradually rather than assuming a large jump will be comfortable or sustainable.
+The practical part is tolerance. Going from a low-fiber diet to a high one overnight is genuinely unpleasant, and most people who "cannot handle fiber" moved too fast rather than found their limit.

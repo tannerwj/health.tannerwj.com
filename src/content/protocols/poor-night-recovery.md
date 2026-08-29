@@ -2,16 +2,16 @@
 name: After a poor night
 slug: poor-night-recovery
 kind: recovery
-summary: "Huberman Lab frames the day after a poor night as a return-to-routine problem, not a reason to rewrite the whole schedule."
+summary: "Keep the wake time, get light, do not chase the lost sleep. One bad night is not worth restructuring the week over."
 order: 90
 sources:
   - type: website
     url: https://www.hubermanlab.com/daily-blueprint
     author: Huberman Lab
-    note: Daily routine context for sleep, light, and recovery.
+    note: Holding the daily routine after a short night.
     accessed: "2026-07-10"
 ---
 
-Huberman Lab's [daily blueprint](https://www.hubermanlab.com/daily-blueprint) emphasizes keeping the next day structured after a short night. A consistent wake time and morning light can help preserve the broader rhythm.
+The instinct after a bad night is to sleep in, nap long, and go to bed early — which is how one bad night turns into a bad week. The [daily blueprint](https://www.hubermanlab.com/daily-blueprint) advice is to hold the wake time and get morning light anyway.
 
-If a nap or non-sleep deep rest feels useful, it can be a deliberate recovery tool rather than a cue to abandon the day. One bad night is not, by itself, a reason to keep shifting the whole sleep schedule.
+A short nap or some [NSDR](#nsdr-yoga-nidra) is fine. Shifting your whole schedule is what causes the trouble.

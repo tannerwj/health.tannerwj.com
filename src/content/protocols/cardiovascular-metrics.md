@@ -2,16 +2,16 @@
 name: Cardiovascular metrics need context
 slug: cardiovascular-metrics
 kind: testing
-summary: "Peter Attia treats resting heart rate, recovery, HRV, VO2 max, and blood pressure as useful only when measurement and context are sound."
+summary: "Resting heart rate, HRV, heart-rate recovery, VO2 max, blood pressure - related, not interchangeable, none self-explanatory."
 order: 310
 sources:
   - type: x
     url: https://x.com/PeterAttiaMD/status/1943309371007471629
     author: Peter Attia
-    note: Resting heart rate, heart-rate recovery, HRV, VO2 max, and blood pressure require sound measurement and context.
+    note: These metrics measure different things and need sound measurement.
     accessed: "2026-07-10"
 ---
 
-Peter Attia's [cardiovascular-metrics post](https://x.com/PeterAttiaMD/status/1943309371007471629) groups resting heart rate, heart-rate recovery, heart-rate variability, VO2 max, and blood pressure as related but distinct signals.
+[Attia groups these together](https://x.com/PeterAttiaMD/status/1943309371007471629) while making the point that they are not substitutes for each other. A good HRV does not tell you about your blood pressure.
 
-They are not interchangeable, and none is self-interpreting. Device accuracy, test protocol, trend length, medications, illness, stress, and training load all change the meaning. Concerning values or symptoms need appropriate clinical interpretation.
+HRV is the one most often over-read. It varies hugely between people, so your own trend is the only meaningful comparison — and illness, alcohol, and a late meal all move it enough to swamp whatever you were trying to observe.

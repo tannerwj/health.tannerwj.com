@@ -2,16 +2,16 @@
 name: Shift-work circadian damage control
 slug: shift-work-circadian-damage-control
 kind: other
-summary: "Huberman Lab discusses stable schedules and controlled light as practical circadian tools for shift work, within real occupational limits."
+summary: "Stable timing and controlled light make shift work less costly. They do not make it free."
 order: 120
 sources:
   - type: website
     url: https://www.hubermanlab.com/episode/find-your-temperature-minimum-to-defeat-jetlag-shift-work-and-sleeplessness
     author: Andrew Huberman
-    note: Episode on shift work, light, and temperature timing.
+    note: Light and timing strategies for atypical work hours.
     accessed: "2026-07-10"
 ---
 
-Andrew Huberman's [episode on schedule shifts](https://www.hubermanlab.com/episode/find-your-temperature-minimum-to-defeat-jetlag-shift-work-and-sleeplessness) treats stable timing and deliberate light exposure as useful levers for people working atypical hours.
+The levers in [Huberman's episode](https://www.hubermanlab.com/episode/find-your-temperature-minimum-to-defeat-jetlag-shift-work-and-sleeplessness) are keeping a schedule as stable as the job allows and controlling light deliberately — bright during the shift, dark on the commute home.
 
-Those levers cannot erase the strain of an occupation that repeatedly disrupts sleep and social timing. This is a damage-control framework, not proof that shift work carries no health tradeoffs.
+Worth being honest that this is damage control. Rotating shifts carry real health costs, and no light protocol removes them.

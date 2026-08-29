@@ -2,16 +2,16 @@
 name: Protein distribution is secondary
 slug: protein-distribution
 kind: nutrition
-summary: "Layne Norton treats protein distribution as secondary to total daily intake."
+summary: "How you spread protein across the day matters far less than the daily total. Fix the total first."
 order: 20
 sources:
   - type: website
     url: https://biolayne.com/podcasts/dr-layne-norton-podcast/supplement-series-tier-1-episode-22/
     author: Layne Norton
-    note: BioLayne context on protein priorities.
+    note: Protein timing and distribution rank behind total intake.
     accessed: "2026-07-10"
 ---
 
-Layne Norton's [Tier 1 supplement discussion](https://biolayne.com/podcasts/dr-layne-norton-podcast/supplement-series-tier-1-episode-22/) keeps protein timing and distribution behind total daily intake.
+[Norton](https://biolayne.com/podcasts/dr-layne-norton-podcast/supplement-series-tier-1-episode-22/) keeps distribution behind total intake for a simple reason: the effect size is much smaller, and people obsess over it while missing the number that matters.
 
-Meal frequency and distribution can be useful context around appetite, training, and routine, but remain secondary. The durable idea is to solve the larger intake question before over-weighting meal spacing.
+Spreading protein across three or four meals is reasonable and easy. It is not worth setting alarms for.

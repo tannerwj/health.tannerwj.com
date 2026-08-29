@@ -2,16 +2,16 @@
 name: Blood pressure as a risk lever
 slug: blood-pressure-risk-lever
 kind: testing
-summary: "NHLBI's SPRINT study highlights blood pressure as an important risk factor while home measurements still need repeated, contextual interpretation."
+summary: "One of the highest-leverage numbers in medicine, and one of the easiest to measure badly."
 order: 220
 sources:
   - type: website
     url: https://www.nhlbi.nih.gov/science/systolic-blood-pressure-intervention-trial-sprint-study
     author: National Heart, Lung, and Blood Institute
-    note: SPRINT trial overview and evidence context.
+    note: SPRINT trial on intensive blood-pressure control.
     accessed: "2026-07-10"
 ---
 
-The [NHLBI SPRINT overview](https://www.nhlbi.nih.gov/science/systolic-blood-pressure-intervention-trial-sprint-study) summarizes a randomized trial showing why blood pressure is a consequential cardiovascular-risk factor in its studied population.
+[SPRINT](https://www.nhlbi.nih.gov/science/systolic-blood-pressure-intervention-trial-sprint-study) was stopped early because tighter blood-pressure control showed a clear benefit in the population studied. Few interventions have that kind of evidence behind them.
 
-Routine and home readings can be useful, but any single measurement carries noise from technique, timing, and circumstances. Lifestyle and medication decisions require clinical context; this note does not set a universal target.
+Technique dominates home readings: feet flat, back supported, arm at heart height, no talking, several minutes seated first, cuff on bare skin and correctly sized. A cuff that is too small reads high. Take several readings across days before concluding anything.

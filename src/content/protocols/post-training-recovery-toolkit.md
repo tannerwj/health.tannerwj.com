@@ -2,16 +2,16 @@
 name: Post-training recovery toolkit
 slug: post-training-recovery-toolkit
 kind: recovery
-summary: "Andy Galpin frames recovery tools as context-dependent choices for arousal, soreness, and fatigue rather than interchangeable performance upgrades."
+summary: "Pick the tool for the actual problem - wired, sore, or exhausted are different states. Feeling better is not the same as recovering better."
 order: 170
 sources:
   - type: conversation
     url: https://www.hubermanlab.com/episode/guest-series-dr-andy-galpin-maximize-recovery-to-achieve-fitness-and-performance-goals
     author: Andrew Huberman and Andy Galpin
-    note: Recovery tools and training-adaptation discussion.
+    note: Matching recovery tools to the specific problem.
     accessed: "2026-07-10"
 ---
 
-In this [Andy Galpin recovery discussion](https://www.hubermanlab.com/episode/guest-series-dr-andy-galpin-maximize-recovery-to-achieve-fitness-and-performance-goals), the right tool depends on the problem in view: elevated arousal, muscle soreness, broad fatigue, or a need to prepare for another session.
+Galpin's [recovery episode](https://www.hubermanlab.com/episode/guest-series-dr-andy-galpin-maximize-recovery-to-achieve-fitness-and-performance-goals) starts by asking what is actually wrong. Too wired to sleep, sore, and systemically exhausted are three different problems, and the tools are not interchangeable.
 
-Feeling better after a recovery tool is not always the same as improving adaptation to training. The relevant tradeoff is the training goal, the timing, and the evidence for the specific tool.
+The uncomfortable part is that feeling better and adapting better sometimes point in opposite directions — see [cold exposure after lifting](#cold-exposure-after-lifting).

@@ -2,16 +2,16 @@
 name: Sleep apnea evaluation
 slug: sleep-apnea-evaluation
 kind: testing
-summary: "Matthew Walker outlines sleep apnea as a diagnosis-and-treatment issue that requires appropriate screening, recording, and clinical interpretation."
+summary: "If you snore and wake up unrefreshed, get tested. This is the one thing on this site that is genuinely urgent."
 order: 140
 sources:
   - type: conversation
     url: https://themattwalkerpodcast.buzzsprout.com/1821163/episodes/12892879-48-what-is-sleep-apnea
     author: Matthew Walker Podcast
-    note: Sleep apnea overview and evaluation context.
+    note: What sleep apnea is and how it is evaluated.
     accessed: "2026-07-10"
 ---
 
-The [Matthew Walker Podcast's sleep-apnea overview](https://themattwalkerpodcast.buzzsprout.com/1821163/episodes/12892879-48-what-is-sleep-apnea) treats suspected apnea as diagnosis-and-treatment territory, rather than a sleep-hack problem.
+Untreated apnea is common, frequently undiagnosed, and carries real cardiovascular consequences. [Walker's overview](https://themattwalkerpodcast.buzzsprout.com/1821163/episodes/12892879-48-what-is-sleep-apnea) treats it as a medical question, and home sleep tests have made getting an answer much easier than it used to be.
 
-Questionnaires can identify concerns, while sleep recordings and clinician interpretation help establish what is happening. Mouth tape is not a substitute for evaluating suspected sleep apnea or blocked breathing.
+Nothing on the rest of this site substitutes for that. [Mouth tape](/sleep#mouth-tape) in particular is not a treatment for apnea, and taping over it is worse than doing nothing.

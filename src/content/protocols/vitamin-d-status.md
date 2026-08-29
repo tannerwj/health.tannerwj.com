@@ -2,21 +2,21 @@
 name: Vitamin D status
 slug: vitamin-d-status
 kind: testing
-summary: "Rhonda Patrick discusses testing vitamin D, addressing low status, and retesting rather than guessing indefinitely."
+summary: "Test, correct if low, retest. It is cheap and one of the few supplements where deficiency is common and measurable."
 order: 70
 sources:
   - type: website
     url: https://www.foundmyfitness.com/topics/vitamin-d
     author: FoundMyFitness
-    note: Rhonda Patrick vitamin D topic overview.
+    note: Vitamin D status and testing overview.
     accessed: "2026-07-10"
   - type: website
     url: https://www.foundmyfitness.com/episodes/attia-patrick-vitamin-d-supplementation
     author: FoundMyFitness
-    note: Peter Attia and Rhonda Patrick vitamin D supplementation discussion.
+    note: Attia and Patrick on supplementation decisions.
     accessed: "2026-07-10"
 ---
 
-FoundMyFitness' [vitamin D topic overview](https://www.foundmyfitness.com/topics/vitamin-d) and [Attia / Patrick vitamin D discussion](https://www.foundmyfitness.com/episodes/attia-patrick-vitamin-d-supplementation) frame vitamin D as a status question.
+[Patrick and Attia](https://www.foundmyfitness.com/episodes/attia-patrick-vitamin-d-supplementation) treat this as a status question rather than a supplement question. Deficiency is common enough — particularly at higher latitudes and through winter — that guessing is a poor strategy.
 
-The durable idea is to test, address low status with appropriate context, and retest rather than guessing indefinitely.
+The retest is the step people skip. Taking vitamin D without ever rechecking means you still do not know where you are.

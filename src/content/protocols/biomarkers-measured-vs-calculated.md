@@ -2,16 +2,16 @@
 name: Measured versus calculated biomarkers
 slug: biomarkers-measured-vs-calculated
 kind: testing
-summary: "Andy Galpin recommends checking whether a lab result was directly measured or calculated before interpreting it."
+summary: "Some numbers on your lab panel were never measured - they were computed from other numbers. LDL is usually one of them."
 order: 290
 sources:
   - type: x
     url: https://x.com/DrAndyGalpin/status/1993757809595625940
     author: Andy Galpin
-    note: Some commonly reported panel values are calculated rather than directly measured.
+    note: Commonly reported panel values are often calculated, not measured.
     accessed: "2026-07-10"
 ---
 
-Andy Galpin's [lab-method post](https://x.com/DrAndyGalpin/status/1993757809595625940) is a reminder that a value printed on a panel may be measured directly or calculated from other results. The distinction can affect precision and interpretation.
+[Galpin's point](https://x.com/DrAndyGalpin/status/1993757809595625940) catches people out: standard LDL cholesterol is typically calculated from other values via an equation, not measured directly. The equation is less reliable at high triglycerides or very low LDL.
 
-Before comparing tests, check the lab method, units, reference range, fasting or collection conditions, and whether the same method was used. This improves context; it does not turn a single biomarker into a diagnosis.
+Before comparing results across labs, check the method, units, and reference range. Two panels using different methods are not directly comparable, and that difference gets mistaken for a real change all the time.

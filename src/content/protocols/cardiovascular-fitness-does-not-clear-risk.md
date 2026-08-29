@@ -2,16 +2,16 @@
 name: Fitness does not rule out cardiovascular risk
 slug: cardiovascular-fitness-does-not-clear-risk
 kind: testing
-summary: "Andy Galpin uses a very fit coach's coronary blockage as a reason not to let performance substitute for risk assessment."
+summary: "Being extremely fit does not mean your arteries are clear. Performance is not a screening test."
 order: 300
 sources:
   - type: x
     url: https://x.com/DrAndyGalpin/status/2057125141713215693
     author: Andy Galpin
-    note: Anecdote about a highly fit coach who still had significant coronary disease.
+    note: A highly fit coach with significant coronary disease.
     accessed: "2026-07-10"
 ---
 
-Andy Galpin's [post about a fit coach with coronary blockage](https://x.com/DrAndyGalpin/status/2057125141713215693) is a useful warning against treating performance as a complete cardiovascular clearance.
+[Galpin's example](https://x.com/DrAndyGalpin/status/2057125141713215693) is a very fit coach who turned out to have significant coronary disease. It is one anecdote, and its value is as a corrective to a belief plenty of fit people hold without examining it.
 
-It is one anecdote, not evidence for a universal screening protocol or a particular test. The conservative takeaway is to consider symptoms, family history, blood pressure, lipids, age, and clinician-guided risk assessment even when fitness is excellent.
+Family history, [ApoB](#apob-risk-marker), [Lp(a)](#lpa-inherited-risk-context), and [blood pressure](#blood-pressure-risk-lever) all carry information your training numbers do not.

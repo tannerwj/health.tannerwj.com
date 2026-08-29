@@ -2,21 +2,21 @@
 name: NSDR and yoga nidra
 slug: nsdr-yoga-nidra
 kind: recovery
-summary: "Huberman Lab presents NSDR and yoga nidra as low-risk deliberate-rest practices, not replacements for sufficient sleep."
+summary: "Guided lying-down rest without sleeping. Low-risk, free, and genuinely useful after a bad night."
 order: 100
 sources:
   - type: website
     url: https://www.hubermanlab.com/nsdr
     author: Huberman Lab
-    note: NSDR practice overview.
+    note: What NSDR is and how it is practised.
     accessed: "2026-07-10"
   - type: website
     url: https://www.hubermanlab.com/newsletter/toolkit-for-sleep
     author: Huberman Lab
-    note: Sleep toolkit context for deliberate rest.
+    note: Deliberate rest within the sleep toolkit.
     accessed: "2026-07-10"
 ---
 
-Huberman Lab's [NSDR overview](https://www.hubermanlab.com/nsdr) describes guided relaxation practices, including yoga nidra, as a way to deliberately downshift and rest.
+[NSDR](https://www.hubermanlab.com/nsdr) is Huberman's relabelling of yoga nidra — a guided script you follow lying down, not trying to sleep. Ten to twenty minutes, no equipment, nothing to buy.
 
-These practices are relatively low-risk options for a short reset when they suit the moment. They do not make chronic sleep restriction equivalent to adequate sleep.
+It is a decent recovery tool for a rough afternoon. It does not bank sleep, and chronic short sleep is not fixable this way.
