@@ -114,14 +114,26 @@ test("the bedtime pair stays coupled and surfaces on the sleep stack", () => {
   assert.match(sleepPage, /\/supplements#\$\{entry\.data\.slug\}/);
 });
 
-test("supplement time-of-day groups keep every current item reachable", () => {
+test("current supplements render as one list ordered through the day", () => {
   const supplementsPage = readTextFile(path.join(workspaceRoot, "src/pages/supplements.astro"));
-  // Items without a recorded time must still render, or they vanish from the page.
-  assert.match(supplementsPage, /currentUngrouped/);
-  assert.match(supplementsPage, /current\.filter\(\(entry\) => !entry\.data\.when\)/);
+  // One Current section, sorted by when; an unrecorded time must still render
+  // rather than being filtered into a group that does not exist.
+  assert.match(supplementsPage, /whenRank/);
+  assert.match(supplementsPage, /rankOf\(a\) - rankOf\(b\)/);
+  assert.doesNotMatch(supplementsPage, /currentByWhen/);
+
+  const rendered = readFileSync(path.join(workspaceRoot, "dist/supplements/index.html"), "utf8");
+  const currentCount = readdirSync(path.join(workspaceRoot, "src/content/supplements"))
+    .filter((file) => file.endsWith(".md"))
+    .map((file) => parseFrontmatter(readTextFile(path.join(workspaceRoot, "src/content/supplements", file)), file))
+    .filter((entry) => entry.status === "current").length;
+  for (const heading of ["Morning", "Before bed"]) {
+    assert(!rendered.includes(`>${heading}</h2>`), `time-of-day heading ${heading} must be gone`);
+  }
+  assert(currentCount > 0);
 });
 
-test("statusless sourced supplements remain separate from personal stack groups", () => {
+test("every supplement is something Tanner takes, tried, or is weighing", () => {
   const supplementsDir = path.join(workspaceRoot, "src/content/supplements");
   const entries = readdirSync(supplementsDir)
     .filter((file) => file.endsWith(".md"))
@@ -143,18 +155,18 @@ test("statusless sourced supplements remain separate from personal stack groups"
   // tried or is weighing. It is deliberately not a catalog of things he does
   // not take, so there are no statusless source notes here.
   assert.deepEqual(sourceNotes, []);
-  assert.equal(entries.filter((entry) => entry.status === "current").length, 7);
+  assert.equal(entries.filter((entry) => entry.status === "current").length, 8);
   assert(entries.every((entry) => entry.status), "every supplement carries a status");
 
+  // The page still knows how to render statusless records if one is ever added,
+  // even though none exist today.
   const supplementsPage = readFileSync(path.join(workspaceRoot, "src/pages/supplements.astro"), "utf8");
   const supplementList = readFileSync(
     path.join(workspaceRoot, "src/components/supplements/SupplementList.astro"),
     "utf8"
   );
   assert.match(supplementsPage, /const sourceNotes = entries\.filter/);
-  assert.match(supplementsPage, /heading="Source notes"/);
   assert.match(supplementList, /"Source note"/);
-  assert.match(supplementsPage, /heading="Saved product links"/);
   assert.match(supplementList, /"Saved product"/);
 });
 

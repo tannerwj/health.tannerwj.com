@@ -139,6 +139,14 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
 });
 
 test("affiliate calls to action are transparent and sponsored", () => {
+  // Outbound product links render in exactly one place, so the sponsored
+  // relationship and new-tab behaviour cannot drift between collections.
+  const shared = read("src/components/site/AffiliateLinks.astro");
+  assert.match(shared, /target="_blank" rel="sponsored noreferrer noopener"/);
+  assert.match(shared, /getAffiliateEntries/);
+  assert.doesNotMatch(shared, /Search Amazon for/);
+  assert.doesNotMatch(shared, />\s*Buy/i);
+
   for (const file of [
     "src/components/supplements/SupplementList.astro",
     "src/components/sleep/SleepEntry.astro",
@@ -146,28 +154,18 @@ test("affiliate calls to action are transparent and sponsored", () => {
     "src/components/peptides/PeptideSupplies.astro"
   ]) {
     const component = read(file);
-    // Every outbound product link opens in a new tab.
-    assert.match(component, /target="_blank" rel="sponsored noreferrer noopener"/);
-    assert.doesNotMatch(component, /Search Amazon for/);
-    assert.doesNotMatch(component, />\s*Buy\b/i);
-    assert.doesNotMatch(component, /Product context:/);
+    assert.match(component, /<AffiliateLinks /, `${file} must use the shared component`);
+    // No collection may hand-roll its own outbound link markup.
+    assert.doesNotMatch(component, /rel="sponsored/, `${file} must not inline an affiliate link`);
   }
 
   const affiliateHelper = read("src/lib/affiliates.ts");
   // The label names the actual vendor, now that not every link is Amazon.
   assert.match(affiliateHelper, /View \$\{affiliate\.product\} on \$\{affiliate\.vendor\}/);
+
   // Affiliate disclosure lives once in the site footer, not per page.
   assert(!existsSync(path.join(workspaceRoot, "src/components/site/AmazonDisclosure.astro")));
   assert.match(read("src/data/site.ts"), /Some links are affiliate links/);
-
-  for (const renderer of [
-    "src/components/supplements/SupplementList.astro",
-    "src/components/sleep/SleepEntry.astro",
-    "src/components/exercise/ExerciseGroup.astro",
-    "src/components/peptides/PeptideSupplies.astro"
-  ]) {
-    assert.match(read(renderer), /getAffiliateEntries/);
-  }
 });
 
 test("Rhonda Patrick remains one person with two primary X profiles", () => {

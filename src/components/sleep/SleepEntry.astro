@@ -1,7 +1,7 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
 import PracticeDataNotice from "../site/PracticeDataNotice.astro";
-import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
+import AffiliateLinks from "../site/AffiliateLinks.astro";
 
 interface Props {
   entry: CollectionEntry<"sleep">;
@@ -10,7 +10,6 @@ interface Props {
 
 const { entry, featured = false } = Astro.props;
 const { Content } = await render(entry);
-const affiliateEntries = getAffiliateEntries(entry.data);
 const hasNotes = Boolean(entry.body?.trim());
 ---
 
@@ -33,7 +32,7 @@ const hasNotes = Boolean(entry.body?.trim());
     </dl>
   ) : null}
 
-  {affiliateEntries.map((affiliate) => <a class="product-link" href={affiliate.url} target="_blank" rel="sponsored noreferrer noopener">{amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span></a>)}
+  <AffiliateLinks data={entry.data} name={entry.data.name} />
 
   {entry.data.practiceOnly ? (
     <PracticeDataNotice label="Practice entry">{entry.data.practiceNote ?? "Practice data only — not Tanner's sleep routine."}</PracticeDataNotice>
@@ -58,7 +57,6 @@ const hasNotes = Boolean(entry.body?.trim());
   .sleep-facts div { min-width: 7rem; }
   dt { color: var(--muted); font-size: .62rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
   dd { margin: .25rem 0 0; font-size: .88rem; line-height: 1.35; }
-  .product-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: .5rem; color: var(--sage-deep); font-size: .87rem; font-weight: 800; text-underline-offset: .2em; }
   details { margin-top: .55rem; border-top: 1px solid var(--line); }
   summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--sage-deep); font-size: .86rem; font-weight: 800; }
   .markdown { max-width: 42rem; padding-bottom: .3rem; line-height: 1.6; }

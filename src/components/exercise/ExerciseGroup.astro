@@ -1,7 +1,7 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
 import PracticeDataNotice from "../site/PracticeDataNotice.astro";
-import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
+import AffiliateLinks from "../site/AffiliateLinks.astro";
 
 interface Props {
   title: string;
@@ -24,7 +24,6 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
       {entries.map(async (entry) => {
         const { Content } = await render(entry);
         const hasNotes = Boolean(entry.body?.trim());
-        const affiliateEntries = getAffiliateEntries(entry.data);
         return (
           <li>
             <article id={entry.data.slug}>
@@ -47,7 +46,7 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
                   {entry.data.spec ? <div><dt>Details</dt><dd>{entry.data.spec}</dd></div> : null}
                 </dl>
               ) : null}
-              {affiliateEntries.map((affiliate) => <a class="product-link" href={affiliate.url} target="_blank" rel="sponsored noreferrer noopener">{amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span></a>)}
+              <AffiliateLinks data={entry.data} name={entry.data.name} />
               {entry.data.practiceOnly ? <PracticeDataNotice label="Practice entry">{entry.data.practiceNote ?? "Practice data only — not Tanner's training plan."}</PracticeDataNotice> : null}
               {hasNotes ? <details><summary>Notes and context</summary><div class="markdown"><Content /></div></details> : null}
             </article>
@@ -74,7 +73,6 @@ const id = `exercise-${title.toLowerCase().replaceAll(" ", "-")}`;
   .summary { max-width: 46rem; margin: .75rem 0 0; line-height: 1.5; }
   dl { display: flex; flex-wrap: wrap; gap: .7rem 1.4rem; margin: 1rem 0 0; border-top: 1px solid var(--line); padding-top: .7rem; }
   dl div { min-width: 7rem; } dt { color: var(--muted); font-size: .62rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; } dd { margin: .25rem 0 0; font-size: .88rem; line-height: 1.4; }
-  .product-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: .5rem; color: var(--sage-deep); font-size: .87rem; font-weight: 800; text-underline-offset: .2em; }
   details { margin-top: .6rem; border-top: 1px solid var(--line); } summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--sage-deep); font-size: .86rem; font-weight: 800; } .markdown { max-width: 44rem; padding-bottom: .3rem; line-height: 1.6; }
   @media (min-width: 48rem) { article { padding: 1.35rem 1.45rem; } }
 </style>

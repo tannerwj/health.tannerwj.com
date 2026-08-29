@@ -1,7 +1,7 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
 import PracticeDataNotice from "../site/PracticeDataNotice.astro";
-import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
+import AffiliateLinks from "../site/AffiliateLinks.astro";
 
 interface Props {
   entries: CollectionEntry<"supplements">[];
@@ -31,7 +31,6 @@ const statusLabels = {
       <ol class="supplement-list">
         {entries.map(async (entry) => {
           const { Content } = await render(entry);
-          const affiliateEntries = getAffiliateEntries(entry.data);
           const hasNotes = Boolean(entry.body?.trim());
 
           return (
@@ -60,15 +59,7 @@ const statusLabels = {
                   {entry.data.frequency ? <div><dt>Frequency</dt><dd>{entry.data.frequency}</dd></div> : null}
                 </dl> : null}
 
-                {affiliateEntries.length ? (
-                  <div class="product-links" aria-label={`Product links for ${entry.data.name}`}>
-                    {affiliateEntries.map((affiliate) => (
-                      <a class="product-link" href={affiliate.url} target="_blank" rel="sponsored noreferrer noopener">
-                        {amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span>
-                      </a>
-                    ))}
-                  </div>
-                ) : null}
+                <AffiliateLinks data={entry.data} name={entry.data.name} />
 
                 {entry.data.practiceOnly ? (
                   <PracticeDataNotice label="Practice entry">
@@ -128,8 +119,6 @@ const statusLabels = {
   .supplement-facts div { min-width: 0; }
   .supplement-facts dt { color: var(--muted); font-size: .64rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
   .supplement-facts dd { margin: .28rem 0 0; font-size: .9rem; line-height: 1.4; }
-  .product-link { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; margin-top: .7rem; border-bottom: 1px solid var(--sage-deep); color: var(--sage-deep); font-size: .8rem; font-weight: 900; text-decoration: none; }
-  .product-links { display: flex; flex-wrap: wrap; gap: .2rem 1.25rem; }
   .entry-details { margin-top: .75rem; border-top: 1px solid var(--line); }
   .entry-details summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--sage-deep); font-size: .86rem; font-weight: 800; }
   .markdown { max-width: 46rem; padding-bottom: .3rem; line-height: 1.6; }

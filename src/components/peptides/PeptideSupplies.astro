@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { amazonLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
+import AffiliateLinks from "../site/AffiliateLinks.astro";
 
 interface Props {
   entries: CollectionEntry<"supplies">[];
@@ -18,17 +18,12 @@ const { entries } = Astro.props;
     </header>
     <div class="supply-grid">
       {entries.map((entry) => {
-        const affiliateEntries = getAffiliateEntries(entry.data);
         return (
           <article class="supply-entry" id={entry.data.slug}>
             <p class="entry-label">Supply link</p>
             <h3>{entry.data.name}</h3>
             <p>{entry.data.summary}</p>
-            {affiliateEntries.map((affiliate) => (
-              <a href={affiliate.url} target="_blank" rel="sponsored noreferrer noopener">
-                {amazonLinkLabel(affiliate, entry.data.name)} <span aria-hidden="true">↗</span>
-              </a>
-            ))}
+            <AffiliateLinks data={entry.data} name={entry.data.name} />
           </article>
         );
       })}

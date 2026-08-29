@@ -1,0 +1,52 @@
+---
+import { affiliateLinkLabel, getAffiliateEntries } from "../../lib/affiliates";
+
+/**
+ * The single place outbound product links are rendered. Centralising this keeps
+ * the sponsored relationship, the new-tab behaviour, and the vendor-aware label
+ * consistent everywhere instead of repeated per collection.
+ */
+interface Props {
+  data: { affiliate?: string; affiliates?: string[] };
+  name: string;
+}
+
+const { data, name } = Astro.props;
+const affiliates = getAffiliateEntries(data);
+---
+
+{affiliates.length ? (
+  <div class="product-links" aria-label={`Product links for ${name}`}>
+    {affiliates.map((affiliate) => (
+      <a class="product-link" href={affiliate.url} target="_blank" rel="sponsored noreferrer noopener">
+        {affiliateLinkLabel(affiliate, name)} <span aria-hidden="true">↗</span>
+      </a>
+    ))}
+  </div>
+) : null}
+
+<style>
+  .product-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .2rem 1.25rem;
+  }
+
+  .product-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    min-height: 44px;
+    margin-top: .6rem;
+    border-bottom: 1px solid var(--sage-deep);
+    color: var(--sage-deep);
+    font-size: .82rem;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  .product-link:hover,
+  .product-link:focus-visible {
+    border-bottom-color: transparent;
+  }
+</style>

@@ -9,21 +9,14 @@ import { routeMetadata } from "../data/site";
 import { sortByOrder } from "../lib/content";
 
 const entries = sortByOrder(await getCollection("supplements"));
+// One Current list, ordered through the day so items taken together sit
+// together. An unrecorded time sorts last rather than splitting off a group.
+const whenRank = { morning: 0, daytime: 1, evening: 2, bedtime: 3 } as const;
+const rankOf = (entry: { data: { when?: keyof typeof whenRank } }) =>
+  entry.data.when ? whenRank[entry.data.when] : whenRank.bedtime + 1;
 const current = entries
   .filter((entry) => entry.data.status === "current")
-  .sort((a, b) => Number(Boolean(b.data.featured)) - Number(Boolean(a.data.featured)) || a.data.order - b.data.order);
-// Current items group by when they are actually taken, so items taken together
-// render together. Items without a recorded time fall into the last group.
-const whenGroups = [
-  ["morning", "Morning"],
-  ["daytime", "During the day"],
-  ["evening", "Evening"],
-  ["bedtime", "Before bed"]
-] as const;
-const currentByWhen = whenGroups
-  .map(([key, label]) => ({ label, entries: current.filter((entry) => entry.data.when === key) }))
-  .filter((group) => group.entries.length);
-const currentUngrouped = current.filter((entry) => !entry.data.when);
+  .sort((a, b) => rankOf(a) - rankOf(b) || a.data.order - b.data.order);
 const considering = entries.filter((entry) => entry.data.status === "considering");
 const previouslyTried = entries.filter((entry) => entry.data.status === "previously-tried");
 const sourceNotes = entries.filter((entry) => !entry.data.status && entry.data.sources?.length);
@@ -54,14 +47,7 @@ const glanceItems = glanceEntries.map((entry) => ({
 
 
     <div class="wrap stack" id="supplement-details">
-      {currentByWhen.map((group) => (
-        <SupplementList
-          entries={group.entries}
-          heading={group.label}
-          emptyMessage="Nothing recorded here yet."
-        />
-      ))}
-      {currentUngrouped.length ? <SupplementList entries={currentUngrouped} heading="Current" emptyMessage="No current supplement entries are published yet." /> : null}
+      {current.length ? <SupplementList entries={current} heading="Current" emptyMessage="No current supplement entries are published yet." /> : null}
       {linkedProducts.length ? <SupplementList entries={linkedProducts} heading="Saved product links" sectionLabel="Products" emptyMessage="No additional products are linked yet." /> : null}
       {considering.length ? <SupplementList entries={considering} heading="Considering" emptyMessage="Nothing is under consideration here right now." /> : null}
       {previouslyTried.length ? <SupplementList entries={previouslyTried} heading="Previously tried" emptyMessage="No previously tried entries are published yet." /> : null}

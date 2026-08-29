@@ -19,7 +19,7 @@ export function getAffiliateEntries(data: {
   return keys.flatMap((key) => affiliateRegistry[key] ? [affiliateRegistry[key]] : []);
 }
 
-export function amazonLinkLabel(affiliate: AffiliateEntry, fallbackName: string): string {
+export function affiliateLinkLabel(affiliate: AffiliateEntry, fallbackName: string): string {
   return affiliate.kind === "product"
     ? `View ${affiliate.product} on ${affiliate.vendor}`
     : `View ${fallbackName} options on ${affiliate.vendor}`;

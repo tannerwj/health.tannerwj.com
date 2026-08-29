@@ -7,23 +7,8 @@ type OrderedEntry = {
   };
 };
 
-type HomepageEntryData = {
-  data: {
-    featured?: boolean;
-    homepageOrder?: number;
-  };
-};
-
 export function sortByOrder<TEntry extends OrderedEntry>(entries: readonly TEntry[]): TEntry[] {
   return [...entries].sort((a, b) => a.data.order - b.data.order);
-}
-
-export function sortFeatured<TEntry extends HomepageEntryData>(entries: readonly TEntry[]): TEntry[] {
-  return [...entries].sort(
-    (a, b) =>
-      (a.data.homepageOrder ?? Number.MAX_SAFE_INTEGER) -
-      (b.data.homepageOrder ?? Number.MAX_SAFE_INTEGER)
-  );
 }
 
 export function groupBy<TEntry, TKey extends PropertyKey>(
