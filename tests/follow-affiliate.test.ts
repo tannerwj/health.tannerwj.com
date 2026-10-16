@@ -37,6 +37,8 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
     ["amazon-bucked-up-creatine-mango-pineapple", "B0DW7BQLG8", "https://amzn.to/4paLgyo"],
     ["amazon-easy-touch-insulin-syringes", "B07P2HV7XQ", "https://amzn.to/44n4xDu"],
     ["amazon-medpride-alcohol-prep-pads", "B07F2MQ9NJ", "https://amzn.to/4vjF8Fz"],
+    ["amazon-gluco-care-plus-pen-tips", "B0CSXKK7PD", "https://amzn.to/4hXwQ1y"],
+    ["amazon-3ml-pen-cartridges", "B0GWL6MKJL", "https://amzn.to/4jpPLVd"],
     ["amazon-avmacol-sulforaphane", "B07V485YZH", "https://amzn.to/44sq7q2"],
     ["amazon-nutricost-ubiquinol", "B0C87VT8CW", "https://amzn.to/4aNBRHn"],
     ["amazon-now-curcumin-phytosome", "B004AC0676", "https://amzn.to/4wzaclH"],
@@ -54,7 +56,7 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
     ["ultrahuman-ring-pro", "https://www.ultrahuman.com/ring-pro/buy/?referral=1zjotd"]
   ]);
 
-  assert.equal(Object.keys(affiliates).length, 18);
+  assert.equal(Object.keys(affiliates).length, 20);
   assert(!JSON.stringify(affiliates).includes("example.com"));
   assert(!JSON.stringify(affiliates).includes("practice"));
 
@@ -128,7 +130,9 @@ test("Amazon links preserve generic searches and exact amzn.to product links", (
 
   const supplyMappings = new Map([
     ["src/content/supplies/easy-touch-insulin-syringes.md", "amazon-easy-touch-insulin-syringes"],
-    ["src/content/supplies/medpride-alcohol-prep-pads.md", "amazon-medpride-alcohol-prep-pads"]
+    ["src/content/supplies/medpride-alcohol-prep-pads.md", "amazon-medpride-alcohol-prep-pads"],
+    ["src/content/supplies/gluco-care-plus-pen-tips.md", "amazon-gluco-care-plus-pen-tips"],
+    ["src/content/supplies/3ml-pen-cartridges.md", "amazon-3ml-pen-cartridges"]
   ]);
   for (const [file, affiliateKey] of supplyMappings) {
     const data = frontmatter(file);
